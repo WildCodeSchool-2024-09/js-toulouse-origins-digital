@@ -1,19 +1,18 @@
-*{
-    background-color: rgb(0, 0, 0);
-    color: white;
+* {
+  background-color: rgb(0, 0, 0);
+  color: white;
 }
-
 
 .carousel {
-    background-color: rgba(222, 205, 205, 0.5);
+  background-color: rgba(222, 205, 205, 0.5);
 }
 .thumbs-wrapper {
-    display: none;
+  display: none;
 }
 .carousel-status {
-    display: none;
+  display: none;
 }
 
-.image-items{
-    border-radius: 50px;
+.image-items {
+  border-radius: 50px;
 }
