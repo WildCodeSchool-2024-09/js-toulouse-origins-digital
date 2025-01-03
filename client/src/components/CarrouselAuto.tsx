@@ -46,11 +46,11 @@ export default function CarrouselAuto() {
         <img src={carouselAuto3} alt="Slide 3" />
         <img src={carouselAuto4} alt="Slide 4" />
         <img src={carouselAuto5} alt="Slide 5" />
-        <img src={carouselAuto1} alt="Slide 1 Clone" />
-        <img src={carouselAuto2} alt="Slide 2 Clone" />
-        <img src={carouselAuto3} alt="Slide 3 Clone" />
-        <img src={carouselAuto4} alt="Slide 4 Clone" />
-        <img src={carouselAuto5} alt="Slide 5 Clone" />
+        <img src={carouselAuto1} alt="Slide 1" />
+        <img src={carouselAuto2} alt="Slide 2" />
+        <img src={carouselAuto3} alt="Slide 3" />
+        <img src={carouselAuto4} alt="Slide 4" />
+        <img src={carouselAuto5} alt="Slide 5" />
       </div>
     </div>
   );
