@@ -1,10 +1,10 @@
 import "../styles/CarrouselAuto.css";
 import { useEffect, useRef } from "react";
-import img1 from "../assets/images/img-carrousel-1.jpg";
-import img2 from "../assets/images/img-carrousel-2.png";
-import img3 from "../assets/images/img-carrousel-3.png";
-import img4 from "../assets/images/img-carrousel-4.png";
-import img5 from "../assets/images/img-carrousel-5.jpg";
+import carouselAuto1 from "../assets/images/carrousel-auto-1.jpg";
+import carouselAuto2 from "../assets/images/carrousel-auto-2.png";
+import carouselAuto3 from "../assets/images/carrousel-auto-3.png";
+import carouselAuto4 from "../assets/images/carrousel-auto-4.png";
+import carouselAuto5 from "../assets/images/carrousel-auto-5.jpg";
 
 export default function CarrouselAuto() {
   const trackRef = useRef<HTMLDivElement>(null);
@@ -41,16 +41,16 @@ export default function CarrouselAuto() {
   return (
     <div className="carousel">
       <div className="carousel-track" ref={trackRef}>
-        <img src={img1} alt="Slide 1" />
-        <img src={img2} alt="Slide 2" />
-        <img src={img3} alt="Slide 3" />
-        <img src={img4} alt="Slide 4" />
-        <img src={img5} alt="Slide 5" />
-        <img src={img1} alt="Slide 1 Clone" />
-        <img src={img2} alt="Slide 2 Clone" />
-        <img src={img3} alt="Slide 3 Clone" />
-        <img src={img4} alt="Slide 4 Clone" />
-        <img src={img5} alt="Slide 5 Clone" />
+        <img src={carouselAuto1} alt="Slide 1" />
+        <img src={carouselAuto2} alt="Slide 2" />
+        <img src={carouselAuto3} alt="Slide 3" />
+        <img src={carouselAuto4} alt="Slide 4" />
+        <img src={carouselAuto5} alt="Slide 5" />
+        <img src={carouselAuto1} alt="Slide 1 Clone" />
+        <img src={carouselAuto2} alt="Slide 2 Clone" />
+        <img src={carouselAuto3} alt="Slide 3 Clone" />
+        <img src={carouselAuto4} alt="Slide 4 Clone" />
+        <img src={carouselAuto5} alt="Slide 5 Clone" />
       </div>
     </div>
   );
