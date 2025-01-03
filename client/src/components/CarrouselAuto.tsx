@@ -38,19 +38,20 @@ export default function CarrouselAuto() {
     return () => clearInterval(interval);
   }, []);
 
+  const images = [
+    { id: 1, src: carouselAuto1, alt: "Slide 1" },
+    { id: 2, src: carouselAuto2, alt: "Slide 2" },
+    { id: 3, src: carouselAuto3, alt: "Slide 3" },
+    { id: 4, src: carouselAuto4, alt: "Slide 4" },
+    { id: 5, src: carouselAuto5, alt: "Slide 5" },
+  ];
+
   return (
     <div className="carousel">
       <div className="carousel-track" ref={trackRef}>
-        <img src={carouselAuto1} alt="Slide 1" />
-        <img src={carouselAuto2} alt="Slide 2" />
-        <img src={carouselAuto3} alt="Slide 3" />
-        <img src={carouselAuto4} alt="Slide 4" />
-        <img src={carouselAuto5} alt="Slide 5" />
-        <img src={carouselAuto1} alt="Slide 1" />
-        <img src={carouselAuto2} alt="Slide 2" />
-        <img src={carouselAuto3} alt="Slide 3" />
-        <img src={carouselAuto4} alt="Slide 4" />
-        <img src={carouselAuto5} alt="Slide 5" />
+        {images.concat(images).map((image) => (
+          <img key={image.id} src={image.src} alt={image.alt} />
+        ))}
       </div>
     </div>
   );
