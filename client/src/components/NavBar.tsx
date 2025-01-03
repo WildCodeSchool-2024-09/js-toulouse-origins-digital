@@ -3,7 +3,7 @@ import bookmarkIcon from "../assets/images/bookmark.png";
 import homeIcon from "../assets/images/home-2.png";
 import searchIcon from "../assets/images/search.png";
 import imgProfile from "../assets/images/user-solid.svg";
-import "../style/NavBar.css";
+import "../styles/NavBar.css";
 
 export default function NavBar() {
   return (
