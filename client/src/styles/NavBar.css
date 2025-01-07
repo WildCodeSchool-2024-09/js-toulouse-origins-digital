@@ -10,7 +10,7 @@
   bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
-  width: 70%;
+  width: 90%;
   max-width: 400px;
 }
 
@@ -24,4 +24,8 @@
   height: 30px;
   border-radius: 50px;
   border: 3px solid #31d0d9;
+}
+
+.nav-bar-container {
+  margin-top: 80px;
 }

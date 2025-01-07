@@ -7,13 +7,20 @@ import "../styles/NavBar.css";
 
 export default function NavBar() {
   return (
-    <nav className="nav-bar">
-      <img src={homeIcon} alt="Home" className="nav-icon" />
-      <img src={bookmarkIcon} alt="Bookmark" className="nav-icon" />
-      <img src={addIcon} alt="Add" className="nav-icon" />
-      <img src={searchIcon} alt="Search" className="nav-icon" />
-      <img src={imgProfile} alt="Profile" className="nav-icon-profile-style" />
-      <div />
-    </nav>
+    <>
+      <div className="nav-bar-container">
+        <nav className="nav-bar">
+          <img src={homeIcon} alt="Home" className="nav-icon" />
+          <img src={bookmarkIcon} alt="Bookmark" className="nav-icon" />
+          <img src={addIcon} alt="Add" className="nav-icon" />
+          <img src={searchIcon} alt="Search" className="nav-icon" />
+          <img
+            src={imgProfile}
+            alt="Profile"
+            className="nav-icon-profile-style"
+          />
+        </nav>
+      </div>
+    </>
   );
 }
