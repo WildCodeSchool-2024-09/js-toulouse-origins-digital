@@ -1,0 +1,20 @@
+@import url("https://fonts.googleapis.com/css2?family=Audiowide&family=Exo:ital,wght@0,100..900;1,100..900&family=Hind+Madurai:wght@300;400;500;600;700&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --background-color: #121221;
+  --font-title: "Audiowide", sans-serif;
+  --primary-font: "Exo", sans-serif;
+  --secondary-font: "Hind Madurai", sans serif;
+  --primary-text-color: #ffffff;
+  --secondary-text-color: #121221;
+  --link-text-color: #dd25b6;
+  --grandiant-nav: linear-gradient(180deg, #62dde3 0%, #31d0d9 100%);
+  --button-color: #acfcff;
+  --transparence-color: #d9d9d918;
+}

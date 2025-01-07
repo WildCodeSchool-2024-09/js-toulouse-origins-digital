@@ -1,0 +1,59 @@
+body {
+  background-color: var(--background-color);
+}
+
+.title-home-screen {
+  font-family: var(--primary-font);
+  color: white;
+  font-size: 32px;
+}
+
+.text-home-screen {
+  font-family: var(--primary-font);
+  color: white;
+  font-size: 16px;
+}
+
+.intro {
+  padding: 30px 40px;
+  font-size: 20px;
+}
+
+.button-access {
+  border-style: none;
+  border-radius: 50px;
+  font-family: "Exo", sans-serif;
+  background-color: var(--transparence-color);
+  color: white;
+  padding: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  width: 190px;
+}
+
+.subscription-section {
+  background-color: var(--transparence-color);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  background-color: rgba(217, 217, 217, 0.1);
+  backdrop-filter: blur(50px);
+}
+
+.bg-img {
+  height: 24vh;
+  width: 100%;
+  object-position: top;
+  object-fit: cover;
+}
+
+.connection-nav {
+  display: flex;
+  justify-content: space-around;
+  gap: 20px;
+}
+
+.carrousel-section {
+  padding: 50px 0;
+}
