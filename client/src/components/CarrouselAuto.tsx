@@ -47,7 +47,7 @@ export default function CarrouselAuto() {
   ];
 
   return (
-    <div className="carousel">
+    <div className="carousel-auto">
       <div className="carousel-track" ref={trackRef}>
         {images.concat(images).map((image) => (
           <img key={image.id} src={image.src} alt={image.alt} />
