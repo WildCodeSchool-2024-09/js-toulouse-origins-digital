@@ -1,10 +1,12 @@
 import "./App.css";
-import HomeScreen from "./pages/HomeScreen";
+import { Outlet } from "react-router-dom";
 
 function App() {
   return (
     <>
-      <HomeScreen />
+      <main>
+        <Outlet />
+      </main>
     </>
   );
 }
