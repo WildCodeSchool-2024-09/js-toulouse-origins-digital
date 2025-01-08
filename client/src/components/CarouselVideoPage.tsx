@@ -23,7 +23,7 @@ const data = [
   },
   {
     id: 4,
-     url: "https://s3-alpha-sig.figma.com/img/6131/86e5/cdb145978449c63911259d5628745345?Expires=1736726400&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=QyxUowoWodsw2DWjYG4PXtrevcpC72j24gIP05e7yAadwT1Oqik5KafzbLa6BBSU6c2GX2uhrjOTr1x5coomwxVUv~1xrjJ5m8EJC3adALsX7wdJM8llnPGSp-WaLtVNYnIqMyLo5F1wK3K8~x9ZB1s9OennGO4yDDA0MukssnugtuFno5KNQClNYaJ7~QdWM-Y8Ijv~WE9gXhfgS0zrvIjqR9tUY0kDEXFsmsFrRtBbk48h8ihldnY~hkD1XczPojXsDA8uAuHVEt5d2~WNzL4-m22cT0-EPoZUIViCEvL~erGXnTSNck1pNY3lTLttFixfpGuJkc0Zl2hfsX3IAQ__",
+    url: "https://s3-alpha-sig.figma.com/img/6131/86e5/cdb145978449c63911259d5628745345?Expires=1736726400&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=QyxUowoWodsw2DWjYG4PXtrevcpC72j24gIP05e7yAadwT1Oqik5KafzbLa6BBSU6c2GX2uhrjOTr1x5coomwxVUv~1xrjJ5m8EJC3adALsX7wdJM8llnPGSp-WaLtVNYnIqMyLo5F1wK3K8~x9ZB1s9OennGO4yDDA0MukssnugtuFno5KNQClNYaJ7~QdWM-Y8Ijv~WE9gXhfgS0zrvIjqR9tUY0kDEXFsmsFrRtBbk48h8ihldnY~hkD1XczPojXsDA8uAuHVEt5d2~WNzL4-m22cT0-EPoZUIViCEvL~erGXnTSNck1pNY3lTLttFixfpGuJkc0Zl2hfsX3IAQ__",
   },
 ];
 
