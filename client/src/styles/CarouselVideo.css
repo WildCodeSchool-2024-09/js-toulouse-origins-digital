@@ -11,3 +11,10 @@
   object-position: bottom;
   border-radius: 20px;
 }
+
+.title-video {
+  font-family: var(--primary-font);
+  color: white;
+  font-size: 24px;
+  margin-top: 10px;
+}
