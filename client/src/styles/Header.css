@@ -1,0 +1,17 @@
+.logo-header {
+  background-color: #121221;
+  color: rgb(255, 255, 255);
+  font-family: Audiowide, sans-serif;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  display: flex;
+  align-items: center;
+  padding: 0 17px;
+}
+
+.logo-icon {
+  width: 70px;
+  height: auto;
+}

@@ -1,14 +1,17 @@
 import "../styles/HomeScreen.css";
 import bgImage from "../assets/images/bg-img-home-screen.jpeg";
 import CarrouselAuto from "../components/CarrouselAuto";
+import Header from "../components/Header";
+import NavBar from "../components/NavBar";
 
 export default function HomeScreen() {
   return (
     <>
+      <Header />
       <div>
         <section className="carrousel-section">
           <p className="text-home-screen intro">
-            Plongez dans l’univers des jeux vidéos : découvrez nos guides vidéos
+            Plongez dans l'univers des jeux vidéos : découvrez nos guides vidéos
             pour maitriser vos jeux préférés et déjouer tous les défis !
           </p>
           <CarrouselAuto />
@@ -35,6 +38,7 @@ export default function HomeScreen() {
           </div>
         </section>
       </div>
+      <NavBar />
     </>
   );
 }
