@@ -1,12 +1,15 @@
 import "../styles/Video.css";
 import "../App.css";
 import CarouselVideoPage from "../components/CarouselVideoPage";
+import Header from "../components/Header";
+import NavBar from "../components/NavBar";
 
 export default function Video() {
   const img = "/src/assets/images/video1.png";
 
   return (
     <>
+      <Header />
       <div className="watched-video">
         <img className="video" src={img} alt="video" />
         <h1 className="video-name">Video1</h1>
@@ -27,6 +30,7 @@ export default function Video() {
         <hr className="video-hr" />
         <CarouselVideoPage />
       </div>
+      <NavBar />
     </>
   );
 }
