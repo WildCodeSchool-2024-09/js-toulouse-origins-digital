@@ -20,7 +20,7 @@ export default function HomeScreen() {
         <section className="subscription-section">
           <h1 className="title-home-screen">Améliorez votre expérience !</h1>
           <p className="text-home-screen">
-            Inscrivez-vous pour profiter d’un accès complet à toutes nos vidéos,
+            Inscrivez-vous pour profiter d'un accès complet à toutes nos vidéos,
             y compris les dernières nouveautés, ou continuez sans inscription
             pour un aperçu limité !
           </p>
