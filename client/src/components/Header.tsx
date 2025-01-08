@@ -7,7 +7,7 @@ export default function () {
     <div>
       <div className="logo-header">
         <img src={controller} alt="Controller" className="logo-icon" />
-        <h1> JESTONE</h1>
+        <h1>JESTONE</h1>
       </div>
       <SearchBar />
     </div>
