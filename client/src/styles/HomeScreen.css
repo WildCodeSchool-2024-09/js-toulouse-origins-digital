@@ -22,9 +22,7 @@ body {
 .button-access {
   border-style: none;
   border-radius: 50px;
-  font-family: "Exo", sans-serif;
   background-color: var(--transparence-color);
-  color: white;
   padding: 10px;
   font-size: 16px;
   cursor: pointer;
@@ -56,4 +54,11 @@ body {
 
 .carrousel-section {
   padding: 50px 0;
+}
+
+.text-button {
+  font-style: normal;
+  color: white;
+  text-decoration: none;
+  font-family: "Exo", sans-serif;
 }

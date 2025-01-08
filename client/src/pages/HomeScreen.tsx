@@ -23,10 +23,14 @@ export default function HomeScreen() {
           </p>
           <div className="connection-nav">
             <button className="button-access" type="button">
-              Je suis visiteur
+              <a className="text-button" href="/visitor">
+                Je suis visiteur
+              </a>
             </button>
             <button className="button-access" type="button">
-              Je crée un compte / Je me connecte
+              <a className="text-button" href="/signup">
+                Je crée un compte <br />/ Je me connecte
+              </a>
             </button>
           </div>
         </section>
