@@ -33,7 +33,7 @@ const router = createBrowserRouter([
         element: <Video />,
       },
       {
-        path: "/homepage",
+        path: "/home",
         element: <HomePage />,
       },
     ], // Renders the App component for the home page
