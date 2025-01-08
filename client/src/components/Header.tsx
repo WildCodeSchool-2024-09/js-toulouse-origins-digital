@@ -1,6 +1,5 @@
 import controller from "../assets/images/controller.svg";
 import "../styles/Header.css";
-import SearchBar from "./SearchBar";
 
 export default function () {
   return (
@@ -9,7 +8,6 @@ export default function () {
         <img src={controller} alt="Controller" className="logo-icon" />
         <h1>JESTONE</h1>
       </div>
-      <SearchBar />
     </div>
   );
 }
