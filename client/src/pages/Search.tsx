@@ -1,4 +1,5 @@
 import Header from "../components/Header";
+import NavBar from "../components/NavBar";
 import SearchBar from "../components/SearchBar";
 
 export default function Search() {
@@ -6,6 +7,7 @@ export default function Search() {
     <>
       <Header />
       <SearchBar />
+      <NavBar />
     </>
   );
 }
