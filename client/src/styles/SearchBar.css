@@ -1,0 +1,28 @@
+.search-bar {
+  background-color: rgba(211, 211, 211, 0.199);
+  color: white;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  padding: 5px 20px;
+  width: 90%;
+  margin: 0 auto;
+  opacity: 1;
+}
+
+.search-input {
+  background: transparent;
+  border: none;
+  flex: 1;
+  padding: 8px;
+  color: white;
+  font-size: 16px;
+  outline: none;
+  opacity: 1;
+}
+
+.magnifying-glass {
+  width: 15px;
+  height: 15px;
+  margin-left: 20px;
+}

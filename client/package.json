@@ -5,7 +5,8 @@
     "check-types": "tsc --noEmit",
     "dev": "vite --host",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "fix": "npx @biomejs/biome check --write ."
   },
   "dependencies": {
     "react": "^18.3.1",
