@@ -1,5 +1,6 @@
 import "../styles/Video.css";
 import "../App.css";
+import CarouselVideoPage from "../components/CarouselVideoPage";
 
 export default function Video() {
   const img = "/src/assets/images/video1.png";
@@ -24,7 +25,7 @@ export default function Video() {
       <div className="recommended-video-section">
         <h1 className="recommanded-video-title">Vidéos Recommandées</h1>
         <hr className="video-hr" />
-        <img className="recommanded-video" src={img} alt="video" />
+        <CarouselVideoPage />
       </div>
     </>
   );

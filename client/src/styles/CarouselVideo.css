@@ -1,0 +1,13 @@
+.carousel-video {
+  display: flex;
+  overflow-x: auto;
+  gap: 20px;
+  padding: 20px;
+}
+.image-video {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  object-position: bottom;
+  border-radius: 20px;
+}
