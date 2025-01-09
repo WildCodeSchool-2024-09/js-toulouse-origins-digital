@@ -10,10 +10,14 @@ export default function NavBar() {
     <>
       <div className="nav-bar-container">
         <nav className="nav-bar">
-          <img src={homeIcon} alt="Home" className="nav-icon" />
+          <a href="/home">
+            <img src={homeIcon} alt="Home" className="nav-icon" />
+          </a>
           <img src={bookmarkIcon} alt="Bookmark" className="nav-icon" />
           <img src={addIcon} alt="Add" className="nav-icon" />
-          <img src={searchIcon} alt="Search" className="nav-icon" />
+          <a href="/search">
+            <img src={searchIcon} alt="Search" className="nav-icon" />
+          </a>
           <img
             src={imgProfile}
             alt="Profile"
