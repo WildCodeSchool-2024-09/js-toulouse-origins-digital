@@ -64,3 +64,18 @@ insert into item(id, title, user_id)
 values
   (1, "Stuff", 1),
   (2, "Doodads", 1);
+
+insert into category(id, name, url_image, description)
+value 
+(1, "RPG", "", "Plonge dans des aventures épiques et façonne ton héros pour des moments palpitants !")
+(2, "MMORPG", "", "Explore un monde infini, découvre de nouvelles zones et forge des alliances avec des joueurs !")
+(3, "FPS", "", "Améliore ta visée, maîtrise les techniques et deviens invincible dans les affrontements !")
+(4, "Battle Royale", "", "Suis nos conseils pour survivre, devenir stratège et remporter la victoire en solo ou en équipe !")
+(5, "Sport", "", "Ressens l'adrénaline du sport et participe à des compétitions palpitantes avec des amis !")
+(6, "Stratégie / Gestion", "", "Apprends à gérer des ressources et des tactiques pour dominer l'univers du jeu !")
+(7, "Sandbox", "", "Découvre des astuces pour créer, explorer et façonner un monde ouvert à ton image !")
+(8, "Action / Aventure", "", "Trouve des stratégies pour explorer des mondes, combattre et réussir tes missions !")
+(9, "Combat", "", "Participe à des combats intenses et défie tes adversaires dans des duels passionnants !")
+(10, "Indie", "", "Explore des jeux originaux et innovants, créés par des développeurs passionnés !")
+(11, "MOBA", "", "Maîtrise les héros, perfectionne tes tactiques et mène ton équipe à la victoire !")
+(12, "Simulation", "", "Suis nos astuces pour vivre des expériences réalistes et immersives dans chaque simulation !")
