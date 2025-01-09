@@ -3,6 +3,7 @@ import bgImage from "../assets/images/bg-img-home-screen.jpeg";
 import CarrouselAuto from "../components/CarrouselAuto";
 import Header from "../components/Header";
 import NavBar from "../components/NavBar";
+import { Link } from "react-router-dom";
 
 export default function HomeScreen() {
   return (
@@ -25,9 +26,11 @@ export default function HomeScreen() {
             pour un aperçu limité !
           </p>
           <div className="connection-nav">
-            <button className="button-access" type="button">
-              Je suis visiteur
-            </button>
+            <Link to="/video">
+              <button className="button-access" type="button">
+                Je suis visiteur
+              </button>
+            </Link>
             <button className="button-access" type="button">
               Je crée un compte / Je me connecte
             </button>
