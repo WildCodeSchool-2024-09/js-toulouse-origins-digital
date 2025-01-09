@@ -16,7 +16,7 @@ export default function NavBar() {
           </Link>
           <img src={bookmarkIcon} alt="Bookmark" className="nav-icon" />
           <img src={addIcon} alt="Add" className="nav-icon" />
-          <Link to="">
+          <Link to="/search">
             <img src={searchIcon} alt="Search" className="nav-icon" />
           </Link>
           <img
