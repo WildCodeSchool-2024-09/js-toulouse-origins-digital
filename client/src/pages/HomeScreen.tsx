@@ -1,9 +1,9 @@
 import "../styles/HomeScreen.css";
+import { Link } from "react-router-dom";
 import bgImage from "../assets/images/bg-img-home-screen.jpeg";
 import CarrouselAuto from "../components/CarrouselAuto";
 import Header from "../components/Header";
 import NavBar from "../components/NavBar";
-import { Link } from "react-router-dom";
 
 export default function HomeScreen() {
   return (
