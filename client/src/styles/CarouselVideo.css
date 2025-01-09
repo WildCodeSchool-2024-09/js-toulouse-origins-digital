@@ -3,6 +3,10 @@
   overflow-x: auto;
   gap: 20px;
   padding: 20px;
+  scrollbar-width: none;
+}
+.carousel-video::-webkit-scrollbar {
+  display: none;
 }
 .image-video {
   width: 150px;
@@ -10,4 +14,18 @@
   object-fit: cover;
   object-position: bottom;
   border-radius: 20px;
+}
+
+.title-video {
+  font-family: var(--primary-font);
+  color: var(--primary-text-color);
+  font-size: 24px;
+  margin-top: 10px;
+}
+
+.category-video {
+  font-style: normal;
+  color: var(--primary-text-color);
+  font-family: var(--primary-font);
+  font-size: 16px;
 }
