@@ -1,8 +1,8 @@
-.modal-user-login {
+.modal-user-signup {
   background-color: rgba(211, 211, 211, 0.199);
   border-radius: 30px;
   border-color: white;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(20px);
   padding: 40px;
   width: 90%;
   max-width: 400px;
@@ -16,22 +16,25 @@
   text-align: center;
 }
 
-.login-title {
+.signup-title {
   font-family: var(--secondary-font);
   color: white;
   font-size: 30px;
   font-weight: bold;
   margin-bottom: 30px;
 }
-.pseudo-input-login,
-.password-input-login {
+
+.pseudo-input-signup,
+.email-input-signup,
+.password-input-signup,
+.confirm-password-input-signup {
   font-family: var(--secondary-font);
   background: rgba(255, 255, 255, 0.1);
+  color: white;
   border: 1px solid rgba(255, 255, 255, 0.4);
   border-radius: 25px;
   padding: 12px;
   font-size: 16px;
-  color: white;
   width: 100%;
   margin-bottom: 20px;
   outline: none;
@@ -39,30 +42,22 @@
   margin-bottom: 20px;
 }
 
-.pseudo-input-login::placeholder,
-.password-input-login::placeholder {
+.pseudo-input-signup::placeholder,
+.email-input-signup::placeholder,
+.password-input-signup::placeholder,
+.confirm-password-input-signup::placeholder {
   color: white;
 }
 
-.pseudo-input-login:focus,
-.password-input-login:focus {
+.pseudo-input-signup:focus,
+.email-input-signup:focus,
+.password-input-signup:focus,
+.confirm-password-input-signup:focus {
   border: 1px solid rgba(255, 255, 255, 0.8);
   background-color: rgba(255, 255, 255, 0.2);
 }
 
-.forgot-password-link {
-  font-family: var(--secondary-font);
-  display: block;
-  color: white;
-  margin-bottom: 20px;
-  font-size: 14px;
-  text-align: right;
-  margin-right: 15px;
-  text-decoration: none;
-  margin-bottom: 20px;
-}
-
-.login-button {
+.signup-button {
   font-family: var(--secondary-font);
   background-color: #88c0d0;
   border: none;
@@ -76,18 +71,18 @@
   transition: background-color 0.3s ease;
 }
 
-.login-button:hover {
+.signup-button:hover {
   background-color: #acfcff;
 }
 
-.signup-link-login {
+.login-link-signup {
   font-family: var(--secondary-font);
   margin-top: 10px;
   font-size: 14px;
   color: rgba(255, 255, 255, 0.8);
 }
 
-.signup-link {
+.login-link {
   color: #dd25b6;
   text-decoration: none;
 }
@@ -103,6 +98,6 @@
   }
 }
 
-.modal-user-login {
+.modal-user-signup {
   animation: scaleIn 0.4s ease-out;
 }
