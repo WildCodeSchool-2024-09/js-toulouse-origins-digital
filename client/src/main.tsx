@@ -7,7 +7,6 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 // Import the main app component
 import App from "./App";
-import UserLogin from "./components/UserLogin";
 import HomePage from "./pages/HomePage";
 import HomeScreen from "./pages/HomeScreen";
 import Search from "./pages/Search";
@@ -42,10 +41,6 @@ const router = createBrowserRouter([
       {
         path: "/search",
         element: <Search />,
-      },
-      {
-        path: "/login",
-        element: <UserLogin />,
       },
     ], // Renders the App component for the home page
   },
