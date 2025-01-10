@@ -49,7 +49,8 @@ body {
 .connection-nav {
   display: flex;
   justify-content: space-around;
-  gap: 20px;
+  align-items: center;
+  gap: 10px;
 }
 
 .carrousel-section {

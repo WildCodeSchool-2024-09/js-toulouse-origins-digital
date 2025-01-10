@@ -31,11 +31,13 @@ export default function HomeScreen() {
                 Je suis visiteur
               </button>
             </Link>
-            <button className="button-access" type="button">
-              <a className="text-button" href="/signup">
-                Je crée un compte <br />/ Je me connecte
-              </a>
-            </button>
+            <Link to="/login">
+              <button className="button-access" type="button">
+                <a className="text-button" href="/signup">
+                  Je crée un compte <br />/ Je me connecte
+                </a>
+              </button>
+            </Link>
           </div>
         </section>
       </div>

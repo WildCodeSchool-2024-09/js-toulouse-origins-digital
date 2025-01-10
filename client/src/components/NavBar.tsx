@@ -19,11 +19,13 @@ export default function NavBar() {
           <Link to="/search">
             <img src={searchIcon} alt="Search" className="nav-icon" />
           </Link>
-          <img
-            src={imgProfile}
-            alt="Profile"
-            className="nav-icon-profile-style"
-          />
+          <Link to="/login">
+            <img
+              src={imgProfile}
+              alt="Profile"
+              className="nav-icon-profile-style"
+            />
+          </Link>
         </nav>
       </div>
     </>
