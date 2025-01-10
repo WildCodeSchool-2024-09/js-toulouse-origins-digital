@@ -7,6 +7,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 // Import the main app component
 import App from "./App";
+import NavProvider from "./contexts/NavProvider";
 import HomePage from "./pages/HomePage";
 import HomeScreen from "./pages/HomeScreen";
 import Search from "./pages/Search";
@@ -58,7 +59,9 @@ if (rootElement == null) {
 // Render the app inside the root element
 createRoot(rootElement).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <NavProvider>
+      <RouterProvider router={router} />
+    </NavProvider>
   </StrictMode>,
 );
 
