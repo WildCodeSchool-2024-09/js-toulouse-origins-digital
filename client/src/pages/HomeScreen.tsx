@@ -29,10 +29,9 @@ export default function HomeScreen() {
             pour un aperçu limité !
           </p>
           <div className="connection-nav">
-            <Link className="visitor-button" to="/home">
-              <p className="text-button">Je suis visiteur</p>
+            <Link className="visitor-button text-button" to="/home">
+              Je suis visiteur
             </Link>
-
             <button
               className="button-access"
               type="button"
@@ -46,7 +45,6 @@ export default function HomeScreen() {
           </div>
         </section>
       </div>
-
       <NavBar />
     </>
   );

@@ -67,3 +67,15 @@ body {
   text-decoration: none;
   font-family: "Exo", sans-serif;
 }
+
+.visitor-button {
+  border-radius: 50px;
+  background-color: var(--transparence-color);
+  padding: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  width: 190px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
