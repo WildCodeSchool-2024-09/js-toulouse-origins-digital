@@ -3,8 +3,11 @@ import bgImage from "../assets/images/bg-img-home-screen.jpeg";
 import CarrouselAuto from "../components/CarrouselAuto";
 import Header from "../components/Header";
 import NavBar from "../components/NavBar";
+import { useNav } from "../contexts/NavProvider";
 
 export default function HomeScreen() {
+  const { isOpenLogin, setIsOpenLogin } = useNav();
+
   return (
     <>
       <Header />
@@ -28,14 +31,20 @@ export default function HomeScreen() {
             <button className="button-access" type="button">
               Je suis visiteur
             </button>
-            <button className="button-access" type="button">
-              <a className="text-button" href="/signup">
+            <button
+              className="button-access"
+              type="button"
+              onClick={() => setIsOpenLogin(!isOpenLogin)}
+              onKeyDown={() => setIsOpenLogin(!isOpenLogin)}
+            >
+              <p className="text-button">
                 Je crée un compte <br />/ Je me connecte
-              </a>
+              </p>
             </button>
           </div>
         </section>
       </div>
+
       <NavBar />
     </>
   );
