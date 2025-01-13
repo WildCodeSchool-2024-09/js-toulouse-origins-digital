@@ -2,7 +2,11 @@ import "../styles/UserLogin.css";
 
 export default function UserLogin() {
   return (
-    <div className="modal-user-login">
+    <div
+      className="modal-user-login"
+      onClick={(e) => e.stopPropagation()}
+      onKeyDown={(e) => e.stopPropagation()}
+    >
       <h1 className="login-title">Je me connecte</h1>
       <div className="user-login">
         <input
