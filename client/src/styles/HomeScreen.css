@@ -29,6 +29,11 @@ body {
   width: 190px;
 }
 
+.link-home {
+  text-decoration: none;
+  color: white;
+}
+
 .subscription-section {
   background-color: var(--transparence-color);
   padding: 20px;
@@ -53,7 +58,7 @@ body {
 }
 
 .carrousel-section {
-  padding: 0 0 50px 0;
+  padding-bottom: 50px;
 }
 
 .text-button {
