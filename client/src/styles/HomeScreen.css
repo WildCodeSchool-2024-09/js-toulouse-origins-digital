@@ -1,7 +1,3 @@
-body {
-  background-color: var(--background-color);
-}
-
 .title-home-screen {
   font-family: var(--primary-font);
   color: white;
