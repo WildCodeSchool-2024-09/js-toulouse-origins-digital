@@ -1,7 +1,3 @@
-body {
-  background-color: var(--background-color);
-}
-
 .title-home-screen {
   font-family: var(--primary-font);
   color: white;
@@ -29,6 +25,11 @@ body {
   width: 190px;
 }
 
+.link-home {
+  text-decoration: none;
+  color: white;
+}
+
 .subscription-section {
   background-color: var(--transparence-color);
   padding: 20px;
@@ -53,7 +54,7 @@ body {
 }
 
 .carrousel-section {
-  padding: 0 0 50px 0;
+  padding-bottom: 50px;
 }
 
 .text-button {
@@ -61,4 +62,16 @@ body {
   color: white;
   text-decoration: none;
   font-family: "Exo", sans-serif;
+}
+
+.visitor-button {
+  border-radius: 50px;
+  background-color: var(--transparence-color);
+  padding: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  width: 190px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
