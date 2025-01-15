@@ -12,17 +12,17 @@ import itemActions from "./modules/item/itemActions";
 import playlistsActions from "./modules/playlists/playlistsActions";
 import videoPlaylistActions from "./modules/videoplaylist/videoPlaylistActions";
 
-router.get("/api/favorites", favoriteActions.read);
-router.get("/api/favorites", favoriteActions.add);
-router.get("/api/favorites", favoriteActions.remove);
+router.get("/api/favorites/:userId", favoriteActions.read);
+router.post("/api/favorites/:userId", favoriteActions.add);
+router.delete("/api/favorites/:userId", favoriteActions.remove);
 
-router.get("/api/videoplaylist", videoPlaylistActions.read);
-router.get("/api/videoplaylist", videoPlaylistActions.add);
-router.get("/api/videoplaylist", videoPlaylistActions.remove);
+router.get("/api/videoplaylist/:playlistId", videoPlaylistActions.read);
+router.post("/api/videoplaylist/:playlistId", videoPlaylistActions.add);
+router.delete("/api/videoplaylist/:playlistId", videoPlaylistActions.remove);
 
-router.get("/api/playlists", playlistsActions.read);
-router.get("/api/playlists", playlistsActions.add);
-router.get("/api/playlists", playlistsActions.remove);
+router.get("/api/playlists/:userId", playlistsActions.read);
+router.post("/api/playlists/:userId", playlistsActions.add);
+router.delete("/api/playlists/:userId", playlistsActions.remove);
 
 router.get("/api/items", itemActions.browse);
 router.get("/api/items/:id", itemActions.read);
