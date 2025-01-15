@@ -43,7 +43,7 @@ const add: RequestHandler = async (req, res, next) => {
     // Extract the item data from the request body
     const newItem = {
       title: req.body.title,
-      user_id: req.body.user_id,
+      id_user: req.body.id_user,
     };
 
     // Create the item

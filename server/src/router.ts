@@ -6,8 +6,23 @@ const router = express.Router();
 // Define Your API Routes Here
 /* ************************************************************************* */
 
+import favoriteActions from "./modules/favorite/favoriteActions";
 // Define item-related routes
 import itemActions from "./modules/item/itemActions";
+import playlistsActions from "./modules/playlists/playlistsActions";
+import videoPlaylistActions from "./modules/videoplaylist/videoPlaylistActions";
+
+router.get("/api/favorites/:userId", favoriteActions.read);
+router.post("/api/favorites/:userId", favoriteActions.add);
+router.delete("/api/favorites/:userId", favoriteActions.remove);
+
+router.get("/api/videoplaylist/:playlistId", videoPlaylistActions.read);
+router.post("/api/videoplaylist/:playlistId", videoPlaylistActions.add);
+router.delete("/api/videoplaylist/:playlistId", videoPlaylistActions.remove);
+
+router.get("/api/playlists/:userId", playlistsActions.read);
+router.post("/api/playlists/:userId", playlistsActions.add);
+router.delete("/api/playlists/:userId", playlistsActions.remove);
 
 router.get("/api/items", itemActions.browse);
 router.get("/api/items/:id", itemActions.read);
