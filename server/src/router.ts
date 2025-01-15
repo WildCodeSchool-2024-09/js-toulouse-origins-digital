@@ -22,6 +22,14 @@ router.post("/api/categories", categoryActions.add);
 router.put("/api/categories/:id", categoryActions.edit);
 router.delete("/api/categories/:id", categoryActions.destroy);
 
+import videoActions from "./modules/video/videoActions";
+
+router.get("/api/videos", videoActions.browse);
+router.get("/api/videos/:id", videoActions.read);
+router.post("/api/videos", videoActions.add);
+router.put("/api/videos/:id", videoActions.edit);
+router.delete("/api/videos/:id", videoActions.destroy);
+
 /* ************************************************************************* */
 
 export default router;
