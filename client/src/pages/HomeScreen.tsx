@@ -1,4 +1,5 @@
 import "../styles/HomeScreen.css";
+import { Link } from "react-router-dom";
 import bgImage from "../assets/images/bg-img-home-screen.jpeg";
 import CarrouselAuto from "../components/CarrouselAuto";
 import Header from "../components/Header";
@@ -28,11 +29,9 @@ export default function HomeScreen() {
             pour un aperçu limité !
           </p>
           <div className="connection-nav">
-            <button className="button-access" type="button">
-              <a className="text-button" href="/visitor">
-                Je suis visiteur
-              </a>
-            </button>
+            <Link className="visitor-button text-button" to="/home">
+              Je suis visiteur
+            </Link>
             <button
               className="button-access"
               type="button"
@@ -46,7 +45,6 @@ export default function HomeScreen() {
           </div>
         </section>
       </div>
-
       <NavBar />
     </>
   );
