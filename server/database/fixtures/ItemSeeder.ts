@@ -18,11 +18,11 @@ class ItemSeeder extends AbstractSeeder {
       // Generate fake item data
       const fakeItem = {
         title: this.faker.lorem.word(), // Generate a fake title using faker library
-        user_id: this.getRef(`user_${i}`).insertId, // Get the insertId of the corresponding user from UserSeeder
+        id_user: this.getRef(`user_${i}`).insertId, // Get the insertId of the corresponding user from UserSeeder
       };
 
       // Insert the fakeItem data into the 'item' table
-      this.insert(fakeItem); // insert into item(title, user_id) values (?, ?)
+      this.insert(fakeItem); // insert into item(title, id_user) values (?, ?)
     }
   }
 }

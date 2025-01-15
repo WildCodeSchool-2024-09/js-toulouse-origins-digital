@@ -5,7 +5,7 @@ import type { Result, Rows } from "../../../database/client";
 type Item = {
   id: number;
   title: string;
-  user_id: number;
+  id_user: number;
 };
 
 class ItemRepository {
@@ -14,8 +14,8 @@ class ItemRepository {
   async create(item: Omit<Item, "id">) {
     // Execute the SQL INSERT query to add a new item to the "item" table
     const [result] = await databaseClient.query<Result>(
-      "insert into item (title, user_id) values (?, ?)",
-      [item.title, item.user_id],
+      "insert into item (title, id_user) values (?, ?)",
+      [item.title, item.id_user],
     );
 
     // Return the ID of the newly inserted item

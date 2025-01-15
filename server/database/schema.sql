@@ -29,7 +29,7 @@ CREATE TABLE playlist (
   id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT NOT NULL,
   name VARCHAR(255) NOT NULL,
   id_user INT UNSIGNED NOT NULL,
-  FOREIGN KEY (id_user) REFERENCES user(id)
+  FOREIGN KEY (id_user) REFERENCES user(id),
 );
 
 CREATE TABLE favorite (
@@ -60,7 +60,7 @@ insert into user(id, email, password)
 values
   (1, "jdoe@mail.com", "123456");
 
-insert into item(id, title, user_id)
+insert into item(id, title, id_user)
 values
   (1, "Stuff", 1),
   (2, "Doodads", 1);
