@@ -1,7 +1,7 @@
-.modal-user-login {
+.modal-user-login-signup {
   background-color: rgba(211, 211, 211, 0.199);
   border-radius: 30px;
-  border-color: white;
+  border: 1px solid white;
   backdrop-filter: blur(10px);
   padding: 40px;
   width: 90%;
@@ -10,21 +10,22 @@
   position: fixed;
   top: 50%;
   left: 50%;
+  text-align: center;
   transform: translate(-50%, -50%);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
   z-index: 1000;
-  text-align: center;
+  animation: scaleIn 0.4s ease-out;
 }
 
-.login-title {
+.login-signup-title {
   font-family: var(--secondary-font);
   color: white;
   font-size: 30px;
   font-weight: bold;
   margin-bottom: 30px;
 }
-.pseudo-input-login,
-.password-input-login {
+
+.input-field {
   font-family: var(--secondary-font);
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.4);
@@ -36,37 +37,32 @@
   margin-bottom: 20px;
   outline: none;
   transition: border 0.3s ease, background-color 0.3s ease;
-  margin-bottom: 20px;
 }
 
-.pseudo-input-login::placeholder,
-.password-input-login::placeholder {
+.input-field::placeholder {
   color: white;
 }
 
-.pseudo-input-login:focus,
-.password-input-login:focus {
+.input-field:focus {
   border: 1px solid rgba(255, 255, 255, 0.8);
   background-color: rgba(255, 255, 255, 0.2);
 }
 
 .forgot-password-link {
   font-family: var(--secondary-font);
-  display: block;
-  color: white;
-  margin-bottom: 20px;
-  font-size: 14px;
   text-align: right;
-  margin-right: 15px;
+  color: rgb(255, 255, 255);
+  font-size: 14px;
   text-decoration: none;
+  display: block;
+  margin-top: -10px;
   margin-bottom: 20px;
 }
 
-.login-button {
+.primary-button {
   font-family: var(--secondary-font);
   background-color: #88c0d0;
   border: none;
-  margin-top: 15px;
   border-radius: 25px;
   padding: 12px;
   font-size: 16px;
@@ -75,20 +71,28 @@
   transition: background-color 0.3s ease;
 }
 
-.login-button:hover {
+.primary-button:hover {
   background-color: #acfcff;
 }
 
-.signup-link-login {
+.switch-button {
+  font-family: var(--secondary-font);
+  background: none;
+  border: none;
+  color: #dd25b6;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.switch-button:hover {
+  color: #ff67d6;
+}
+
+.switch-link {
   font-family: var(--secondary-font);
   margin-top: 10px;
   font-size: 14px;
   color: rgba(255, 255, 255, 0.8);
-}
-
-.signup-link {
-  color: #dd25b6;
-  text-decoration: none;
 }
 
 @keyframes scaleIn {
@@ -100,8 +104,4 @@
     transform: translate(-50%, -50%) scale(1);
     opacity: 1;
   }
-}
-
-.modal-user-login {
-  animation: scaleIn 0.4s ease-out;
 }
