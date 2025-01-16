@@ -48,7 +48,7 @@ import userActions from "./modules/user/userActions";
 router.get("/api/users", userActions.browse);
 router.get("/api/users/:id", userActions.read);
 router.put("/api/users/:id", userActions.edit);
-router.post("/api/users/:id", userActions.add);
+router.post("/api/users/", userActions.add);
 router.delete("/api/users/:id", userActions.destroy);
 /* ************************************************************************* */
 
