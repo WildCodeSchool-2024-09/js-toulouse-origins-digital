@@ -5,6 +5,7 @@ import searchIcon from "../assets/images/search.png";
 import imgProfile from "../assets/images/user-solid.svg";
 import { useNav } from "../contexts/NavProvider";
 import "../styles/NavBar.css";
+import { Link } from "react-router-dom";
 import UserLogin from "./UserLogin";
 
 export default function NavBar() {
@@ -15,10 +16,14 @@ export default function NavBar() {
       {isOpenLogin ? <UserLogin /> : null}
       <div className="nav-bar-container">
         <nav className="nav-bar">
-          <img src={homeIcon} alt="Home" className="nav-icon" />
+          <Link to="/home">
+            <img src={homeIcon} alt="Home" className="nav-icon" />
+          </Link>
           <img src={bookmarkIcon} alt="Bookmark" className="nav-icon" />
           <img src={addIcon} alt="Add" className="nav-icon" />
-          <img src={searchIcon} alt="Search" className="nav-icon" />
+          <Link to="/search">
+            <img src={searchIcon} alt="Search" className="nav-icon" />
+          </Link>
           <img
             onClick={() => setIsOpenLogin(true)}
             onKeyDown={() => setIsOpenLogin(true)}
