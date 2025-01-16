@@ -15,12 +15,16 @@ router.post("/api/items", itemActions.add);
 
 // Define category-related routes
 import categoryActions from "./modules/category/categoryActions";
+import userActions from "./modules/user/userActions";
 
 router.get("/api/categories", categoryActions.browse);
 router.get("/api/categories/:id", categoryActions.read);
 router.post("/api/categories", categoryActions.add);
 router.put("/api/categories/:id", categoryActions.edit);
 router.delete("/api/categories/:id", categoryActions.destroy);
+
+router.get("/api/users", userActions.browse);
+router.get("/api/users/:id", userActions.read);
 
 /* ************************************************************************* */
 
