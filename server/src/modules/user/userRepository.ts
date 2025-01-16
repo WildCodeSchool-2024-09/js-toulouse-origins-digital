@@ -1,5 +1,5 @@
 import databaseClient from "../../../database/client";
-import type { Rows } from "../../../database/client";
+import type { Result, Rows } from "../../../database/client";
 
 type User = {
   id: number;
@@ -22,6 +22,39 @@ class userRepository {
       [id],
     );
     return rows[0] as User | undefined;
+  }
+
+  async update(user: User) {
+    const [result] = await databaseClient.query<Result>(
+      "update program set email = ?, password = ?, pseudo = ?, is_admin = ?, avatar_url = ?",
+      [user.email, user.password, user.pseudo, user.is_admin, user.avatar_url],
+    );
+    return result.affectedRows;
+  }
+
+  async create(user: Omit<User, "id">) {
+    try {
+      const query =
+        "insert into user (email, password, pseudo, is_admin, avatar_url) values (?, ?, ?, ?, ?)";
+      const params = [
+        user.email,
+        user.password,
+        user.pseudo,
+        user.is_admin,
+        user.avatar_url,
+      ];
+      const [result] = await databaseClient.query<Result>(query, params);
+      return result.insertId;
+    } catch (error) {
+      console.error("Erreur lors de l'ajout d'un utilisateur", error);
+      throw error;
+    }
+  }
+
+  async delete(id: number) {
+    const query = "delete from user where id = ?";
+    const [result] = await databaseClient.query<Result>(query, [id]);
+    return result.affectedRows;
   }
 }
 
