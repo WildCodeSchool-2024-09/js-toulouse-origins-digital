@@ -81,13 +81,13 @@ git config --global core.autocrlf false
 
 ### Commandes de Base
 
-| Commande               | Description                                                                 |
-|------------------------|-----------------------------------------------------------------------------|
-| `npm install`          | Installe les dépendances pour le client et le serveur                       |
-| `npm run db:migrate`   | Met à jour la base de données à partir d'un schéma défini                   |
-| `npm run dev`          | Démarre les deux serveurs (client et serveur) dans un seul terminal         |
-| `npm run check`        | Exécute les outils de validation (linting et formatage)                     |
-| `npm run test`         | Exécute les tests unitaires et d'intégration                                |
+| Commande             | Description                                                         |
+| -------------------- | ------------------------------------------------------------------- |
+| `npm install`        | Installe les dépendances pour le client et le serveur               |
+| `npm run db:migrate` | Met à jour la base de données à partir d'un schéma défini           |
+| `npm run dev`        | Démarre les deux serveurs (client et serveur) dans un seul terminal |
+| `npm run check`      | Exécute les outils de validation (linting et formatage)             |
+| `npm run test`       | Exécute les tests unitaires et d'intégration                        |
 
 ### Structure des Dossiers
 
@@ -156,15 +156,15 @@ export default client;
 CREATE TABLE item (
   id INT AUTO_INCREMENT PRIMARY KEY,
   title VARCHAR(255) NOT NULL,
-  user_id INT NOT NULL,
-  FOREIGN KEY(user_id) REFERENCES user(id)
+  id_user INT NOT NULL,
+  FOREIGN KEY(id_user) REFERENCES user(id)
 );
 ```
 
 **Insérer des données** dans `server/database/schema.sql` :
 
 ```sql
-INSERT INTO item (title, user_id) VALUES
+INSERT INTO item (title, id_user) VALUES
   ('Sample Item 1', 1),
   ('Sample Item 2', 2);
 ```
@@ -226,7 +226,7 @@ import type { Result, Rows } from "../../../database/client";
 interface Item {
   id: number;
   title: string;
-  user_id: number;
+  id_user: number;
 }
 
 class ItemRepository {
@@ -240,7 +240,7 @@ class ItemRepository {
 export default new ItemRepository();
 ```
 
-**Ajouter un middleware** 
+**Ajouter un middleware**
 
 ```typescript
 // ...
@@ -256,7 +256,7 @@ const foo: RequestHandler = (req, res, next) => {
   req.message = "hello middleware";
 
   next();
-}
+};
 
 router.get("/api/items", foo, itemActions.browse);
 
@@ -290,7 +290,7 @@ declare global {
 ### REST
 
 | Opération | Méthode | Chemin d'URL | Corps de la requête | SQL    | Réponse (Succès)               | Réponse (Erreur)                                                       |
-|-----------|---------|--------------|---------------------|--------|--------------------------------|------------------------------------------------------------------------|
+| --------- | ------- | ------------ | ------------------- | ------ | ------------------------------ | ---------------------------------------------------------------------- |
 | Browse    | GET     | /items       |                     | SELECT | 200 (OK), liste des items.     |                                                                        |
 | Read      | GET     | /items/:id   |                     | SELECT | 200 (OK), un item.             | 404 (Not Found), si id invalide.                                       |
 | Add       | POST    | /items       | Données de l'item   | INSERT | 201 (Created), id d'insertion. | 400 (Bad Request), si corps invalide.                                  |
@@ -300,6 +300,7 @@ declare global {
 ### Autres Bonnes Pratiques
 
 - **Sécurité** :
+
   - Validez et échappez toujours les entrées des utilisateurs.
   - Utilisez HTTPS pour toutes les communications réseau.
   - Stockez les mots de passe de manière sécurisée en utilisant des hash forts (ex : argon2).

@@ -13,17 +13,16 @@ const browse: RequestHandler = async (req, res, next) => {
 const read: RequestHandler = async (req, res, next) => {
   try {
     const userId = Number.parseInt(req.params.id);
-     const user = await userRepository.read(userId);
+    const user = await userRepository.read(userId);
 
-      if(user != null) {
-        res.status(200).json(user);
-      } else {
-        res.sendStatus(404);
-      }
+    if (user != null) {
+      res.status(200).json(user);
+    } else {
+      res.sendStatus(404);
+    }
   } catch (error) {
     next(error);
   }
 };
-
 
 export default { browse, read };

@@ -84,7 +84,7 @@ describe("POST /api/items", () => {
       .mockImplementation(async () => [result, []]);
 
     // Fake item data
-    const fakeItem = { title: "foo", user_id: 0 };
+    const fakeItem = { title: "foo", id_user: 0 };
 
     // Send a POST request to the /api/items endpoint with a test item
     const response = await supertest(app).post("/api/items").send(fakeItem);
@@ -104,7 +104,7 @@ describe("POST /api/items", () => {
       .spyOn(databaseClient, "query")
       .mockImplementation(async () => [result, []]);
 
-    // Fake item data with missing user_id
+    // Fake item data with missing id_user
     const fakeItem = { title: "foo" };
 
     // Send a POST request to the /api/items endpoint with a test item
@@ -129,7 +129,7 @@ describe("PUT /api/items/:id", () => {
       .mockImplementation(async () => [result, []]);
 
     // Fake item data
-    const fakeItem = { title: "foo", user_id: 0 };
+    const fakeItem = { title: "foo", id_user: 0 };
 
     // Send a PUT request to the /api/items/:id endpoint with a test item
     const response = await supertest(app).put("/api/items/42").send(fakeItem);
@@ -148,7 +148,7 @@ describe("PUT /api/items/:id", () => {
       .spyOn(databaseClient, "query")
       .mockImplementation(async () => [result, []]);
 
-    // Fake item data with missing user_id
+    // Fake item data with missing id_user
     const fakeItem = { title: "foo" };
 
     // Send a PUT request to the /api/items/:id endpoint with a test item
@@ -168,8 +168,8 @@ describe("PUT /api/items/:id", () => {
       .spyOn(databaseClient, "query")
       .mockImplementation(async () => [result, []]);
 
-    // Fake item data with missing user_id
-    const fakeItem = { title: "foo", user_id: 0 };
+    // Fake item data with missing id_user
+    const fakeItem = { title: "foo", id_user: 0 };
 
     // Send a PUT request to the /api/items/:id endpoint with a test item
     const response = await supertest(app).put("/api/items/43").send(fakeItem);
