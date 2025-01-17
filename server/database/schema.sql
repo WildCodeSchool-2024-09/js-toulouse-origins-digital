@@ -69,3 +69,7 @@ values
 ('Sandbox', 'https://cdn.videas.fr/v-medias/uploads/f21c91fa-22b7-4a6e-9363-e40ebf4ca8a5', "Découvre des astuces pour créer, explorer et façonner un monde ouvert à ton image !"),
 ('Sport', 'https://cdn.videas.fr/v-medias/uploads/67484d5a-12ff-4482-9631-d647bd5f893f', "Ressens l'adrénaline du sport et participe à des compétitions palpitantes avec des amis !"),
 ('Indie', 'https://cdn.videas.fr/v-medias/uploads/6c3b7f62-3f7a-46d4-8a3e-14a71fb5e6f2', "Explore des jeux originaux et innovants, créés par des développeurs passionnés !");
+
+insert into user(email, password, pseudo, is_admin)
+values
+("salut@test.com", "salut*&é", "salut", false);
