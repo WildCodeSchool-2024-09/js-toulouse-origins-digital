@@ -1,7 +1,7 @@
 CREATE TABLE user (
   id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT NOT NULL,
   email VARCHAR(255) NOT NULL UNIQUE,
-  password VARCHAR(255) NOT NULL,
+  hashed_password VARCHAR(255) NOT NULL,
   pseudo VARCHAR(45) NOT NULL DEFAULT "Utilisateur",
   is_admin BOOLEAN NOT NULL DEFAULT FALSE,
   avatar_url VARCHAR(2048)
@@ -70,6 +70,6 @@ values
 ('Sport', 'https://cdn.videas.fr/v-medias/uploads/67484d5a-12ff-4482-9631-d647bd5f893f', "Ressens l'adrénaline du sport et participe à des compétitions palpitantes avec des amis !"),
 ('Indie', 'https://cdn.videas.fr/v-medias/uploads/6c3b7f62-3f7a-46d4-8a3e-14a71fb5e6f2', "Explore des jeux originaux et innovants, créés par des développeurs passionnés !");
 
-insert into user(email, password, pseudo, is_admin)
+insert into user(email, hashed_password, pseudo, is_admin)
 values
-("salut@test.com", "salut*&é", "salut", false);
+("salut@test.com", "$argon2id$v=19$m=19456,t=2,p=1$nz6t40CzCcijUhj3Ntpz9A$4DW+9sqLdKvj27E3JYbImIIfZAadyDGXHFiwpBHli4s", "salut", false);
