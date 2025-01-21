@@ -11,7 +11,7 @@ interface Category {
 }
 
 interface CarouselPrimaryProps {
-  onCategorySelect: (categoryName: string) => void;
+  onCategorySelect: (name: string, id: number) => void;
 }
 
 const CarouselPrimary = ({ onCategorySelect }: CarouselPrimaryProps) => {
@@ -25,7 +25,8 @@ const CarouselPrimary = ({ onCategorySelect }: CarouselPrimaryProps) => {
 
   const handleChange = (index: number) => {
     if (categories[index]) {
-      onCategorySelect(categories[index].name);
+      const category = categories[index];
+      onCategorySelect(category.name, category.id);
     }
   };
 

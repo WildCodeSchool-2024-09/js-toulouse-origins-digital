@@ -12,7 +12,7 @@ interface Video {
 }
 
 interface CarouselVideoProps {
-  categoryId?: number;
+  categoryId?: number | null;
 }
 
 interface Category {
@@ -46,8 +46,13 @@ export default function CarouselVideo({ categoryId }: CarouselVideoProps) {
     fetch(endPoint)
       .then((response) => response.json())
       .then((data) => {
-        setCategoryVideos(data);
-        setVideos(data);
+        if (Array.isArray(data) && data.length > 0) {
+          setCategoryVideos(data);
+          setVideos(data);
+        } else {
+          setCategoryVideos([]);
+          setVideos([]);
+        }
       })
       .catch((error) => console.error("Error", error));
   }, [categoryId]);
@@ -76,6 +81,16 @@ export default function CarouselVideo({ categoryId }: CarouselVideoProps) {
   });
 
   const displayedVideos = categoryId ? categoryVideos : videos;
+
+  if (displayedVideos.length === 0 && categoryId) {
+    return (
+      <div className="carousel-video">
+        <p className="no-videos-message">
+          Aucune vidéo disponible pour cette catégorie
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="carousel-video">
