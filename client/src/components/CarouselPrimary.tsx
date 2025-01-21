@@ -22,6 +22,7 @@ const CarouselPrimary = () => {
   return (
     <>
       <Carousel
+        showThumbs={false}
         transitionTime={500}
         infiniteLoop={true}
         className="category-carousel"
