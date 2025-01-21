@@ -1,68 +1,109 @@
+import { useEffect, useState } from "react";
 import "../styles/CarouselVideo.css";
 
-const data = [
-  {
-    id: 1,
-    title: "Vidéo 1",
-    text: "catégorie",
-    url: "https://s3-alpha-sig.figma.com/img/1e02/d7be/7e689ebb847d97473e737707d224852b?Expires=1736726400&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=p4-ovuqdlbmP3QDagxe8I-iCepNQttGcgalxAVlqjWyMwRO6~FdhyMh-kDIc8Z0Ldy3E-9iGXFq1qIl91Ovy5zNRW4XTdZYMWB9WMjMt4JGxVB3vaGFVmt6HSUo4FCHDsVYG~tCUOKSCfzE6YoZ3FQhPiSAFHSPYgpQ7n5-3zt1Vg4QLLHJb-6PSWHYJ6IorF5BriKXP1N5~RafE5U8JdFc10hj-cs-Hpdq8ONYZDnD-PZTb~wTKvxVyYWwmVJvfTBGPBnGarxAov9qXFD1xzIIyCiG2XYI5sfuf~-px4c2FAKk8lVvZiT408ri9sv1UP2o3oCc5fmFZ99q3gp5rfQ__",
-  },
-  {
-    id: 2,
-    title: "Vidéo 2",
-    text: "catégorie",
-    url: "https://s3-alpha-sig.figma.com/img/843a/303a/8027290984f90a732e4dedf7ec025045?Expires=1736726400&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=M1JMTbtFa67e68VkIQPckBDwigpgEtngsBpxIKUBo5tJvNfxHxKWAjrcr4~T99t84ilBVBE4yMFd1hNrjxpqobxm0s9QXNS8ZNZFgCUvdXbDmaJ1CELsj7gd3vyAR9xiX~BBBhd5MqGEXfzpQVXzdrXc2iUNoUyWYimoxXi7IscyzzCxyJ3PH2LoJTtZGOz-5vWW8b~2jpdKt3jlkNC8ihmVj2TumEMqUFJF2xOAq1-A6l2VH9GuxjBEhxfxlAwIhqoQ87C5gVHqZf5mJ2VTmK2KLrsmVcRibm1PUvMR0uAXLCRVWhvHAgbwXvuqxBls~63f5ShwVwfVIvrrztm8Lg__",
-  },
-  {
-    id: 3,
-    title: "Vidéo 3",
-    text: "catégorie",
-    url: "https://s3-alpha-sig.figma.com/img/55dd/5be3/89f98c3f5efcd66559ac38574f9017aa?Expires=1736726400&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=A1ejbXQ9xihbFmc2-fq6-AgTCI7NZrvflOf2rjDoXsqGNz~LEZx8tHPRYC~ivHNpr7Z-oXwQ3p~DwTCldLIYeqTQg4M1XG8LAhW-eNXiPHDMwOeeZ5ffhBeqJuIv5jdxEQcnTNdjIQRWSvn2xY-MSVWomZyKr08EHaETPTuaYZyC7NHuzwqBEPRVYezv1nH5r-Qj0zqDUNtm2hHTweO5hkoc3cmCRAuK~g8MYGCqdM~M27U7NjobNPggw1VHzODVqPWP9ZcVe~oALsJ7I2ntcEDNL6ataQyA52BYHvgx9qAydjJzd7cHxlOFVEeNkyjl-eCGxrseaaXQbwEhvfo7JQ__",
-  },
-  {
-    id: 4,
-    title: "Vidéo 4",
-    text: "catégorie",
-    url: "https://s3-alpha-sig.figma.com/img/6131/86e5/cdb145978449c63911259d5628745345?Expires=1736726400&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=QyxUowoWodsw2DWjYG4PXtrevcpC72j24gIP05e7yAadwT1Oqik5KafzbLa6BBSU6c2GX2uhrjOTr1x5coomwxVUv~1xrjJ5m8EJC3adALsX7wdJM8llnPGSp-WaLtVNYnIqMyLo5F1wK3K8~x9ZB1s9OennGO4yDDA0MukssnugtuFno5KNQClNYaJ7~QdWM-Y8Ijv~WE9gXhfgS0zrvIjqR9tUY0kDEXFsmsFrRtBbk48h8ihldnY~hkD1XczPojXsDA8uAuHVEt5d2~WNzL4-m22cT0-EPoZUIViCEvL~erGXnTSNck1pNY3lTLttFixfpGuJkc0Zl2hfsX3IAQ__",
-  },
-  {
-    id: 5,
-    title: "Vidéo 5",
-    text: "catégorie",
-    url: "https://s3-alpha-sig.figma.com/img/1e02/d7be/7e689ebb847d97473e737707d224852b?Expires=1736726400&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=p4-ovuqdlbmP3QDagxe8I-iCepNQttGcgalxAVlqjWyMwRO6~FdhyMh-kDIc8Z0Ldy3E-9iGXFq1qIl91Ovy5zNRW4XTdZYMWB9WMjMt4JGxVB3vaGFVmt6HSUo4FCHDsVYG~tCUOKSCfzE6YoZ3FQhPiSAFHSPYgpQ7n5-3zt1Vg4QLLHJb-6PSWHYJ6IorF5BriKXP1N5~RafE5U8JdFc10hj-cs-Hpdq8ONYZDnD-PZTb~wTKvxVyYWwmVJvfTBGPBnGarxAov9qXFD1xzIIyCiG2XYI5sfuf~-px4c2FAKk8lVvZiT408ri9sv1UP2o3oCc5fmFZ99q3gp5rfQ__",
-  },
-  {
-    id: 6,
-    title: "Vidéo 6",
-    text: "catégorie",
-    url: "https://s3-alpha-sig.figma.com/img/843a/303a/8027290984f90a732e4dedf7ec025045?Expires=1736726400&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=M1JMTbtFa67e68VkIQPckBDwigpgEtngsBpxIKUBo5tJvNfxHxKWAjrcr4~T99t84ilBVBE4yMFd1hNrjxpqobxm0s9QXNS8ZNZFgCUvdXbDmaJ1CELsj7gd3vyAR9xiX~BBBhd5MqGEXfzpQVXzdrXc2iUNoUyWYimoxXi7IscyzzCxyJ3PH2LoJTtZGOz-5vWW8b~2jpdKt3jlkNC8ihmVj2TumEMqUFJF2xOAq1-A6l2VH9GuxjBEhxfxlAwIhqoQ87C5gVHqZf5mJ2VTmK2KLrsmVcRibm1PUvMR0uAXLCRVWhvHAgbwXvuqxBls~63f5ShwVwfVIvrrztm8Lg__",
-  },
-  {
-    id: 7,
-    title: "Vidéo 7",
-    text: "catégorie",
-    url: "https://s3-alpha-sig.figma.com/img/55dd/5be3/89f98c3f5efcd66559ac38574f9017aa?Expires=1736726400&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=A1ejbXQ9xihbFmc2-fq6-AgTCI7NZrvflOf2rjDoXsqGNz~LEZx8tHPRYC~ivHNpr7Z-oXwQ3p~DwTCldLIYeqTQg4M1XG8LAhW-eNXiPHDMwOeeZ5ffhBeqJuIv5jdxEQcnTNdjIQRWSvn2xY-MSVWomZyKr08EHaETPTuaYZyC7NHuzwqBEPRVYezv1nH5r-Qj0zqDUNtm2hHTweO5hkoc3cmCRAuK~g8MYGCqdM~M27U7NjobNPggw1VHzODVqPWP9ZcVe~oALsJ7I2ntcEDNL6ataQyA52BYHvgx9qAydjJzd7cHxlOFVEeNkyjl-eCGxrseaaXQbwEhvfo7JQ__",
-  },
-  {
-    id: 8,
-    title: "Vidéo 8",
-    text: "catégorie",
-    url: "https://s3-alpha-sig.figma.com/img/6131/86e5/cdb145978449c63911259d5628745345?Expires=1736726400&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=QyxUowoWodsw2DWjYG4PXtrevcpC72j24gIP05e7yAadwT1Oqik5KafzbLa6BBSU6c2GX2uhrjOTr1x5coomwxVUv~1xrjJ5m8EJC3adALsX7wdJM8llnPGSp-WaLtVNYnIqMyLo5F1wK3K8~x9ZB1s9OennGO4yDDA0MukssnugtuFno5KNQClNYaJ7~QdWM-Y8Ijv~WE9gXhfgS0zrvIjqR9tUY0kDEXFsmsFrRtBbk48h8ihldnY~hkD1XczPojXsDA8uAuHVEt5d2~WNzL4-m22cT0-EPoZUIViCEvL~erGXnTSNck1pNY3lTLttFixfpGuJkc0Zl2hfsX3IAQ__",
-  },
-];
+interface Video {
+  id: number;
+  title: string;
+  description: string;
+  video_url: string;
+  date: Date;
+  duration: string;
+  views: number;
+}
 
-export default function CarouselVideo() {
+interface CarouselVideoProps {
+  categoryId?: number;
+}
+
+interface Category {
+  id: number;
+  name: string;
+}
+
+function getYoutubeVideoId(url: string): string | null {
+  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+  const match = url.match(regExp);
+  return match && match[2].length === 11 ? match[2] : null;
+}
+
+function getYoutubeThumbnail(url: string): string {
+  const videoId = getYoutubeVideoId(url);
+  return videoId ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` : "";
+}
+
+export default function CarouselVideo({ categoryId }: CarouselVideoProps) {
+  const [videos, setVideos] = useState<Video[]>([]);
+  const [categoryVideos, setCategoryVideos] = useState<Video[]>([]);
+  const [videoCategories, setVideoCategories] = useState<
+    Record<number, Category[]>
+  >([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+
+  useEffect(() => {
+    const endPoint = categoryId
+      ? `http://localhost:3310/api/videocategory/videos/${categoryId}`
+      : "http://localhost:3310/api/videos";
+    fetch(endPoint)
+      .then((response) => response.json())
+      .then((data) => {
+        setCategoryVideos(data);
+        setVideos(data);
+      })
+      .catch((error) => console.error("Error", error));
+  }, [categoryId]);
+
+  useEffect(() => {
+    if (videos.length > 0) {
+      for (const video of videos) {
+        fetch(`http://localhost:3310/api/videocategory/categories/${video.id}`)
+          .then((response) => response.json())
+          .then((data) =>
+            setVideoCategories((prev) => ({
+              ...prev,
+              [video.id]: data,
+            })),
+          )
+          .catch((error) => console.error("Error", error));
+      }
+    }
+  }, [videos]);
+
+  useEffect(() => {
+    fetch("http://localhost:3310/api/categories")
+      .then((response) => response.json())
+      .then((data) => setCategories(data))
+      .catch((error) => console.error("Error", error));
+  });
+
+  const displayedVideos = categoryId ? categoryVideos : videos;
+
   return (
     <div className="carousel-video">
-      {data.map((item) => (
-        <div key={item.id}>
-          <div>
-            <img src={item.url} alt={item.title} className="image-video" />
+      {displayedVideos.map((video) => {
+        const thumbnailUrl = getYoutubeThumbnail(video.video_url);
+        const filteredCategories = categories.filter((cat) =>
+          videoCategories[video.id]?.some((vc: Category) => vc.id === cat.id),
+        );
+        return (
+          <div key={video.id}>
+            <div>
+              <img
+                src={thumbnailUrl}
+                alt={video.title}
+                className="image-video"
+              />
+            </div>
+            <h2 className="title-video">{video.title}</h2>
+            <div className="category-video-container">
+              {filteredCategories.map((category) => (
+                <p key={category.id} className="category-video">
+                  {category.name}
+                </p>
+              ))}
+            </div>
           </div>
-          <h2 className="title-video">{item.title}</h2>
-          <p className="category-video">{item.text}</p>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 }

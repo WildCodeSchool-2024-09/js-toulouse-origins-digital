@@ -1,14 +1,29 @@
 import type { RequestHandler } from "express";
 import videoCategoryRepository from "./videoCategoryRepository";
 
-const read: RequestHandler = async (req, res, next) => {
+const readVideosByCategory: RequestHandler = async (req, res, next) => {
   try {
     const categoryId = Number.parseInt(req.params.categoryId);
-    const videos = await videoCategoryRepository.read(categoryId);
+    const videos =
+      await videoCategoryRepository.readVideosByCategory(categoryId);
     if (videos.length === 0) {
       res.status(404).json("No videos found");
     }
     res.status(200).json(videos);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const readCategoriesByVideo: RequestHandler = async (req, res, next) => {
+  try {
+    const videoId = Number.parseInt(req.params.videoId);
+    const categories =
+      await videoCategoryRepository.readCategoriesByVideo(videoId);
+    if (categories.length === 0) {
+      res.status(404).json("No videos found");
+    }
+    res.status(200).json(categories);
   } catch (error) {
     next(error);
   }
@@ -57,4 +72,4 @@ const remove: RequestHandler = async (req, res, next) => {
   }
 };
 
-export default { read, add, remove };
+export default { readVideosByCategory, readCategoriesByVideo, add, remove };

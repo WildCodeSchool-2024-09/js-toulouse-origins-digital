@@ -8,16 +8,16 @@ export default function HomePage() {
   return (
     <>
       <Header />
-      <div className="container-home-page">
+      <div className="container container-home-page">
         <CarouselPrimary />
-        <h2 className="title-home-page">Catégories &#x27E9;</h2>
+        <h2 className="title-home-page">Catégorie sélectionnée &#x27E9;</h2>
         <hr className="line" />
-        <CarouselVideo />
+        <CarouselVideo categoryId={3} />
         <h2 className="title-home-page">Toutes les vidéos &#x27E9;</h2>
         <hr className="line" />
         <CarouselVideo />
-        <NavBar />
       </div>
+      <NavBar />
     </>
   );
 }

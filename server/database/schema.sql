@@ -73,3 +73,110 @@ values
 insert into user(email, password, pseudo, is_admin)
 values
 ("salut@test.com", "salut*&é", "salut", false);
+
+insert into video(title, description, duration, video_url, date, views)
+values
+("Chef RPG : Construisez votre empire culinaire", 
+ "Prenez les rênes d'un restaurant dans un monde ouvert RPG. Parcourez des villages pittoresques pour récolter des ingrédients frais et impressionnez vos clients. Stratégie, exploration et cuisine se rencontrent dans cette aventure unique.", 
+ "00:02:30", 
+ "https://www.youtube.com/watch?v=bKySdMKzgZ8",
+ NOW(),
+ 0),
+
+("Fable 4 : La magie et les choix d'un monde fantastique",
+ "Retournez à Albion dans cette suite tant attendue. Forgez votre légende en explorant un monde ouvert vivant et rempli d'aventures. Chaque décision que vous prenez influencera votre destin et celui du royaume.",
+ "00:02:45",
+ "https://www.youtube.com/watch?v=w6TJTHdgmts",
+ NOW(),
+ 0),
+
+("Super Mario RPG : L'aventure légendaire renaît",
+ "Découvrez ou redécouvrez l'un des classiques de Mario avec une touche de RPG. Plongez dans une quête captivante avec Mario, Bowser et la princesse Peach. Une combinaison parfaite d'action, de stratégie et de nostalgie.",
+ "00:02:15",
+ "https://www.youtube.com/watch?v=zju4gITxkm0",
+ NOW(),
+ 0),
+
+("Illusion Carnival : Un voyage dans l'étrange et le mystérieux",
+ "Entrez dans un carnaval fantastique où rien n'est ce qu'il paraît. Résolvez des énigmes complexes et révélez des secrets cachés. Une expérience immersive et captivante pour les amateurs de mystères.",
+ "00:02:30",
+ "https://www.youtube.com/watch?v=agjw2yHZQiQ",
+ NOW(),
+ 0),
+
+("Batman: Gotham City Chronicles : Le chevalier noir à l'épreuve",
+ "Luttez contre le crime dans une Gotham corrompue et dangereuse. Mettez vos compétences de détective et de combattant à l'épreuve pour protéger la ville. Une expérience intense pour les fans du justicier masqué.",
+ "00:02:20",
+ "https://www.youtube.com/watch?v=NqJfpUuTY0c",
+ NOW(),
+ 0),
+
+("PROJECT HP : Batailles médiévales réinventées",
+ "Plongez dans un monde où magie et combat médiéval fusionnent. Prenez part à des batailles épiques avec des personnages puissants et des stratégies uniques. Un mélange captivant d'action et de tactique.",
+ "00:02:40",
+ "https://www.youtube.com/watch?v=iOzIrts0Cdk",
+ NOW(),
+ 0),
+
+("Throne and Liberty : Luttez pour le pouvoir dans un univers fantastique",
+ "Explorez un monde ouvert gigantesque rempli de quêtes, de batailles et d'intrigues. Forgez des alliances, défiez des ennemis redoutables et bâtissez votre empire. Un MMORPG épique qui repousse les limites du genre.",
+ "00:02:35",
+ "https://www.youtube.com/watch?v=RgAh11sH-gE",
+ NOW(),
+ 0),
+
+("Wakfu : Une aventure RPG stratégique et envoûtante",
+ "Partez à la découverte de contrées magiques dans Wakfu. Rejoignez des compagnons, combattez des ennemis et découvrez des mystères anciens. Un RPG tactique et coloré à l'humour unique.",
+ "00:02:25",
+ "https://www.youtube.com/watch?v=L8fBwVYoFoM",
+ NOW(),
+ 0),
+
+("Eden Eternal : Aventurez-vous dans un monde magique et vibrant",
+ "Créez votre héros, changez de classe et partez explorer un univers fantastique. Combattez des boss puissants et formez des alliances stratégiques. Une aventure MMORPG inoubliable qui offre une liberté totale.",
+ "00:02:50",
+ "https://www.youtube.com/watch?v=iJx9h4Wc4yg",
+ NOW(),
+ 0),
+
+("Shadowgun Legends : Combattez pour votre survie dans un futur dystopique",
+ "Affrontez des hordes d'ennemis dans un monde de science-fiction époustouflant. Débloquez des armes futuristes et gravissez les échelons pour devenir une légende. Un FPS intense et palpitant.",
+ "00:02:30",
+ "https://www.youtube.com/watch?v=ZVWOD0AzO8E",
+ NOW(),
+ 0);
+
+insert into video_category (id_video, id_category) values
+/* Chef RPG - RPG */
+(1, 1),
+
+/* Fable 4 - RPG et Action/Aventure */
+(2, 1),
+(2, 4),
+
+/* Super Mario RPG - RPG */
+(3, 1),
+
+/* Illusion Carnival - RPG et Indie */
+(4, 1),
+(4, 12),
+
+/* Batman: Gotham City Chronicles - Action/Aventure */
+(5, 4),
+
+/* PROJECT HP - Combat et Action/Aventure */
+(6, 7),
+(6, 4),
+
+/* Throne and Liberty - MMORPG */
+(7, 2),
+
+/* Wakfu - MMORPG et Stratégie */
+(8, 2),
+(8, 8),
+
+/* Eden Eternal - MMORPG */
+(9, 2),
+
+/* Shadowgun Legends - FPS */
+(10, 3);

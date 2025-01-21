@@ -23,3 +23,7 @@ body {
   --button-color: #acfcff;
   --transparence-color: #d9d9d918;
 }
+
+.container {
+  padding-bottom: 10px;
+}

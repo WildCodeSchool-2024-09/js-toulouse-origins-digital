@@ -10,7 +10,7 @@ export default function Video() {
   return (
     <>
       <Header />
-      <div className="watched-video">
+      <div className="container watched-video">
         <img className="video" src={img} alt="video" />
         <h1 className="video-name">Video1</h1>
         <h2 className="video-description">
