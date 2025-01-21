@@ -15,7 +15,9 @@ export default function ForgotResetPassword({
   const [email, setEmail] = useState("");
 
   const handleEmailSubmit = () => {
-    switchToReset();
+    setTimeout(() => {
+      switchToReset();
+    }, 200);
   };
 
   return (

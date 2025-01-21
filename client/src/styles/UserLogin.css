@@ -107,6 +107,10 @@
   margin-bottom: 20px;
 }
 
+.fade-in-out {
+  animation: fadeInOut 0.8s ease;
+}
+
 @keyframes scaleIn {
   0% {
     transform: translate(-50%, -50%) scale(0.8);
@@ -115,5 +119,17 @@
   100% {
     transform: translate(-50%, -50%) scale(1);
     opacity: 1;
+  }
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
   }
 }
