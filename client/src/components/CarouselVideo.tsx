@@ -85,7 +85,7 @@ export default function CarouselVideo({ categoryId }: CarouselVideoProps) {
           videoCategories[video.id]?.some((vc: Category) => vc.id === cat.id),
         );
         return (
-          <div key={video.id}>
+          <div key={video.id} className="video-card">
             <div>
               <img
                 src={thumbnailUrl}

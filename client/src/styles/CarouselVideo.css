@@ -5,9 +5,15 @@
   padding: 20px;
   scrollbar-width: none;
 }
+
+.video-card {
+  width: 280px;
+}
+
 .carousel-video::-webkit-scrollbar {
   display: none;
 }
+
 .image-video {
   width: 280px;
   height: 150px;

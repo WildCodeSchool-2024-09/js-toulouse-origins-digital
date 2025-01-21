@@ -12,7 +12,7 @@ export default function HomePage() {
         <CarouselPrimary />
         <h2 className="title-home-page">Catégorie sélectionnée &#x27E9;</h2>
         <hr className="line" />
-        <CarouselVideo categoryId={3} />
+        <CarouselVideo categoryId={2} />
         <h2 className="title-home-page">Toutes les vidéos &#x27E9;</h2>
         <hr className="line" />
         <CarouselVideo />
