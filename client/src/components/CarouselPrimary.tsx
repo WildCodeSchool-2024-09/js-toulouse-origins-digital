@@ -38,6 +38,10 @@ const CarouselPrimary = ({ onCategorySelect }: CarouselPrimaryProps) => {
         infiniteLoop={true}
         className="category-carousel"
         onChange={handleChange}
+        swipeable={true}
+        emulateTouch={true}
+        swipeScrollTolerance={5}
+        preventMovementUntilSwipeScrollTolerance={true}
       >
         {categories.map((category) => (
           <div key={category.id}>

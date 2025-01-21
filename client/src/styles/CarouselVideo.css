@@ -46,3 +46,12 @@
   flex-wrap: wrap;
   gap: 6px;
 }
+
+.no-videos-message {
+  font-family: var(--primary-font);
+  color: var(--primary-text-color);
+  font-size: 16px;
+  text-align: center;
+  width: 100%;
+  padding: 20px;
+}

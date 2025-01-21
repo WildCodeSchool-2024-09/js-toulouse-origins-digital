@@ -63,11 +63,11 @@
   text-align: center;
 }
 
-.no-videos-message {
-  font-family: var(--primary-font);
-  color: var(--primary-text-color);
-  font-size: 16px;
-  text-align: center;
-  width: 100%;
-  padding: 20px;
+.title-video,
+.category-video,
+.description-item,
+.image-items {
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
