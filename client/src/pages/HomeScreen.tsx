@@ -12,7 +12,7 @@ export default function HomeScreen() {
   return (
     <>
       <Header />
-      <div>
+      <div className="container">
         <section className="carrousel-section">
           <p className="text-home-screen intro">
             Plongez dans l'univers des jeux vidéos : découvrez nos guides vidéos
