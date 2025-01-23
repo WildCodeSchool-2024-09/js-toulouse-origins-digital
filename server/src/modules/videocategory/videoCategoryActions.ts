@@ -21,7 +21,7 @@ const readCategoriesByVideo: RequestHandler = async (req, res, next) => {
     const categories =
       await videoCategoryRepository.readCategoriesByVideo(videoId);
     if (categories.length === 0) {
-      res.status(404).json("No videos found");
+      res.status(404).json(["No videos found"]);
     }
     res.status(200).json(categories);
   } catch (error) {

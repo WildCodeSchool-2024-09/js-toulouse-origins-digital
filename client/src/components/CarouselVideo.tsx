@@ -20,15 +20,16 @@ interface Category {
   name: string;
 }
 
-function getYoutubeVideoId(url: string): string | null {
-  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+function getVideasVideoId(url: string): string | null {
+  const regExp =
+    /^.*\/([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}).*$/;
   const match = url.match(regExp);
-  return match && match[2].length === 11 ? match[2] : null;
+  return match ? match[1] : null;
 }
 
-function getYoutubeThumbnail(url: string): string {
-  const videoId = getYoutubeVideoId(url);
-  return videoId ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` : "";
+function getVideasThumbnail(url: string): string {
+  const videoId = getVideasVideoId(url);
+  return videoId ? `https://app.videas.fr/media/${videoId}/thumbnail.jpg` : "";
 }
 
 export default function CarouselVideo({ categoryId }: CarouselVideoProps) {
@@ -62,12 +63,12 @@ export default function CarouselVideo({ categoryId }: CarouselVideoProps) {
       for (const video of videos) {
         fetch(`http://localhost:3310/api/videocategory/categories/${video.id}`)
           .then((response) => response.json())
-          .then((data) =>
+          .then((data) => {
             setVideoCategories((prev) => ({
               ...prev,
               [video.id]: data,
-            })),
-          )
+            }));
+          })
           .catch((error) => console.error("Error", error));
       }
     }
@@ -78,7 +79,7 @@ export default function CarouselVideo({ categoryId }: CarouselVideoProps) {
       .then((response) => response.json())
       .then((data) => setCategories(data))
       .catch((error) => console.error("Error", error));
-  });
+  }, []);
 
   const displayedVideos = categoryId ? categoryVideos : videos;
 
@@ -95,7 +96,7 @@ export default function CarouselVideo({ categoryId }: CarouselVideoProps) {
   return (
     <div className="carousel-video">
       {displayedVideos.map((video) => {
-        const thumbnailUrl = getYoutubeThumbnail(video.video_url);
+        const thumbnailUrl = getVideasThumbnail(video.video_url);
         const filteredCategories = categories.filter((cat) =>
           videoCategories[video.id]?.some((vc: Category) => vc.id === cat.id),
         );
