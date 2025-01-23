@@ -56,7 +56,8 @@ const add: RequestHandler = async (req, res, next) => {
       avatar_url: req.body.avatar_url,
     };
     const insertId = await userRepository.create(newUser);
-    res.status(201).json({ insertId });
+    const response = await userRepository.read(insertId);
+    res.status(201).json(response);
   } catch (error) {
     next(error);
   }

@@ -34,13 +34,14 @@ class userRepository {
 
   async update(user: User) {
     const [result] = await databaseClient.query<Result>(
-      "update program set email = ?, password = ?, pseudo = ?, is_admin = ?, avatar_url = ?",
+      "update user set email = ?, hashed_password = ?, pseudo = ?, is_admin = ?, avatar_url = ? where id = ?",
       [
         user.email,
         user.hashed_password,
         user.pseudo,
         user.is_admin,
         user.avatar_url,
+        user.id,
       ],
     );
     return result.affectedRows;
