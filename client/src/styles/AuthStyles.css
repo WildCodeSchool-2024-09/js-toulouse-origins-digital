@@ -1,0 +1,133 @@
+.modal-user-login-signup {
+  background-color: rgba(211, 211, 211, 0.199);
+  border-radius: 30px;
+  border: 1px solid white;
+  backdrop-filter: blur(10px);
+  padding: 40px;
+  width: 90%;
+  max-width: 400px;
+  margin: auto;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  text-align: center;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  animation: scaleIn 0.4s ease-out;
+}
+
+.login-signup-title {
+  font-family: var(--secondary-font);
+  color: white;
+  font-size: 30px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.input-field {
+  font-family: var(--secondary-font);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 25px;
+  padding: 12px;
+  font-size: 16px;
+  color: white;
+  width: 100%;
+  margin-bottom: 14px;
+  outline: none;
+  transition: border 0.3s ease, background-color 0.3s ease;
+}
+
+.input-field::placeholder {
+  color: white;
+}
+
+.input-field:focus {
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.forgot-password-link {
+  font-family: var(--secondary-font);
+  background-color: transparent;
+  border: none;
+  text-align: right;
+  color: rgb(255, 255, 255);
+  font-size: 14px;
+  text-decoration: none;
+  outline: none;
+  margin-left: 120px;
+  margin-top: -10px;
+  margin-bottom: 30px;
+}
+
+.primary-button {
+  font-family: var(--secondary-font);
+  background-color: #88c0d0;
+  border: none;
+  border-radius: 25px;
+  padding: 12px;
+  font-size: 16px;
+  color: #121221;
+  width: 100%;
+  transition: background-color 0.3s ease;
+}
+
+.primary-button:hover {
+  background-color: #acfcff;
+}
+
+.switch-button {
+  font-family: var(--secondary-font);
+  background: none;
+  border: none;
+  color: #dd25b6;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.switch-button:hover {
+  color: #ff67d6;
+}
+
+.switch-link {
+  font-family: var(--secondary-font);
+  margin-top: 10px;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.forgot-password,
+.reset-password {
+  animation: scaleIn 0.4s ease-out;
+}
+
+.info-text {
+  font-family: var(--secondary-font);
+  color: white;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+@keyframes scaleIn {
+  0% {
+    transform: translate(-50%, -50%) scale(0.2);
+    opacity: 0;
+  }
+  200% {
+    transform: translate(-50%, -50%) scale(0.2);
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

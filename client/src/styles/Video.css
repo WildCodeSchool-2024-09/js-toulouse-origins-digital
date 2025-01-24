@@ -1,0 +1,40 @@
+.watched-video,
+.recommended-video-section,
+.recommended-video-title,
+.recommanded-video,
+.video {
+  padding: 15px;
+}
+
+.video-hr {
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.video-name,
+.video-description {
+  padding: 10px;
+}
+
+.recommended-video-title {
+  margin-top: 60px;
+}
+
+.recommanded-video,
+.video {
+  width: 100%;
+}
+
+.video-name,
+.recommanded-video-title {
+  font-family: var(--primary-font);
+  color: var(--primary-text-color);
+  font-weight: 400;
+}
+
+.video-description {
+  font-family: var(--secondary-font);
+  font-size: 16px;
+  color: var(--primary-text-color);
+  font-weight: 400;
+}
