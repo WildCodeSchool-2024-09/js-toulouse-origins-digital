@@ -26,7 +26,7 @@ export default function NavBar() {
 
   return (
     <>
-      {isOpenLogin ? auth ? <UserLogout /> : <UserLogin /> : null}
+      {isOpenLogin ? auth ? <UserLogin /> : <UserLogout /> : null}
       <div className="nav-bar-container">
         <nav className="nav-bar">
           <Link to="/home">

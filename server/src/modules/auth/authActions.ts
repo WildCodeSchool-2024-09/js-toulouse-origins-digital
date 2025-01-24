@@ -8,7 +8,9 @@ const login: RequestHandler = async (req, res, next) => {
   try {
     const user = await userRepository.readByEmailWithPassword(req.body.email);
     if (user == null) {
-      res.sendStatus(422);
+      res
+        .status(422)
+        .json({ message: "Utilisateur ou mot de passe incorrect." });
       return;
     }
 
@@ -16,7 +18,6 @@ const login: RequestHandler = async (req, res, next) => {
       user.hashed_password,
       req.body.password,
     );
-
     if (verified) {
       const { hashed_password, ...userWithoutHashedPassword } = user;
       const myPayload: MyPayload = {
@@ -27,7 +28,7 @@ const login: RequestHandler = async (req, res, next) => {
         expiresIn: "1h",
       });
 
-      res.json({
+      res.status(200).json({
         token,
         user: userWithoutHashedPassword,
       });

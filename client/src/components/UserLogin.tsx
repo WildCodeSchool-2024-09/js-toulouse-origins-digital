@@ -2,21 +2,8 @@ import ForgotResetPassword from "./ForgotResetPassword";
 import "../styles/UserLogin.css";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useOutletContext } from "react-router-dom";
-
-type User = {
-  id: number;
-  email: string;
-  is_admin: boolean;
-};
-
-type Auth = {
-  user: User;
-  token: string;
-};
 
 export default function UserLogin() {
-  const { auth } = useOutletContext() as { auth: Auth };
   const [currentView, setCurrentView] = useState<
     "login" | "forgotPassword" | "resetPassword"
   >("login");
@@ -28,12 +15,14 @@ export default function UserLogin() {
     pseudo: "",
     email: "",
     password: "",
+    confirmPassword: "",
+    is_admin: false,
   });
 
   const validateEmail = (value: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(value)) {
-      alert(
+      setError(
         "Veuillez entrer un email valide au format prenom.nom@main.extension",
       );
     } else {
@@ -67,7 +56,7 @@ export default function UserLogin() {
         setResponseMessage(
           `Compte créé avec succès! pseudo:${responseData.pseudo}`,
         );
-        navigate(`/users/${responseData.id}`);
+        navigate("/home");
       } else {
         setResponseMessage(
           "Une erreur inconnue s'est produite. Veuillez réessayer",
@@ -78,25 +67,36 @@ export default function UserLogin() {
     }
   };
 
-  const handleConnexionSubmit = () => {
-    fetch(`${import.meta.env.VITE_API_URL}/api/users/login`, {
-      method: "post",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${auth.token}`,
-      },
-      body: JSON.stringify(user),
-    })
-      .then((response) => response.json())
-      .then((responseData) => {
-        navigate(`/users/${responseData.id}`);
-      })
-      .catch((err) => console.error(err));
+  const handleConnexionSubmit = async (
+    event: React.FormEvent<HTMLFormElement>,
+  ) => {
+    event.preventDefault();
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/users/login`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: user.email,
+            password: user.password,
+          }),
+        },
+      );
+      if (response.ok) {
+        navigate("/home");
+      } else {
+        const errorData = await response.json();
+        setResponseMessage(errorData.message || "Une erreur est survenue.");
+      }
+    } catch (error) {
+      setResponseMessage("Une erreur s'est produite. Veuillez réessayer.");
+    }
   };
 
   return (
     <div
-      className="modal-user-login-signup"
+      className="modal-container"
       onClick={(e) => e.stopPropagation()}
       onKeyDown={(e) => e.stopPropagation()}
     >
@@ -107,23 +107,28 @@ export default function UserLogin() {
               <h1 className="login-signup-title">Je me connecte</h1>
               <input
                 type="text"
-                placeholder="Identifiant"
+                name="email"
+                placeholder="Email"
                 className="input-field"
+                value={user.email}
+                onChange={handleChange}
               />
               <input
                 type="password"
+                name="password"
                 placeholder="Mot de passe"
                 className="input-field"
+                value={user.password}
+                onChange={handleChange}
               />
               <button
                 type="button"
                 className="forgot-password-link"
                 onClick={() => setCurrentView("forgotPassword")}
               >
-                {" "}
                 Mot de passe oublié ?
               </button>
-              <button type="button" className="primary-button">
+              <button type="submit" className="primary-button">
                 Se connecter
               </button>
               <p className="switch-link">
@@ -142,7 +147,7 @@ export default function UserLogin() {
               <h1 className="login-signup-title">Je crée un compte</h1>
               <input
                 type="text"
-                name="Pseudo"
+                name="pseudo"
                 placeholder="Pseudo*"
                 className="input-field"
                 value={user.pseudo}
@@ -151,7 +156,7 @@ export default function UserLogin() {
               />
               <input
                 type="email"
-                name="Email"
+                name="email"
                 placeholder="Email*"
                 className="input-field"
                 value={user.email}
@@ -169,21 +174,21 @@ export default function UserLogin() {
               />
               <input
                 type="password"
-                name="password"
+                name="confirmPassword"
                 placeholder="Confirmer le mot de passe*"
                 className="input-field"
-                value={user.password}
+                value={user.confirmPassword || ""}
                 onChange={handleChange}
                 required
               />
               {error && <p style={{ color: "red" }}>{error}</p>}
-              <button type="button" className="primary-button">
+              <button type="submit" className="primary-button">
                 S'inscrire
               </button>
               {responseMessage && (
                 <p
                   className="response-message"
-                  style={{ color: "green", marginTop: "10px" }}
+                  style={{ color: "red", marginTop: "10px" }}
                 >
                   {responseMessage}
                 </p>
