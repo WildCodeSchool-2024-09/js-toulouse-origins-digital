@@ -9,13 +9,19 @@ const router = express.Router();
 import authActions from "./modules/auth/authActions";
 import categoryActions from "./modules/category/categoryActions";
 import favoriteActions from "./modules/favorite/favoriteActions";
-// Define item-related routes
 import itemActions from "./modules/item/itemActions";
 import playlistsActions from "./modules/playlists/playlistsActions";
 import userActions from "./modules/user/userActions";
 import videoActions from "./modules/video/videoActions";
 import videoCategoryActions from "./modules/videocategory/videoCategoryActions";
-import videoPlaylistActions from "./modules/videoplaylist/videoPlaylistActions";
+
+router.get("/api/favorites/:userId", favoriteActions.read);
+router.post("/api/favorites/:userId", favoriteActions.add);
+router.delete("/api/favorites/:userId", favoriteActions.remove);
+
+router.get("/api/playlists/:userId", playlistsActions.read);
+router.post("/api/playlists/:userId", playlistsActions.add);
+router.delete("/api/playlists/:userId", playlistsActions.remove);
 
 router.get("/api/items", itemActions.browse);
 router.get("/api/items/:id", itemActions.read);
@@ -27,7 +33,14 @@ router.post("/api/categories", categoryActions.add);
 router.put("/api/categories/:id", categoryActions.edit);
 router.delete("/api/categories/:id", categoryActions.destroy);
 
-router.get("/api/videocategory/:categoryId", videoCategoryActions.read);
+router.get(
+  "/api/videocategory/videos/:categoryId",
+  videoCategoryActions.readVideosByCategory,
+);
+router.get(
+  "/api/videocategory/categories/:videoId",
+  videoCategoryActions.readCategoriesByVideo,
+);
 router.post("/api/videocategory/:categoryId", videoCategoryActions.add);
 router.delete("/api/videocategory/:categoryId", videoCategoryActions.remove);
 
@@ -42,10 +55,6 @@ router.use(authActions.verifyToken);
 router.get("/api/favorites/:userId", favoriteActions.read);
 router.post("/api/favorites/:userId", favoriteActions.add);
 router.delete("/api/favorites/:userId", favoriteActions.remove);
-
-router.get("/api/videoplaylist/:playlistId", videoPlaylistActions.read);
-router.post("/api/videoplaylist/:playlistId", videoPlaylistActions.add);
-router.delete("/api/videoplaylist/:playlistId", videoPlaylistActions.remove);
 
 router.get("/api/playlists/:userId", playlistsActions.read);
 router.post("/api/playlists/:userId", playlistsActions.add);

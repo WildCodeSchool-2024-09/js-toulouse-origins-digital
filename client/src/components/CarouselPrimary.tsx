@@ -10,7 +10,11 @@ interface Category {
   description: string;
 }
 
-const CarouselPrimary = () => {
+interface CarouselPrimaryProps {
+  onCategorySelect: (name: string, id: number) => void;
+}
+
+const CarouselPrimary = ({ onCategorySelect }: CarouselPrimaryProps) => {
   const [categories, setCategories] = useState<Category[]>([]);
   useEffect(() => {
     fetch("http://localhost:3310/api/categories")
@@ -19,12 +23,25 @@ const CarouselPrimary = () => {
       .catch((error) => console.error("Error", error));
   }, []);
 
+  const handleChange = (index: number) => {
+    if (categories[index]) {
+      const category = categories[index];
+      onCategorySelect(category.name, category.id);
+    }
+  };
+
   return (
     <>
       <Carousel
+        showThumbs={false}
         transitionTime={500}
         infiniteLoop={true}
         className="category-carousel"
+        onChange={handleChange}
+        swipeable={true}
+        emulateTouch={true}
+        swipeScrollTolerance={5}
+        preventMovementUntilSwipeScrollTolerance={true}
       >
         {categories.map((category) => (
           <div key={category.id}>

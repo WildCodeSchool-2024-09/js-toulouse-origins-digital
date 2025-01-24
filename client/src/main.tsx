@@ -10,6 +10,7 @@ import App from "./App";
 import NavProvider from "./contexts/NavProvider";
 import HomePage from "./pages/HomePage";
 import HomeScreen from "./pages/HomeScreen";
+import Playlists from "./pages/Playlists";
 import Search from "./pages/Search";
 import Video from "./pages/Video";
 
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
       {
         path: "/home",
         element: <HomePage />,
+      },
+      {
+        path: "/playlists",
+        element: <Playlists />,
       },
       {
         path: "/search",

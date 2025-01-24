@@ -1,0 +1,124 @@
+// src/components/GamePlaylists.tsx
+import { useEffect, useState } from "react";
+import Header from "../components/Header";
+import NavBar from "../components/NavBar";
+import PlaylistList from "../components/PlaylistList";
+import VideosGrid from "../components/VideosGrid";
+import {
+  addPlaylist,
+  deletePlaylist,
+  deleteVideoFromPlaylist,
+  fetchPlaylists,
+  fetchVideoPlaylists,
+  fetchVideos,
+} from "../services/playlistService";
+import "../styles/Playlists.css";
+import type { Playlist, Video, VideoPlaylist } from "../types/types";
+
+const userId = 1;
+
+const GamePlaylists = () => {
+  const [playlists, setPlaylists] = useState<Playlist[]>([]);
+  const [selectedPlaylist, setSelectedPlaylist] = useState<Playlist | null>(
+    null,
+  );
+  const [videoPlaylists, setVideoPlaylists] = useState<VideoPlaylist[]>([]);
+  const [videos, setVideos] = useState<Video[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [playlistName, setPlaylistName] = useState("");
+
+  useEffect(() => {
+    const loadPlaylists = async () => {
+      setIsLoading(true);
+      try {
+        const data = await fetchPlaylists(userId);
+        setPlaylists(data);
+      } catch {
+        setError("Failed to load playlists");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    loadPlaylists();
+  }, []);
+
+  const handleAddPlaylist = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const newPlaylist: Playlist = {
+        id: 0,
+        name: playlistName,
+        id_user: userId,
+      };
+      await addPlaylist(userId, newPlaylist);
+      const updatedPlaylists = await fetchPlaylists(userId);
+      setPlaylists(updatedPlaylists);
+    } catch {
+      setError("Failed to add playlist");
+    }
+  };
+
+  const handleDeletePlaylist = async (playlistId: number) => {
+    try {
+      await deletePlaylist(playlistId);
+      const updatedPlaylists = await fetchPlaylists(userId);
+      setPlaylists(updatedPlaylists);
+    } catch {
+      setError("Failed to delete playlist");
+    }
+  };
+
+  const handlePlaylistClick = async (playlist: Playlist) => {
+    setSelectedPlaylist(playlist);
+    setIsLoading(true);
+    try {
+      const vp = await fetchVideoPlaylists(playlist.id);
+      setVideoPlaylists(vp);
+      const vids = await fetchVideos(vp);
+      setVideos(vids);
+    } catch {
+      setError("Failed to load videos");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <>
+      <Header />
+      <main className="playlists-container">
+        <h1 className="page-title">
+          {selectedPlaylist ? selectedPlaylist.name : "Mes Playlists"}
+        </h1>
+        {error && <div className="error-message">{error}</div>}
+        {isLoading && <div className="loading">Loading...</div>}
+        {!selectedPlaylist ? (
+          <PlaylistList
+            playlists={playlists}
+            onPlaylistClick={handlePlaylistClick}
+            onAddPlaylist={handleAddPlaylist}
+            onDeletePlaylist={handleDeletePlaylist}
+            playlistName={playlistName}
+            setPlaylistName={setPlaylistName}
+          />
+        ) : (
+          <VideosGrid
+            videos={videos}
+            videoPlaylists={videoPlaylists}
+            selectedPlaylist={selectedPlaylist}
+            onBack={() => setSelectedPlaylist(null)}
+            onDeleteVideo={(videoId) =>
+              deleteVideoFromPlaylist(videoId).then(() => {
+                handlePlaylistClick(selectedPlaylist);
+              })
+            }
+          />
+        )}
+      </main>
+      <NavBar />
+    </>
+  );
+};
+
+export default GamePlaylists;

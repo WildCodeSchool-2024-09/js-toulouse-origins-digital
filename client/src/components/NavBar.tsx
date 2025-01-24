@@ -33,7 +33,9 @@ export default function NavBar() {
             <img src={homeIcon} alt="Home" className="nav-icon" />
           </Link>
           <img src={bookmarkIcon} alt="Bookmark" className="nav-icon" />
-          <img src={addIcon} alt="Add" className="nav-icon" />
+          <a href="/playlists">
+            <img src={addIcon} alt="Add" className="nav-icon" />
+          </a>
           <Link to="/search">
             <img src={searchIcon} alt="Search" className="nav-icon" />
           </Link>
