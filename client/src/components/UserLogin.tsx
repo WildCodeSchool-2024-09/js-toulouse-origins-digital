@@ -2,6 +2,7 @@ import ForgotResetPassword from "./ForgotResetPassword";
 import "../styles/UserLogin.css";
 import { useState } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
+import { useNav } from "../contexts/NavProvider";
 
 type User = {
   id: number;
@@ -15,6 +16,7 @@ type Auth = {
 };
 
 export default function UserLogin() {
+  const { isOpenLogin, setIsOpenLogin } = useNav();
   const [currentView, setCurrentView] = useState<
     "login" | "forgotPassword" | "resetPassword"
   >("login");
@@ -96,9 +98,11 @@ export default function UserLogin() {
           }),
         },
       );
+
       if (response.ok) {
         const user = await response.json();
         setAuth(user);
+        setIsOpenLogin(!isOpenLogin);
         navigate("/home");
       } else {
         const errorData = await response.json();

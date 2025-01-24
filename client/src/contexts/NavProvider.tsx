@@ -1,14 +1,14 @@
 import type React from "react";
 import { createContext, useContext, useState } from "react";
 
-interface NavContextProps {
+type NavContextProps = {
   isOpenLogin: boolean;
-  setIsOpenLogin: React.Dispatch<React.SetStateAction<boolean>>;
-}
+  setIsOpenLogin: (value: boolean) => void;
+};
 
 const NavContext = createContext<NavContextProps | null>(null);
 
-const NavProvider = ({ children }: { children: React.ReactNode }) => {
+export function NavProvider({ children }: { children: React.ReactNode }) {
   const [isOpenLogin, setIsOpenLogin] = useState(false);
 
   return (
@@ -16,14 +16,14 @@ const NavProvider = ({ children }: { children: React.ReactNode }) => {
       {children}
     </NavContext.Provider>
   );
-};
+}
 
 export default NavProvider;
 
-export const useNav = () => {
+export function useNav() {
   const context = useContext(NavContext);
   if (!context) {
     throw new Error("useNav must be used within a NavProvider");
   }
   return context;
-};
+}
