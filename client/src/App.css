@@ -20,7 +20,7 @@ body {
   --secondary-text-color: #121221;
   --link-text-color: #dd25b6;
   --grandiant-nav: linear-gradient(180deg, #62dde3 0%, #31d0d9 100%);
-  --button-color: #acfcff;
+  --button-color: rgb(172, 252, 255);
   --transparence-color: #d9d9d918;
 }
 

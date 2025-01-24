@@ -13,6 +13,7 @@ CREATE TABLE video (
   description TEXT NOT NULL,
   duration TIME NOT NULL,
   video_url VARCHAR(2048) NOT NULL,
+  miniature_url VARCHAR(2048),
   date DATETIME NOT NULL,
   views INT UNSIGNED NOT NULL DEFAULT 0
 );
@@ -22,13 +23,6 @@ CREATE TABLE category (
   name VARCHAR(45) NOT NULL,
   url_image VARCHAR(2048) NOT NULL,
   description TEXT
-);
-
-CREATE TABLE playlist (
-  id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT NOT NULL,
-  name VARCHAR(255) NOT NULL,
-  id_user INT UNSIGNED NOT NULL,
-  FOREIGN KEY (id_user) REFERENCES user(id)
 );
 
 CREATE TABLE favorite (
@@ -47,13 +41,23 @@ CREATE TABLE video_category (
   FOREIGN KEY (id_category) REFERENCES category(id)
 );
 
+CREATE TABLE playlist (
+  id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT NOT NULL,
+  name VARCHAR(255) NOT NULL,
+  id_user INT UNSIGNED NOT NULL,
+  FOREIGN KEY (id_user) REFERENCES user(id)
+);
+
 CREATE TABLE video_playlist (
   id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT NOT NULL,
   id_video INT UNSIGNED NOT NULL,
   id_playlist INT UNSIGNED NOT NULL,
   FOREIGN KEY (id_video) REFERENCES video(id),
   FOREIGN KEY (id_playlist) REFERENCES playlist(id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
 );
+
 
 insert into category(name, url_image, description)
 values
@@ -462,3 +466,32 @@ NOW(),
 NOW(),
 0);
 */
+INSERT INTO user (email, password, pseudo, is_admin, avatar_url) VALUES
+('example@example.com', 'hashed_password', 'Player1', FALSE, 'https://example.com/avatar.png'),
+('example2@example.com', 'hashed_password', 'Player2', FALSE, 'https://example.com/avatar.png');
+
+INSERT INTO playlist (name, id_user) VALUES
+('Action', 1),
+('Aventure', 1),
+('RPG', 1),
+('FPS', 1),
+('Stratégie', 1),
+('Simulation', 1),
+('Course', 1),
+('Puzzle', 1),
+('Horreur', 1),
+('Multijoueur en ligne', 1),
+('Action', 2),
+('Aventure', 2),
+('RPG', 2),
+('FPS', 2);
+
+
+insert into video_playlist(id_video, id_playlist) values
+(2, 3),
+(1, 2),
+(2, 2),
+(1, 3),
+(3, 3);
+
+select * from video_playlist;
