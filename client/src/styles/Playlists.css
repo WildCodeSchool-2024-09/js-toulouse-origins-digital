@@ -1,0 +1,126 @@
+.category{
+    margin-top: 10px;
+    background-color: rgba(172, 252, 255, 0.245);
+}
+.page-title{
+    font-family: var(--font-title);
+    color: var(--primary-text-color);
+    font-size: 36px;
+    margin-left: 10px;
+}
+.button-add-playlist{
+    background-color: var(--button-color);
+    color: var(--secondary-text-color);
+    font-family: var(--primary-font);
+    font-size: 16px;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+.input-add-playlist{
+    background-color: var(--transparence-color);
+    color: var(--primary-text-color);
+    font-family: var(--primary-font);
+    font-size: 16px;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    margin-top: 10px;
+
+}
+.playlist-card{
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+    justify-content: space-between;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+.playlist-card>button{
+    all : unset;
+}
+.playlist-name{
+    font-family: var(--primary-font);
+    color: var(--primary-text-color);
+    font-size: 24px;
+    margin-top: 10px;
+    cursor: pointer;
+    background-color: var(--transparence-color);
+    border-radius: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.playlist-name:hover{
+    background-color: var(--button-color);
+    color: var(--secondary-text-color);
+}
+.container-playlists{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.form-add-playlist{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 5px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+.delete-playlist{
+    cursor: pointer;
+}
+.video-title-playlist{
+    font-family: var(--primary-font);
+    color: var(--primary-text-color);
+    font-size: 24px;
+    margin-top: 10px;
+    cursor: pointer;
+    background-color: var(--transparence-color);
+    border-radius: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    
+}
+.video-card-playlist{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    justify-content: space-between;
+    margin-left: 10px;
+    margin-right: 10px;
+    text-align: center;
+}
+.picture-video-playlist{
+    width: 80%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 20px;
+
+}
+.button-delete-video-playlist{
+   width: 60%;
+   cursor: pointer;
+    background-color: rgb(255, 255, 255);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+}
+.delete-icon{
+    height: 25px;
+}
+.back-playlist-button{
+    background-color:var(--button-color);
+    color: var(--secondary-text-color);
+    font-family: var(--primary-font);
+    font-size: 16px;
+    border: none;
+    border-radius: 10px;
+    padding: 2px 10px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    cursor: pointer;
+    
+}

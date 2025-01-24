@@ -16,7 +16,7 @@ const read: RequestHandler = async (req, res, next) => {
     const video = await videoRepository.read(videoId);
 
     if (video != null) {
-      res.status(200).json(video);
+      res.status(200).json({video});
     } else {
       res.sendStatus(404);
     }
