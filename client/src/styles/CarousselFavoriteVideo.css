@@ -1,0 +1,13 @@
+.carousel-favorite-video {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+}
+
+.favorite-video {
+  display: flex;
+  align-items: center;
+  border-radius: 20px;
+  object-fit: cover;
+}

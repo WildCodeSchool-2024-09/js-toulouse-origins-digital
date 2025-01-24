@@ -8,6 +8,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 // Import the main app component
 import App from "./App";
 import NavProvider from "./contexts/NavProvider";
+import Favorite from "./pages/Favorite";
 import HomePage from "./pages/HomePage";
 import HomeScreen from "./pages/HomeScreen";
 import Playlists from "./pages/Playlists";
@@ -47,6 +48,11 @@ const router = createBrowserRouter([
       {
         path: "/search",
         element: <Search />,
+      },
+
+      {
+        path: "/favorite",
+        element: <Favorite />,
       },
     ], // Renders the App component for the home page
   },

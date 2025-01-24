@@ -1,0 +1,40 @@
+.favorite-container {
+  font-family: "Exo", sans-serif;
+  font-weight: 100;
+  padding: 20px;
+}
+
+.favorite-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.title-fovarite-page {
+  font-size: 24px;
+  font-weight: 200;
+}
+
+.filter-sort-out {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
+.filter-sort-out h3 {
+  font-size: 14px;
+  font-weight: 100;
+}
+
+.line {
+  border: 1px solid white;
+  opacity: 1;
+  margin: 10px 0;
+}
+
+.favorite-video {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
