@@ -486,10 +486,6 @@ INSERT INTO playlist (name, id_user) VALUES
 ('RPG', 2),
 ('FPS', 2);
 
-insert into video(title, description, duration, video_url, date, views) values
-('The Witcher 3: Wild Hunt', 'The Witcher 3: Wild Hunt est un jeu vidéo de rôle développé par CD Projekt RED. Il est sorti le 19 mai 2015 sur Microsoft Windows, PlayStation 4 et Xbox One, puis sur Nintendo Switch le 15 octobre 2019.', '00:03:00', 'https://app.videas.fr/embed/media/6eac5642-9cc6-4f89-80d8-cbef13ebeaed/','2025-01-16','0'),
-('The Witcher 3: Wild Hunt', 'The Witcher 3: Wild Hunt est un jeu vidéo de rôle développé par CD Projekt RED. Il est sorti le 19 mai 2015 sur Microsoft Windows, PlayStation 4 et Xbox One, puis sur Nintendo Switch le 15 octobre 2019.', '00:03:00', 'https://app.videas.fr/embed/media/1e00fb97-fcc5-4a58-9593-f8dfe7b04ca4/','2025-01-16','0'),
-('The Witcher 3: Wild Hunt', 'The Witcher 3: Wild Hunt est un jeu vidéo de rôle développé par CD Projekt RED. Il est sorti le 19 mai 2015 sur Microsoft Windows, PlayStation 4 et Xbox One, puis sur Nintendo Switch le 15 octobre 2019.', '00:03:00', 'https://app.videas.fr/embed/media/8cff09c4-1ea6-4d26-bb64-6c81e46faaf7/','2025-01-16','0');
 
 insert into video_playlist(id_video, id_playlist) values
 (2, 3),
