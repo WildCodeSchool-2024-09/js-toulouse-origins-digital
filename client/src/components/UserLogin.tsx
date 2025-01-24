@@ -1,7 +1,18 @@
 import ForgotResetPassword from "./ForgotResetPassword";
 import "../styles/UserLogin.css";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
+
+type User = {
+  id: number;
+  email: string;
+  is_admin: boolean;
+};
+
+type Auth = {
+  user: User;
+  token: string;
+};
 
 export default function UserLogin() {
   const [currentView, setCurrentView] = useState<
@@ -18,7 +29,9 @@ export default function UserLogin() {
     confirmPassword: "",
     is_admin: false,
   });
-
+  const { setAuth } = useOutletContext() as {
+    setAuth: (auth: Auth | null) => void;
+  };
   const validateEmail = (value: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(value)) {
@@ -84,6 +97,8 @@ export default function UserLogin() {
         },
       );
       if (response.ok) {
+        const user = await response.json();
+        setAuth(user);
         navigate("/home");
       } else {
         const errorData = await response.json();

@@ -50,8 +50,6 @@ router.post("/api/videos", videoActions.add);
 router.put("/api/videos/:id", videoActions.edit);
 router.delete("/api/videos/:id", videoActions.destroy);
 
-router.use(authActions.verifyToken);
-
 router.get("/api/favorites/:userId", favoriteActions.read);
 router.post("/api/favorites/:userId", favoriteActions.add);
 router.delete("/api/favorites/:userId", favoriteActions.remove);
@@ -65,5 +63,7 @@ router.put("/api/users/:id", authActions.hashPassword, userActions.edit);
 router.post("/api/users/", authActions.hashPassword, userActions.add);
 router.post("/api/users/login", authActions.login, userActions.edit);
 router.delete("/api/users/:id", userActions.destroy);
+
+router.use(authActions.verifyToken);
 
 export default router;
