@@ -45,7 +45,9 @@ const PlaylistList: React.FC<Props> = ({
         placeholder="Add new playlist"
         className="input-add-playlist"
       />
-      <button type="submit" className="button-add-playlist">Ajouter </button>
+      <button type="submit" className="button-add-playlist">
+        Ajouter{" "}
+      </button>
     </form>
   </div>
 );

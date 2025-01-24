@@ -5,12 +5,12 @@ import NavBar from "../components/NavBar";
 import PlaylistList from "../components/PlaylistList";
 import VideosGrid from "../components/VideosGrid";
 import {
-  fetchPlaylists,
-  fetchVideoPlaylists,
-  fetchVideos,
   addPlaylist,
   deletePlaylist,
   deleteVideoFromPlaylist,
+  fetchPlaylists,
+  fetchVideoPlaylists,
+  fetchVideos,
 } from "../services/playlistService";
 import "../styles/Playlists.css";
 import type { Playlist, Video, VideoPlaylist } from "../types/types";
@@ -20,7 +20,7 @@ const userId = 1;
 const GamePlaylists = () => {
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
   const [selectedPlaylist, setSelectedPlaylist] = useState<Playlist | null>(
-    null
+    null,
   );
   const [videoPlaylists, setVideoPlaylists] = useState<VideoPlaylist[]>([]);
   const [videos, setVideos] = useState<Video[]>([]);

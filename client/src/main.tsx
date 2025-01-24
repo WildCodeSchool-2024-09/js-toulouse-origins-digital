@@ -10,9 +10,9 @@ import App from "./App";
 import NavProvider from "./contexts/NavProvider";
 import HomePage from "./pages/HomePage";
 import HomeScreen from "./pages/HomeScreen";
+import Playlists from "./pages/Playlists";
 import Search from "./pages/Search";
 import Video from "./pages/Video";
-import Playlists from "./pages/Playlists";
 
 // Import additional components for new routes
 // Try creating these components in the "pages" folder

@@ -1,5 +1,5 @@
-import type { Video, VideoPlaylist, Playlist } from "../types/types";
 import deleteIcon from "../assets/images/supprimer.png";
+import type { Playlist, Video, VideoPlaylist } from "../types/types";
 interface Props {
   videos: Video[];
   videoPlaylists: VideoPlaylist[];
@@ -14,7 +14,6 @@ const VideosGrid: React.FC<Props> = ({
   onBack,
   onDeleteVideo,
 }) => {
-    
   return (
     <div className="videos-grid">
       <button className="back-playlist-button" type="button" onClick={onBack}>
@@ -32,7 +31,9 @@ const VideosGrid: React.FC<Props> = ({
             className="button-delete-video-playlist"
             type="button"
             onClick={() => {
-              const playlist = videoPlaylists.find(vp => vp.id_video === video.id);
+              const playlist = videoPlaylists.find(
+                (vp) => vp.id_video === video.id,
+              );
               if (playlist) {
                 onDeleteVideo(playlist.id);
               }

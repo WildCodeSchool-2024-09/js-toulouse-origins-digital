@@ -11,8 +11,8 @@ import favoriteActions from "./modules/favorite/favoriteActions";
 import itemActions from "./modules/item/itemActions";
 import playlistsActions from "./modules/playlists/playlistsActions";
 import videoActions from "./modules/video/videoActions";
-import videoCategoryActions from "./modules/videocategory/videoCategoryActions";
 import videoAndPlaylistActions from "./modules/videoPlaylist/videoAndPlaylistActions";
+import videoCategoryActions from "./modules/videocategory/videoCategoryActions";
 
 router.get("/api/favorites/:userId", favoriteActions.read);
 router.post("/api/favorites/:userId", favoriteActions.add);
