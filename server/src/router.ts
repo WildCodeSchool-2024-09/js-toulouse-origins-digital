@@ -36,7 +36,14 @@ router.post("/api/categories", categoryActions.add);
 router.put("/api/categories/:id", categoryActions.edit);
 router.delete("/api/categories/:id", categoryActions.destroy);
 
-router.get("/api/videocategory/:categoryId", videoCategoryActions.read);
+router.get(
+  "/api/videocategory/videos/:categoryId",
+  videoCategoryActions.readVideosByCategory,
+);
+router.get(
+  "/api/videocategory/categories/:videoId",
+  videoCategoryActions.readCategoriesByVideo,
+);
 router.post("/api/videocategory/:categoryId", videoCategoryActions.add);
 router.delete("/api/videocategory/:categoryId", videoCategoryActions.remove);
 

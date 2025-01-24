@@ -8,10 +8,18 @@ interface VideoCategory {
 }
 
 class VideoCategoryRepository {
-  async read(id_category: number): Promise<Rows> {
+  async readVideosByCategory(id_category: number): Promise<Rows> {
     const [rows] = await databaseClient.query<Rows>(
-      "select * from video_category where id_category = ?",
+      "SELECT v.* FROM video v JOIN video_category vc ON v.id = vc.id_video WHERE vc.id_category = ?",
       [id_category],
+    );
+    return rows;
+  }
+
+  async readCategoriesByVideo(id_video: number): Promise<Rows> {
+    const [rows] = await databaseClient.query<Rows>(
+      "SELECT c.* FROM category c JOIN video_category vc ON c.id = vc.id_category WHERE vc.id_video = ?",
+      [id_video],
     );
     return rows;
   }
