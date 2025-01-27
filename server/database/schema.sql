@@ -58,7 +58,7 @@ CREATE TABLE video_playlist (
 );
 
 
-insert into category(name, url_image, description)
+INSERT INTO category(name, url_image, description)
 values
 ('RPG', 'https://cdn.videas.fr/v-medias/uploads/64889fcb-4e70-4e7e-8f42-919bb92e1a9d', "Plonge dans des aventures épiques et façonne ton héros pour des moments palpitants !"),
 ('MMORPG', 'https://cdn.videas.fr/v-medias/uploads/994a0f37-0db9-4672-80c7-6a07e730d8ac', "Explore un monde infini, découvre de nouvelles zones et forge des alliances avec des joueurs !"),
