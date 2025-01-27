@@ -16,7 +16,8 @@ type Auth = {
 
 function App() {
   const [auth, setAuth] = useState({
-    user: { id: 12, email: "prout@prout.prout", is_admin: false },
+    /*mock données temporaires*/
+    user: { id: 12, email: "test@test.test", is_admin: false },
     token: "hcfkjn",
   } as Auth | null);
   const { isOpenLogin, setIsOpenLogin } = useNav();
