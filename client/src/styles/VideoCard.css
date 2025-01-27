@@ -1,0 +1,19 @@
+.card-video {
+  padding: 5%;
+  padding-top: 10%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100vw;
+  height: 90vh;
+  background-color: rgba(100, 121, 139, 0.467);
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  backdrop-filter: blur(10px);
+}
+.frame-video {
+  width: 100%;
+}

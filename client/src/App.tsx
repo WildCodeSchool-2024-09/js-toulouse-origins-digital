@@ -4,6 +4,7 @@ import { useNav } from "./contexts/NavProvider";
 
 function App() {
   const { isOpenLogin, setIsOpenLogin } = useNav();
+
   return (
     <>
       <main

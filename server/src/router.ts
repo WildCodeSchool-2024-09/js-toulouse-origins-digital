@@ -19,7 +19,10 @@ router.post("/api/favorites/:userId", favoriteActions.add);
 router.delete("/api/favorites/:userId", favoriteActions.remove);
 
 router.get("/api/videoplaylist/:playlistId", videoAndPlaylistActions.read);
-router.post("/api/videoplaylist/:playlistId", videoAndPlaylistActions.add);
+router.post(
+  "/api/videoplaylist/:playlistId/:videoId",
+  videoAndPlaylistActions.add,
+);
 router.delete("/api/videoplaylist/:id", videoAndPlaylistActions.remove);
 
 router.get("/api/playlists/:userId", playlistsActions.read);

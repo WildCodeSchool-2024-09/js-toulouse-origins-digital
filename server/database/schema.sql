@@ -493,5 +493,3 @@ insert into video_playlist(id_video, id_playlist) values
 (2, 2),
 (1, 3),
 (3, 3);
-
-select * from video_playlist;

@@ -15,7 +15,7 @@ import {
 import "../styles/Playlists.css";
 import type { Playlist, Video, VideoPlaylist } from "../types/types";
 
-const userId = 1;
+const userId = 2;
 
 const GamePlaylists = () => {
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
