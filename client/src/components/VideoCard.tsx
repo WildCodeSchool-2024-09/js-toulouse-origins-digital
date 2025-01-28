@@ -1,5 +1,6 @@
 import "../styles/VideoCard.css";
 import { useEffect, useState } from "react";
+import { useOutletContext } from "react-router-dom";
 import { fetchPlaylists } from "../services/playlistService";
 import type { Playlist } from "../types/types";
 
@@ -11,8 +12,16 @@ interface VideoPlayerProps {
     video_url: string;
   } | null;
 }
+type User = {
+  id: number;
+  email: string;
+  is_admin: boolean;
+};
 
-const userId = 2;
+type Auth = {
+  user: User;
+  token: string;
+};
 
 export default function VideoCard({ video }: VideoPlayerProps) {
   const [isOpenCardVideo, setIsOpenCardVideo] = useState(false);
@@ -21,12 +30,14 @@ export default function VideoCard({ video }: VideoPlayerProps) {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const { auth } = useOutletContext() as { auth: Auth | null };
+  const userId = auth?.user.id || 0;
 
   useEffect(() => {
     const loadPlaylists = async () => {
       setIsLoading(true);
       try {
-        const data = await fetchPlaylists(userId);
+        const data = await fetchPlaylists(userId || 0);
         setPlaylists(data);
       } catch {
         setError("Failed to load playlists");
@@ -35,7 +46,7 @@ export default function VideoCard({ video }: VideoPlayerProps) {
       }
     };
     loadPlaylists();
-  }, []);
+  }, [userId]);
   useEffect(() => {
     if (video && video.id > 0) {
       setIsOpenCardVideo(true);
@@ -76,12 +87,8 @@ export default function VideoCard({ video }: VideoPlayerProps) {
   return (
     <>
       {isOpenCardVideo && (
-        <div className="card-video">
-          <h2>{video?.title}</h2>
-          <button onClick={() => setIsOpenCardVideo(false)} type="button">
-            fermer
-          </button>
-          <div className="card-content">
+        <div className="card-video-card">
+          <div className="card-content-video-card">
             <div>
               <iframe
                 className="frame-video"
@@ -89,15 +96,17 @@ export default function VideoCard({ video }: VideoPlayerProps) {
                 title={video?.title}
               />
             </div>
+            <h2 className="title-video-card">{video?.title}</h2>
 
             <p className="card-text">{video?.description}</p>
 
             <button
+              className="button-playlist"
               type="button"
               onClick={() => setIsOpenPlaylists(!isOpenPlaylists)}
               onKeyDown={() => setIsOpenPlaylists(!isOpenPlaylists)}
             >
-              ajouter a un eplaylist{" "}
+              ajouter à une playlist{" "}
             </button>
             {successMessage && (
               <div className="success-message">{successMessage}</div>
@@ -129,6 +138,13 @@ export default function VideoCard({ video }: VideoPlayerProps) {
               </ul>
             ) : null}
           </div>
+          <button
+            onClick={() => setIsOpenCardVideo(false)}
+            type="button"
+            className="button-close-video-card"
+          >
+            fermer
+          </button>
         </div>
       )}
     </>
