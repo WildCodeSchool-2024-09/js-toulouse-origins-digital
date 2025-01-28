@@ -31,6 +31,7 @@ export default function UserLogin() {
     confirmPassword: "",
     is_admin: false,
   });
+
   const { setAuth } = useOutletContext() as {
     setAuth: (auth: Auth | null) => void;
   };
@@ -102,6 +103,7 @@ export default function UserLogin() {
       if (response.ok) {
         const user = await response.json();
         setAuth(user);
+        localStorage.setItem("auth", JSON.stringify(user));
         setIsOpenLogin(!isOpenLogin);
         navigate("/home");
       } else {
