@@ -25,18 +25,19 @@ const VideosGrid: React.FC<Props> = ({
           Retour aux playlists
         </button>
         {videos.map((video) => (
-          <div
-            key={video.id}
-            className="video-card-playlist"
-            onClick={() => setSelectedVideo(video)}
-            onKeyDown={() => setSelectedVideo(video)}
-          >
+          <div key={video.id} className="video-card-playlist">
             <h3 className="video-title-playlist">{video.title}</h3>
-            <img
-              src={`${video.video_url}thumbnail.jpg`}
-              alt={video.title}
-              className="picture-video-playlist"
-            />
+            <button
+              style={{ all: "unset" }}
+              onClick={() => setSelectedVideo(video)}
+              type="button"
+            >
+              <img
+                src={`${video.video_url}thumbnail.jpg`}
+                alt={video.title}
+                className="picture-video-playlist"
+              />
+            </button>
             <button
               className="button-delete-video-playlist"
               type="button"

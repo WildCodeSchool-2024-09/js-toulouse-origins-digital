@@ -57,6 +57,7 @@ router.get("/api/videos/:id", videoActions.read);
 router.post("/api/videos", videoActions.add);
 router.put("/api/videos/:id", videoActions.edit);
 router.delete("/api/videos/:id", videoActions.destroy);
+router.get("/api/videos/search/:term", videoActions.search);
 
 router.get("/api/favorites/:userId", favoriteActions.read);
 router.post("/api/favorites/:userId", favoriteActions.add);
