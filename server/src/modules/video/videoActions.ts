@@ -9,6 +9,15 @@ const browse: RequestHandler = async (req, res, next) => {
     next(error);
   }
 };
+const search: RequestHandler = async (req, res, next) => {
+  try {
+    const videos = await videoRepository.search(req.params.term as string);
+
+    res.status(200).json(videos);
+  } catch (error) {
+    next(error);
+  }
+};
 
 const read: RequestHandler = async (req, res, next) => {
   try {
@@ -78,4 +87,4 @@ const destroy: RequestHandler = async (req, res, next) => {
     next(error);
   }
 };
-export default { browse, read, edit, add, destroy };
+export default { browse, read, edit, add, destroy, search };
