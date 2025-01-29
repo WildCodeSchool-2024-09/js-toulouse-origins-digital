@@ -86,13 +86,17 @@ export default function SearchBar() {
             video_url: string;
           }) => (
             <div key={video.id} className="result-item">
-              <img
-                src={`${video.video_url}thumbnail.jpg`}
-                alt={video.title}
-                className="picture-video-search"
+              <button
+                type="button"
                 onClick={() => setSelectedVideo(video)}
-                onKeyDown={() => setSelectedVideo(video)}
-              />
+                style={{ all: "unset" }}
+              >
+                <img
+                  src={`${video.video_url}thumbnail.jpg`}
+                  alt={video.title}
+                  className="picture-video-search"
+                />
+              </button>
               <h3 className="title-video-search">{video.title}</h3>
             </div>
           ),
