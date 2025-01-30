@@ -103,7 +103,12 @@ export default function UserLogin() {
       if (response.ok) {
         const user = await response.json();
         setAuth(user);
-        localStorage.setItem("auth", JSON.stringify(user));
+        localStorage.setItem(
+          "user",
+          JSON.stringify({
+            id: user.id,
+          }),
+        );
         setIsOpenLogin(!isOpenLogin);
         navigate("/home");
       } else {

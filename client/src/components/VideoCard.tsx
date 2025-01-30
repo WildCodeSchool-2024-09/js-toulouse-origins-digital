@@ -10,6 +10,7 @@ interface VideoPlayerProps {
     title: string;
     description: string;
     video_url: string;
+    views: number;
   } | null;
 }
 type User = {
@@ -31,8 +32,16 @@ export default function VideoCard({ video }: VideoPlayerProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const { auth } = useOutletContext() as { auth: Auth | null };
-  const userId = auth?.user.id || 0;
-
+  const userId =
+    auth?.user.id ||
+    (() => {
+      const userData = localStorage.getItem("user");
+      if (userData) {
+        const user = JSON.parse(userData);
+        return user.id;
+      }
+      return 0;
+    })();
   useEffect(() => {
     const loadPlaylists = async () => {
       setIsLoading(true);
@@ -50,8 +59,26 @@ export default function VideoCard({ video }: VideoPlayerProps) {
   useEffect(() => {
     if (video && video.id > 0) {
       setIsOpenCardVideo(true);
+      incrementViews(video.id);
     }
   }, [video]);
+
+  async function incrementViews(videoId: number) {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/videos/views/${videoId}`,
+        {
+          method: "PUT",
+        },
+      );
+
+      if (!response.ok) {
+        throw new Error("Erreur lors de l'incrémentation des vues");
+      }
+    } catch (error) {
+      console.error("Erreur :", error);
+    }
+  }
 
   const addVideoToPlaylist = async (playlistId: number, videoId: number) => {
     try {
@@ -97,6 +124,7 @@ export default function VideoCard({ video }: VideoPlayerProps) {
               />
             </div>
             <h2 className="title-video-card">{video?.title}</h2>
+            <p className="card-text">Vues: {video?.views}</p>
 
             <p className="card-text">{video?.description}</p>
 

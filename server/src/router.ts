@@ -56,6 +56,7 @@ router.get("/api/videos", videoActions.browse);
 router.get("/api/videos/:id", videoActions.read);
 router.post("/api/videos", videoActions.add);
 router.put("/api/videos/:id", videoActions.edit);
+router.put("/api/videos/views/:id", videoActions.incrementViews);
 router.delete("/api/videos/:id", videoActions.destroy);
 router.get("/api/videos/search/:term", videoActions.search);
 

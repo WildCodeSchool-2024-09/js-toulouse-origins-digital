@@ -48,6 +48,13 @@ class videoRepository {
     );
     return result.affectedRows;
   }
+  async incrementViews(id: number) {
+    const [result] = await databaseClient.query<Result>(
+      "update video set views = views + 1 where id = ?",
+      [id],
+    );
+    return result.affectedRows;
+  }
 
   async create(video: Omit<Video, "id">) {
     try {

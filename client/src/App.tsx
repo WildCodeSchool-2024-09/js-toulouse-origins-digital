@@ -5,8 +5,6 @@ import { useNav } from "./contexts/NavProvider";
 
 type User = {
   id: number;
-  email: string;
-  is_admin: boolean;
 };
 
 type Auth = {
@@ -20,6 +18,15 @@ function App() {
     const savedAuth = localStorage.getItem("auth");
     return savedAuth ? JSON.parse(savedAuth) : null;
   });
+  useEffect(() => {
+    const expiry = localStorage.getItem("expiry");
+
+    if (expiry && Date.now() > Number.parseInt(expiry)) {
+      localStorage.clear();
+    } else {
+      localStorage.setItem("expiry", (Date.now() + 60 * 60 * 1000).toString());
+    }
+  }, []);
 
   // Gestion de l'état du menu ou modal de connexion
   const { isOpenLogin, setIsOpenLogin } = useNav();
@@ -27,7 +34,12 @@ function App() {
   // Sauvegarder l'auth dans localStorage chaque fois qu'il change
   useEffect(() => {
     if (auth) {
-      localStorage.setItem("auth", JSON.stringify(auth));
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          id: auth?.user.id,
+        }),
+      );
     } else {
       localStorage.removeItem("auth");
     }
