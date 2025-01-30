@@ -13,11 +13,19 @@ import itemActions from "./modules/item/itemActions";
 import playlistsActions from "./modules/playlists/playlistsActions";
 import userActions from "./modules/user/userActions";
 import videoActions from "./modules/video/videoActions";
+import videoAndPlaylistActions from "./modules/videoPlaylist/videoAndPlaylistActions";
 import videoCategoryActions from "./modules/videocategory/videoCategoryActions";
 
 router.get("/api/favorites/:userId", favoriteActions.read);
 router.post("/api/favorites/:userId", favoriteActions.add);
 router.delete("/api/favorites/:userId", favoriteActions.remove);
+
+router.get("/api/videoplaylist/:playlistId", videoAndPlaylistActions.read);
+router.post(
+  "/api/videoplaylist/:playlistId/:videoId",
+  videoAndPlaylistActions.add,
+);
+router.delete("/api/videoplaylist/:id", videoAndPlaylistActions.remove);
 
 router.get("/api/playlists/:userId", playlistsActions.read);
 router.post("/api/playlists/:userId", playlistsActions.add);
@@ -63,6 +71,7 @@ router.put("/api/users/:id", authActions.hashPassword, userActions.edit);
 router.post("/api/users/", authActions.hashPassword, userActions.add);
 router.post("/api/users/login", authActions.login, userActions.edit);
 router.delete("/api/users/:id", userActions.destroy);
+router.post("/api/users/logout", authActions.logout, userActions.edit);
 
 router.use(authActions.verifyToken);
 

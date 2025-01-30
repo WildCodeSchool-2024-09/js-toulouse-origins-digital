@@ -22,11 +22,14 @@ type Auth = {
 
 export default function NavBar() {
   const { isOpenLogin, setIsOpenLogin } = useNav();
-  const { auth } = useOutletContext() as { auth: Auth | null };
+  const { auth } = useOutletContext<{
+    auth: Auth | null;
+    setAuth: (auth: Auth | null) => void;
+  }>();
 
   return (
     <>
-      {isOpenLogin ? auth ? <UserLogin /> : <UserLogout /> : null}
+      {auth ? !isOpenLogin && <UserLogout /> : isOpenLogin && <UserLogin />}
       <div className="nav-bar-container">
         <nav className="nav-bar">
           <Link to="/home">

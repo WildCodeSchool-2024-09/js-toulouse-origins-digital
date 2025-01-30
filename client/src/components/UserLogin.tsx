@@ -30,6 +30,7 @@ export default function UserLogin() {
     password: "",
     confirmPassword: "",
     is_admin: false,
+    id: Number,
   });
   const { setAuth } = useOutletContext() as {
     setAuth: (auth: Auth | null) => void;
@@ -50,7 +51,7 @@ export default function UserLogin() {
     if (name === "email") {
       validateEmail(value);
     }
-    setUser({ ...user, [name]: value });
+    setUser((prevUser) => ({ ...prevUser, [name]: value }));
   };
 
   const handleSubscriptionSubmit = async (
@@ -86,12 +87,19 @@ export default function UserLogin() {
     event: React.FormEvent<HTMLFormElement>,
   ) => {
     event.preventDefault();
+
+    if (!user.email || !user.password) {
+      setResponseMessage("Veuillez remplir tous les champs.");
+      return;
+    }
+
     try {
       const response = await fetch(
         `${import.meta.env.VITE_API_URL}/api/users/login`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
+          credentials: "include",
           body: JSON.stringify({
             email: user.email,
             password: user.password,
@@ -100,10 +108,18 @@ export default function UserLogin() {
       );
 
       if (response.ok) {
-        const user = await response.json();
-        setAuth(user);
+        const authData = await response.json();
+        setAuth(authData);
         setIsOpenLogin(!isOpenLogin);
         navigate("/home");
+        localStorage.setItem(
+          "authData",
+          JSON.stringify({
+            id: user.id,
+            email: user.email,
+            is_admin: user.is_admin,
+          }),
+        );
       } else {
         const errorData = await response.json();
         setResponseMessage(errorData.message || "Une erreur est survenue.");
@@ -215,7 +231,7 @@ export default function UserLogin() {
               <p className="switch-link">
                 Déjà un compte ?{" "}
                 <button
-                  type="submit"
+                  type="button"
                   className="switch-button"
                   onClick={() => setIsLogin(true)}
                 >
