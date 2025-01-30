@@ -8,6 +8,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 // Import the main app component
 import App from "./App";
 import NavProvider from "./contexts/NavProvider";
+import Admin from "./pages/Admin";
 import HomePage from "./pages/HomePage";
 import HomeScreen from "./pages/HomeScreen";
 import Playlists from "./pages/Playlists";
@@ -42,6 +43,10 @@ const router = createBrowserRouter([
       {
         path: "/search",
         element: <Search />,
+      },
+      {
+        path: "/admin",
+        element: <Admin />,
       },
     ], // Renders the App component for the home page
   },

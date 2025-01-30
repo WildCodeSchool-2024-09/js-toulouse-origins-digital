@@ -31,6 +31,7 @@ export default function HomePage() {
         <CarouselVideo />
       </div>
       <NavBar />
+      <div className="fill-the-gap" />
     </>
   );
 }

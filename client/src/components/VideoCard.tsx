@@ -85,7 +85,7 @@ export default function VideoCard({ video }: VideoPlayerProps) {
       setIsLoading(true);
 
       const response = await fetch(
-        `http://localhost:3310/api/videoplaylist/${playlistId}/${videoId}`,
+        `${import.meta.env.VITE_API_URL}/api/videoplaylist/${playlistId}/${videoId}`,
         {
           method: "POST",
           headers: {
