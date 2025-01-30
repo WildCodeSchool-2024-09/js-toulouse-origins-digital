@@ -29,7 +29,7 @@ router.delete("/api/videoplaylist/:id", videoAndPlaylistActions.remove);
 
 router.get("/api/playlists/:userId", playlistsActions.read);
 router.post("/api/playlists/:userId", playlistsActions.add);
-router.delete("/api/playlists/:userId", playlistsActions.remove);
+router.delete("/api/playlists/:id", playlistsActions.remove);
 
 router.get("/api/items", itemActions.browse);
 router.get("/api/items/:id", itemActions.read);
@@ -56,15 +56,14 @@ router.get("/api/videos", videoActions.browse);
 router.get("/api/videos/:id", videoActions.read);
 router.post("/api/videos", videoActions.add);
 router.put("/api/videos/:id", videoActions.edit);
+router.put("/api/videos/views/:id", videoActions.incrementViews);
 router.delete("/api/videos/:id", videoActions.destroy);
+router.get("/api/videos/search/:term", videoActions.search);
 
 router.get("/api/favorites/:userId", favoriteActions.read);
 router.post("/api/favorites/:userId", favoriteActions.add);
 router.delete("/api/favorites/:userId", favoriteActions.remove);
 
-router.get("/api/playlists/:userId", playlistsActions.read);
-router.post("/api/playlists/:userId", playlistsActions.add);
-router.delete("/api/playlists/:userId", playlistsActions.remove);
 router.get("/api/users", userActions.browse);
 router.get("/api/users/:id", userActions.read);
 router.put("/api/users/:id", authActions.hashPassword, userActions.edit);

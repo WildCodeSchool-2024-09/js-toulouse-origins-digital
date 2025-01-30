@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "../styles/CarouselVideo.css";
+import VideoCard from "./VideoCard";
 
 interface Video {
   id: number;
@@ -39,6 +40,10 @@ export default function CarouselVideo({ categoryId }: CarouselVideoProps) {
     Record<number, Category[]>
   >([]);
   const [categories, setCategories] = useState<Category[]>([]);
+  const [selectedVideo, setSelectedVideo] = useState<Video | null>(null);
+  const carouselRef = useRef<HTMLDivElement>(null);
+  const [isAtStart, setIsAtStart] = useState(true);
+  const [isAtEnd, setIsAtEnd] = useState(false);
 
   useEffect(() => {
     const endPoint = categoryId
@@ -81,6 +86,22 @@ export default function CarouselVideo({ categoryId }: CarouselVideoProps) {
       .catch((error) => console.error("Error", error));
   }, []);
 
+  const handleScroll = (distance: number) => {
+    if (carouselRef.current) {
+      carouselRef.current.scrollBy({ left: distance, behavior: "smooth" });
+
+      setTimeout(() => {
+        const {
+          scrollLeft,
+          scrollWidth = 0,
+          clientWidth,
+        } = carouselRef.current ?? { scrollLeft: 0, clientWidth: 0 };
+        setIsAtStart(scrollLeft === 0);
+        setIsAtEnd(scrollLeft + (clientWidth ?? 0) >= scrollWidth);
+      }, 300);
+    }
+  };
+
   const displayedVideos = categoryId ? categoryVideos : videos;
 
   if (displayedVideos.length === 0 && categoryId) {
@@ -94,32 +115,65 @@ export default function CarouselVideo({ categoryId }: CarouselVideoProps) {
   }
 
   return (
-    <div className="carousel-video">
-      {displayedVideos.map((video) => {
-        const thumbnailUrl = getVideasThumbnail(video.video_url);
-        const filteredCategories = categories.filter((cat) =>
-          videoCategories[video.id]?.some((vc: Category) => vc.id === cat.id),
-        );
-        return (
-          <div key={video.id} className="video-card">
-            <div>
-              <img
-                src={thumbnailUrl}
-                alt={video.title}
-                className="image-video"
-              />
-            </div>
-            <h2 className="title-video">{video.title}</h2>
-            <div className="category-video-container">
-              {filteredCategories.map((category) => (
-                <p key={category.id} className="category-video">
-                  {category.name}
-                </p>
-              ))}
-            </div>
-          </div>
-        );
-      })}
-    </div>
+    <>
+      <div className="carousel-container">
+        <div className="container-scroll-button-left">
+          <button
+            type="button"
+            className="scroll-button-left"
+            disabled={isAtStart}
+            onClick={() => handleScroll(-300)}
+          >
+            &#9664;
+          </button>
+        </div>
+
+        <div className="carousel-video" ref={carouselRef}>
+          {displayedVideos.map((video) => {
+            const thumbnailUrl = getVideasThumbnail(video.video_url);
+            const filteredCategories = categories.filter((cat) =>
+              videoCategories[video.id]?.some(
+                (vc: Category) => vc.id === cat.id,
+              ),
+            );
+            return (
+              <div
+                key={video.id}
+                className="video-card"
+                onClick={() => setSelectedVideo(video)}
+                onKeyDown={() => setSelectedVideo(video)}
+              >
+                <div>
+                  <img
+                    src={thumbnailUrl}
+                    alt={video.title}
+                    className="image-video"
+                  />
+                </div>
+                <h2 className="title-video">{video.title}</h2>
+                <div className="category-video-container">
+                  {filteredCategories.map((category) => (
+                    <p key={category.id} className="category-video">
+                      {category.name}
+                    </p>
+                  ))}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+        <div className="container-scroll-button-right">
+          <button
+            type="button"
+            className="scroll-button-right"
+            disabled={isAtEnd}
+            onClick={() => handleScroll(300)}
+          >
+            &#9654;
+          </button>
+        </div>
+      </div>
+      <VideoCard video={selectedVideo ?? null} />
+    </>
   );
 }

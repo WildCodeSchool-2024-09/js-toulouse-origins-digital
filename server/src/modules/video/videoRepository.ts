@@ -16,6 +16,14 @@ class videoRepository {
     const [rows] = await databaseClient.query<Rows>("select * from video");
     return rows as Video[];
   }
+  async search(query: string) {
+    const [rows] = await databaseClient.query<Rows>(
+      "SELECT * FROM video WHERE title LIKE ? OR description LIKE ?",
+      [`%${query}%`, `%${query}%`],
+    );
+
+    return rows as Video[];
+  }
 
   async read(id: number) {
     const [rows] = await databaseClient.query<Rows>(
@@ -37,6 +45,13 @@ class videoRepository {
         video.views,
         video.id,
       ],
+    );
+    return result.affectedRows;
+  }
+  async incrementViews(id: number) {
+    const [result] = await databaseClient.query<Result>(
+      "update video set views = views + 1 where id = ?",
+      [id],
     );
     return result.affectedRows;
   }

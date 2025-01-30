@@ -32,6 +32,7 @@ export default function UserLogin() {
     is_admin: false,
     id: Number,
   });
+
   const { setAuth } = useOutletContext() as {
     setAuth: (auth: Auth | null) => void;
   };
@@ -108,8 +109,14 @@ export default function UserLogin() {
       );
 
       if (response.ok) {
-        const authData = await response.json();
-        setAuth(authData);
+        const user = await response.json();
+        setAuth(user);
+        localStorage.setItem(
+          "user",
+          JSON.stringify({
+            id: user.id,
+          }),
+        );
         setIsOpenLogin(!isOpenLogin);
         navigate("/home");
         localStorage.setItem(

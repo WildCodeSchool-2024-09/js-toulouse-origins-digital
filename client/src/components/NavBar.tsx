@@ -11,8 +11,6 @@ import UserLogout from "./UserLogout";
 
 type User = {
   id: number;
-  email: string;
-  is_admin: boolean;
 };
 
 type Auth = {
@@ -22,14 +20,21 @@ type Auth = {
 
 export default function NavBar() {
   const { isOpenLogin, setIsOpenLogin } = useNav();
-  const { auth } = useOutletContext<{
-    auth: Auth | null;
-    setAuth: (auth: Auth | null) => void;
-  }>();
+  const { auth } = useOutletContext() as { auth: Auth | null };
 
+  // Récupérer userId directement dans auth ou depuis localStorage
+  let userId = auth?.user.id;
+
+  if (!userId) {
+    const userData = localStorage.getItem("user");
+    if (userData) {
+      const user = JSON.parse(userData);
+      userId = user.id;
+    }
+  }
   return (
     <>
-      {auth ? !isOpenLogin && <UserLogout /> : isOpenLogin && <UserLogin />}
+      {isOpenLogin ? !userId ? <UserLogin /> : <UserLogout /> : null}
       <div className="nav-bar-container">
         <nav className="nav-bar">
           <Link to="/home">
