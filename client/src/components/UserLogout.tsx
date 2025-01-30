@@ -5,8 +5,6 @@ import { useNavigate, useOutletContext } from "react-router-dom";
 
 type User = {
   id: number;
-  email: string;
-  is_admin: boolean;
 };
 
 type Auth = {
@@ -20,9 +18,9 @@ export default function UserLogout() {
   };
   const navigate = useNavigate();
 
-  const [Password, setPassword] = useState(false);
-  const [Pseudo, setPseudo] = useState(false);
-  const [Email, setEmail] = useState(false);
+  const [password, setPassword] = useState(false);
+  const [pseudo, setPseudo] = useState(false);
+  const [email, setEmail] = useState(false);
 
   const togglePassword = () => setPassword((visible) => !visible);
   const togglePseudo = () => setPseudo((visible) => !visible);
@@ -55,11 +53,11 @@ export default function UserLogout() {
         </button>
         <img src={imgProfile} alt="Profile" className="profile-picture" />
         <button type="button" className="first-button" onClick={togglePassword}>
-          {Password
+          {password
             ? "Fermer l'onglet mot de passe "
             : "Changer le mot de passe"}
         </button>
-        {Password && (
+        {password && (
           <div>
             <input
               type="password"
@@ -77,9 +75,9 @@ export default function UserLogout() {
           </div>
         )}
         <button type="button" className="first-button" onClick={togglePseudo}>
-          {Pseudo ? "Fermer l'onglet pseudo" : "Changer de pseudo"}
+          {pseudo ? "Fermer l'onglet pseudo" : "Changer de pseudo"}
         </button>
-        {Pseudo && (
+        {pseudo && (
           <div>
             <input type="text" placeholder="Pseudo*" className="input-area" />
             <button type="button" className="input-area button">
@@ -88,9 +86,9 @@ export default function UserLogout() {
           </div>
         )}
         <button type="button" className="first-button" onClick={toggleEmail}>
-          {Email ? "Fermer l'onglet email" : "Changer l'adresse email"}
+          {email ? "Fermer l'onglet email" : "Changer l'adresse email"}
         </button>
-        {Email && (
+        {email && (
           <div>
             <input
               type="text"

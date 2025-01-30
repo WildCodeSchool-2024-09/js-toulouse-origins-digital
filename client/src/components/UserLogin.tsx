@@ -6,8 +6,6 @@ import { useNav } from "../contexts/NavProvider";
 
 type User = {
   id: number;
-  email: string;
-  is_admin: boolean;
 };
 
 type Auth = {
@@ -119,14 +117,6 @@ export default function UserLogin() {
         );
         setIsOpenLogin(!isOpenLogin);
         navigate("/home");
-        localStorage.setItem(
-          "authData",
-          JSON.stringify({
-            id: user.id,
-            email: user.email,
-            is_admin: user.is_admin,
-          }),
-        );
       } else {
         const errorData = await response.json();
         setResponseMessage(errorData.message || "Une erreur est survenue.");
