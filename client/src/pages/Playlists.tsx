@@ -38,7 +38,17 @@ const GamePlaylists = () => {
   const [error, setError] = useState<string | null>(null);
   const [playlistName, setPlaylistName] = useState("");
   const { auth } = useOutletContext() as { auth: Auth | null };
-  const userId = auth?.user.id || 0;
+
+  const userId =
+    auth?.user.id ||
+    (() => {
+      const userData = localStorage.getItem("user");
+      if (userData) {
+        const user = JSON.parse(userData);
+        return user.id;
+      }
+      return 0;
+    })();
 
   useEffect(() => {
     const loadPlaylists = async () => {

@@ -56,6 +56,20 @@ const edit: RequestHandler = async (req, res, next) => {
   }
 };
 
+const incrementViews: RequestHandler = async (req, res, next) => {
+  try {
+    const videoId = Number(req.params.id);
+    const affectedRows = await videoRepository.incrementViews(videoId);
+    if (affectedRows === 0) {
+      res.sendStatus(404);
+    } else {
+      res.sendStatus(204);
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
 const add: RequestHandler = async (req, res, next) => {
   try {
     const newVideo = {
@@ -87,4 +101,4 @@ const destroy: RequestHandler = async (req, res, next) => {
     next(error);
   }
 };
-export default { browse, read, edit, add, destroy, search };
+export default { browse, read, edit, add, destroy, search, incrementViews };
