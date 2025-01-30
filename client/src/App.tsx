@@ -1,7 +1,8 @@
 import "./App.css";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 import { useNav } from "./contexts/NavProvider";
+import "./App.css";
 
 type User = {
   id: number;
@@ -18,6 +19,7 @@ function App() {
     const savedAuth = localStorage.getItem("auth");
     return savedAuth ? JSON.parse(savedAuth) : null;
   });
+
   useEffect(() => {
     const expiry = localStorage.getItem("expiry");
 
@@ -44,6 +46,29 @@ function App() {
       localStorage.removeItem("auth");
     }
   }, [auth]);
+
+  const getCookie = useCallback((name: string) => {
+    const cookieArr = document.cookie.split("; ");
+    for (let i = 0; i < cookieArr.length; i++) {
+      const cookie = cookieArr[i].split("=");
+      if (cookie[0] === name) {
+        return cookie[1];
+      }
+    }
+    return null;
+  }, []);
+
+  useEffect(() => {
+    const token = getCookie("token");
+    const savedUser = localStorage.getItem("user");
+
+    if (token && savedUser) {
+      const user = JSON.parse(savedUser);
+      setAuth({ user, token });
+    } else {
+      setAuth(null);
+    }
+  }, [getCookie]);
 
   return (
     <>

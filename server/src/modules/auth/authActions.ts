@@ -1,12 +1,17 @@
 import * as argon2 from "argon2";
 import type { RequestHandler } from "express";
+import type { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import type { JwtPayload } from "jsonwebtoken";
 import userRepository from "../user/userRepository";
 
-const login: RequestHandler = async (req, res, next) => {
+const login: RequestHandler = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const user = await userRepository.readByEmailWithPassword(req.body.email);
+
     if (user == null) {
       res
         .status(422)
@@ -18,6 +23,7 @@ const login: RequestHandler = async (req, res, next) => {
       user.hashed_password,
       req.body.password,
     );
+
     if (verified) {
       const { hashed_password, ...userWithoutHashedPassword } = user;
       const myPayload: MyPayload = {
@@ -28,8 +34,14 @@ const login: RequestHandler = async (req, res, next) => {
         expiresIn: "1h",
       });
 
+      res.cookie("auth_token", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+        maxAge: 60 * 60 * 1000,
+      });
+
       res.status(200).json({
-        token,
         user: userWithoutHashedPassword,
       });
     } else {
@@ -42,14 +54,10 @@ const login: RequestHandler = async (req, res, next) => {
 
 const verifyToken: RequestHandler = (req, res, next) => {
   try {
-    const authorizationHeader = req.get("Authorization");
-    if (authorizationHeader == null) {
-      throw new Error("Authorization header is missing");
-    }
+    const token = req.cookies.auth_token;
 
-    const [type, token] = authorizationHeader.split(" ");
-    if (type !== "Bearer") {
-      throw new Error("Authorization header does not have the 'Bearer' type");
+    if (!token == null) {
+      throw new Error("Accès non autorisé, token manquant");
     }
 
     req.auth = jwt.verify(token, process.env.APP_SECRET as string) as MyPayload;
@@ -59,6 +67,15 @@ const verifyToken: RequestHandler = (req, res, next) => {
     console.error(err);
     res.sendStatus(401);
   }
+};
+
+const logout: RequestHandler = (req, res) => {
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: true,
+    sameSite: "strict",
+  });
+  res.status(200).json({ message: "Deconnexion réussie" });
 };
 
 const hashingOptions = {
@@ -80,4 +97,4 @@ const hashPassword: RequestHandler = async (req, res, next) => {
   }
 };
 
-export default { login, hashPassword, verifyToken };
+export default { login, hashPassword, verifyToken, logout };

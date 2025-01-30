@@ -6,8 +6,6 @@ import { useNav } from "../contexts/NavProvider";
 
 type User = {
   id: number;
-  email: string;
-  is_admin: boolean;
 };
 
 type Auth = {
@@ -30,6 +28,7 @@ export default function UserLogin() {
     password: "",
     confirmPassword: "",
     is_admin: false,
+    id: Number,
   });
 
   const { setAuth } = useOutletContext() as {
@@ -51,7 +50,7 @@ export default function UserLogin() {
     if (name === "email") {
       validateEmail(value);
     }
-    setUser({ ...user, [name]: value });
+    setUser((prevUser) => ({ ...prevUser, [name]: value }));
   };
 
   const handleSubscriptionSubmit = async (
@@ -87,12 +86,19 @@ export default function UserLogin() {
     event: React.FormEvent<HTMLFormElement>,
   ) => {
     event.preventDefault();
+
+    if (!user.email || !user.password) {
+      setResponseMessage("Veuillez remplir tous les champs.");
+      return;
+    }
+
     try {
       const response = await fetch(
         `${import.meta.env.VITE_API_URL}/api/users/login`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
+          credentials: "include",
           body: JSON.stringify({
             email: user.email,
             password: user.password,
@@ -222,7 +228,7 @@ export default function UserLogin() {
               <p className="switch-link">
                 Déjà un compte ?{" "}
                 <button
-                  type="submit"
+                  type="button"
                   className="switch-button"
                   onClick={() => setIsLogin(true)}
                 >

@@ -70,6 +70,7 @@ router.put("/api/users/:id", authActions.hashPassword, userActions.edit);
 router.post("/api/users/", authActions.hashPassword, userActions.add);
 router.post("/api/users/login", authActions.login, userActions.edit);
 router.delete("/api/users/:id", userActions.destroy);
+router.post("/api/users/logout", authActions.logout, userActions.edit);
 
 router.use(authActions.verifyToken);
 
