@@ -8,10 +8,21 @@
   line-height: normal;
   display: flex;
   align-items: center;
-  padding: 0 17px;
 }
 
 .logo-icon {
   width: 70px;
   height: auto;
+}
+
+.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+}
+
+.view-text {
+  text-decoration: none;
+  font-family: var(--primary-font);
 }

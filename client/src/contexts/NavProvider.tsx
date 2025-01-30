@@ -10,7 +10,6 @@ const NavContext = createContext<NavContextProps | null>(null);
 
 export function NavProvider({ children }: { children: React.ReactNode }) {
   const [isOpenLogin, setIsOpenLogin] = useState(false);
-
   return (
     <NavContext.Provider value={{ isOpenLogin, setIsOpenLogin }}>
       {children}
