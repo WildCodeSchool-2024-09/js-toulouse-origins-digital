@@ -1,18 +1,21 @@
 .container {
   background-image: linear-gradient(
       to bottom,
-      transparent 0%,
-      rgba(18, 18, 33, 0) 40%,
-      rgba(18, 18, 33, 0.5) 60%,
-      rgba(18, 18, 33, 0.8) 80%,
-      #121221 95%,
+      rgba(18, 18, 33, 0) 0%,
+      rgba(18, 18, 33, 0) 30%,
+      rgba(18, 18, 33, 0.6) 40%,
+      rgba(18, 18, 33, 0.8) 60%,
+      rgba(18, 18, 33, 0.85) 80%,
+      rgba(18, 18, 33, 0.95) 90%,
       #121221 100%
     ), url(../assets/images/bg-img-cateory.png);
-  background-size: cover;
-  background-position: top;
+  background-size: fit;
+  background-position: top center;
   background-repeat: no-repeat;
   width: 100%;
-  height: 80vh;
+  min-height: 100vh;
+  position: relative;
+  padding-bottom: 2rem;
 }
 
 .title-home-page {
@@ -21,10 +24,12 @@
   font-size: 32px;
   margin-left: 30px;
   margin-top: 30px;
+  position: relative;
 }
 
 hr {
   border: none;
   border-top: 1px solid #ffffff;
   margin: 5px 0;
+  position: relative;
 }
