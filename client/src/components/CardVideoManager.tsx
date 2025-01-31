@@ -1,14 +1,17 @@
 import editPicto from "../assets/images/pencil-management.png";
 import deletePicto from "../assets/images/trash-management.png";
+import useDeleteVideo from "../services/deleteVideo";
 import "../styles/CardVideoManager.css";
 
 interface CardVideoManagerProps {
+  id: number;
   title: string;
   description: string;
   duration: string;
   video_url: string;
   date: string;
   views: number;
+  onDelete: (deletedId: number) => void;
 }
 
 function getVideasVideoId(url: string): string | null {
@@ -24,13 +27,26 @@ function getVideasThumbnail(url: string): string {
 }
 
 export default function CardVideoManager({
+  id,
   title,
   description,
   duration,
   video_url,
   date,
   views,
+  onDelete,
 }: CardVideoManagerProps) {
+  const deleteVideo = useDeleteVideo();
+  const handleDelete = async () => {
+    if (
+      window.confirm(`Êtes-vous sûr de vouloir supprimer la vidéo "${title}" ?`)
+    ) {
+      const success = await deleteVideo(id);
+      if (success) {
+        onDelete(id);
+      }
+    }
+  };
   const thumbnailUrl = getVideasThumbnail(video_url);
   return (
     <div className="video-component-admin">
@@ -49,7 +65,14 @@ export default function CardVideoManager({
           </div>
           <div className="video-actions">
             <img width={30} className="edit" src={editPicto} alt="" />
-            <img width={30} className="delete" src={deletePicto} alt="" />
+            <img
+              width={30}
+              className="delete"
+              src={deletePicto}
+              alt="Supprimer"
+              onClick={handleDelete}
+              onKeyDown={handleDelete}
+            />
           </div>
         </div>
       </div>

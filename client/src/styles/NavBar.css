@@ -21,6 +21,11 @@
   cursor: pointer;
 }
 
+.nav-icon:hover {
+  transform: scale(1.1);
+  filter: hue-rotate(75deg);
+}
+
 .nav-icon-profile-style {
   width: 30px;
   height: 30px;

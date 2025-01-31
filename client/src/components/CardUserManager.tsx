@@ -1,20 +1,38 @@
 import editPicto from "../assets/images/pencil-management.png";
 import deletePicto from "../assets/images/trash-management.png";
+import useDeleteUser from "../services/deleteUser";
 import "../styles/CardUserManager.css";
 
 interface CardUserManagerProps {
+  id: number;
   pseudo: string;
   email: string;
   avatar_url: string;
   is_admin: boolean;
+  onDelete: (deletedId: number) => void;
 }
 
 export default function CardUserManager({
+  id,
   pseudo,
   email,
   avatar_url,
   is_admin,
+  onDelete,
 }: CardUserManagerProps) {
+  const deleteUser = useDeleteUser();
+  const handleDelete = async () => {
+    if (
+      window.confirm(
+        `Êtes-vous sûr de vouloir supprimer l'utilisateur "${pseudo}" ?`,
+      )
+    ) {
+      const success = await deleteUser(id);
+      if (success) {
+        onDelete(id);
+      }
+    }
+  };
   return (
     <div className="admin-card user-card">
       <img
@@ -28,7 +46,14 @@ export default function CardUserManager({
       </div>
       <div className="user-actions">
         <img width={30} className="edit" src={editPicto} alt="" />
-        <img width={30} className="delete" src={deletePicto} alt="" />
+        <img
+          width={30}
+          className="delete"
+          src={deletePicto}
+          alt="Supprimer"
+          onClick={handleDelete}
+          onKeyDown={handleDelete}
+        />
       </div>
     </div>
   );
