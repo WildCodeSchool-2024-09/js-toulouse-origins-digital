@@ -34,7 +34,7 @@
 
 .nav-admin {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   padding: 10px;
 }
 
@@ -45,6 +45,7 @@
   align-items: center;
   padding: 10px;
   cursor: pointer;
+  width: 25%;
 }
 
 .button-nav-admin:hover {
