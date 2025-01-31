@@ -13,7 +13,6 @@ import HomePage from "./pages/HomePage";
 import HomeScreen from "./pages/HomeScreen";
 import Playlists from "./pages/Playlists";
 import Search from "./pages/Search";
-import AdminModal from "./components/AdminModal";
 
 // Import additional components for new routes
 // Try creating these components in the "pages" folder
@@ -48,10 +47,6 @@ const router = createBrowserRouter([
       {
         path: "/admin",
         element: <Admin />,
-      },
-      {
-        path: "/admin_modal",
-        element: <AdminModal />,
       },
     ], // Renders the App component for the home page
   },
