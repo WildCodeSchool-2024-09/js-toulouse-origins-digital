@@ -8,6 +8,8 @@ import categoriesPic from "../assets/images/category-management.png";
 import usersPic from "../assets/images/users-management.png";
 import videosPic from "../assets/images/video-management.png";
 import NavBar from "../components/NavBar";
+import AdminModal from "../components/AdminModal";
+import useModal from "../services/useModal";
 
 const truncateText = (text: string, maxLength = 80) => {
   if (text.length <= maxLength) return text;
@@ -62,6 +64,21 @@ export default function Admin() {
   const [user, setUser] = useState<User[]>([]);
   const [adminSection, setAdminSection] = useState("users");
   const [isLoading, setIsLoading] = useState(true);
+  const handleCategoryDelete = (deletedId: number) => {
+    setCategory((prevCategories) =>
+      prevCategories.filter((cat) => cat.id !== deletedId),
+    );
+  };
+
+  const handleUserDelete = (deletedId: number) => {
+    setUser((prevUsers) => prevUsers.filter((user) => user.id !== deletedId));
+  };
+
+  const handleVideoDelete = (deletedId: number) => {
+    setVideo((prevVideos) => prevVideos.filter((vid) => vid.id !== deletedId));
+  };
+
+  const { isShowing, toggle } = useModal();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -92,11 +109,12 @@ export default function Admin() {
 
   return (
     <>
+      <AdminModal isShowing={isShowing} hide={toggle} />
       <Header />
       <div className="admin-page">
         <nav className="nav-admin">
           <button
-            className="button-nav-admin"
+            className={`button-nav-admin ${adminSection === "users" ? "button-nav-admin-active" : ""}`}
             type="button"
             onClick={() => setAdminSection("users")}
           >
@@ -104,7 +122,7 @@ export default function Admin() {
             <p>Users</p>
           </button>
           <button
-            className="button-nav-admin"
+            className={`button-nav-admin ${adminSection === "categories" ? "button-nav-admin-active" : ""}`}
             type="button"
             onClick={() => setAdminSection("categories")}
           >
@@ -112,7 +130,7 @@ export default function Admin() {
             <p>Categories</p>
           </button>
           <button
-            className="button-nav-admin"
+            className={`button-nav-admin ${adminSection === "videos" ? "button-nav-admin-active" : ""}`}
             type="button"
             onClick={() => setAdminSection("videos")}
           >
@@ -140,14 +158,18 @@ export default function Admin() {
               category.map((cat) => (
                 <CardCategoryManager
                   key={cat.id}
+                  id={cat.id}
                   name={cat.name}
                   description={cat.description}
                   url_image={cat.url_image}
+                  onEdit={toggle}
+                  onDelete={handleCategoryDelete}
                 />
               ))}
             {adminSection === "videos" &&
               video.map((vid) => (
                 <CardVideoManager
+                  id={vid.id}
                   key={vid.id}
                   title={vid.title}
                   description={truncateText(vid.description)}
@@ -155,16 +177,19 @@ export default function Admin() {
                   video_url={vid.video_url}
                   date={formatDate(vid.date.toString())}
                   views={vid.views}
+                  onDelete={handleVideoDelete}
                 />
               ))}
             {adminSection === "users" &&
               user.map((user) => (
                 <CardUserManager
+                  id={user.id}
                   key={user.id}
                   pseudo={user.pseudo}
                   email={user.email}
                   avatar_url={user.avatar_url}
                   is_admin={user.is_admin}
+                  onDelete={handleUserDelete}
                 />
               ))}
           </>

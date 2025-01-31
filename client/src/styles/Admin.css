@@ -50,6 +50,13 @@
 .button-nav-admin:hover {
   border-radius: 20px;
   background-color: #474756;
+  transform: scale(1.05);
+}
+
+.button-nav-admin-active {
+  border-radius: 20px;
+  background-color: #474756;
+  transform: scale(1.05);
 }
 
 .button-nav-admin p {
