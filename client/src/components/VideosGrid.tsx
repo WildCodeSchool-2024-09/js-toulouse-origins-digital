@@ -17,9 +17,11 @@ const VideosGrid: React.FC<Props> = ({
   onDeleteVideo,
 }) => {
   const [selectedVideo, setSelectedVideo] = useState<Video | null>(null);
+  const handleCloseVideo = () => setSelectedVideo(null);
+
   return (
     <>
-      <VideoCard video={selectedVideo ?? null} />
+      <VideoCard video={selectedVideo ?? null} onClose={handleCloseVideo} />
       <div className="videos-grid">
         <button className="back-playlist-button" type="button" onClick={onBack}>
           Retour aux playlists

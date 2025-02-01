@@ -17,20 +17,24 @@
   backdrop-filter: blur(10px);
   overflow-x: scroll;
 }
+
 .title-video-card {
   font-family: var(--primary-font);
   font-weight: 600;
   font-size: 30px;
 }
+
 .frame-video {
   width: 100%;
   border: none;
-  height: 30vh;
+  aspect-ratio: 16 / 9;
   border-radius: 20px;
 }
+
 .card-text {
   font-family: var(--secondary-font);
 }
+
 .playlist-list {
   list-style-type: none;
   display: flex;
@@ -41,10 +45,12 @@
   font-weight: 600;
   align-items: center;
 }
+
 .success-message {
   font-family: var(--primary-font);
   font-weight: 600;
 }
+
 .button-playlist {
   font-family: var(--primary-font);
   font-weight: 600;
@@ -59,6 +65,7 @@
   margin-right: auto;
   cursor: pointer;
 }
+
 .button-close-video-card {
   font-family: var(--primary-font);
   font-weight: 600;
@@ -72,6 +79,7 @@
   margin-bottom: 25px;
   border: none;
 }
+
 .card-content-video-card {
   display: flex;
   flex-direction: column;

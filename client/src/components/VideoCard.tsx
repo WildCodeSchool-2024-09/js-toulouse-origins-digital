@@ -12,6 +12,7 @@ interface VideoPlayerProps {
     video_url: string;
     views: number;
   } | null;
+  onClose: () => void;
 }
 type User = {
   id: number;
@@ -24,7 +25,7 @@ type Auth = {
   token: string;
 };
 
-export default function VideoCard({ video }: VideoPlayerProps) {
+export default function VideoCard({ video, onClose }: VideoPlayerProps) {
   const [isOpenCardVideo, setIsOpenCardVideo] = useState(false);
   const [isOpenPlaylists, setIsOpenPlaylists] = useState(false);
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
@@ -121,6 +122,7 @@ export default function VideoCard({ video }: VideoPlayerProps) {
                 className="frame-video"
                 src={video?.video_url}
                 title={video?.title}
+                allowFullScreen
               />
             </div>
             <h2 className="title-video-card">{video?.title}</h2>
@@ -167,7 +169,10 @@ export default function VideoCard({ video }: VideoPlayerProps) {
             ) : null}
           </div>
           <button
-            onClick={() => setIsOpenCardVideo(false)}
+            onClick={() => {
+              setIsOpenCardVideo(false);
+              onClose();
+            }}
             type="button"
             className="button-close-video-card"
           >
