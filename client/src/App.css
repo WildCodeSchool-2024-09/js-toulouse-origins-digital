@@ -33,3 +33,7 @@ img {
   -ms-user-select: none;
   user-select: none;
 }
+
+button {
+  border: none;
+}

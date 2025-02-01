@@ -126,7 +126,7 @@ export default function VideoCard({ video, onClose }: VideoPlayerProps) {
               />
             </div>
             <h2 className="title-video-card">{video?.title}</h2>
-            <p className="card-text">Vues: {video?.views}</p>
+            <p className="text-view">Vues: {video?.views}</p>
 
             <p className="card-text">{video?.description}</p>
 
