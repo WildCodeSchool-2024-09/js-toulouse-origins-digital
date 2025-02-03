@@ -44,6 +44,7 @@ export default function CarouselVideo({ categoryId }: CarouselVideoProps) {
   const carouselRef = useRef<HTMLDivElement>(null);
   const [isAtStart, setIsAtStart] = useState(true);
   const [isAtEnd, setIsAtEnd] = useState(false);
+  const handleCloseVideo = () => setSelectedVideo(null);
 
   useEffect(() => {
     const endPoint = categoryId
@@ -117,7 +118,11 @@ export default function CarouselVideo({ categoryId }: CarouselVideoProps) {
   return (
     <>
       <div className="carousel-container">
-        <div className="container-scroll-button-left">
+        <div
+          className="container-scroll-button-left"
+          onClick={() => handleScroll(-300)}
+          onKeyDown={() => null}
+        >
           <button
             type="button"
             className="scroll-button-left"
@@ -162,7 +167,11 @@ export default function CarouselVideo({ categoryId }: CarouselVideoProps) {
             );
           })}
         </div>
-        <div className="container-scroll-button-right">
+        <div
+          className="container-scroll-button-right"
+          onClick={() => handleScroll(300)}
+          onKeyDown={() => null}
+        >
           <button
             type="button"
             className="scroll-button-right"
@@ -173,7 +182,7 @@ export default function CarouselVideo({ categoryId }: CarouselVideoProps) {
           </button>
         </div>
       </div>
-      <VideoCard video={selectedVideo ?? null} />
+      <VideoCard video={selectedVideo ?? null} onClose={handleCloseVideo} />
     </>
   );
 }

@@ -4,6 +4,8 @@
   gap: 20px;
   padding: 20px;
   scrollbar-width: none;
+  justify-content: flex-start;
+  flex: 1;
 }
 
 .video-card {
@@ -65,28 +67,35 @@
   overflow: hidden;
   position: relative;
   height: 250px;
+  align-items: flex-start;
+  justify-content: flex-start;
 }
 
 .container-scroll-button-right {
-  height: 80%;
+  height: 100%;
   display: flex;
   align-items: center;
   min-width: 30px;
   justify-content: center;
+  cursor: pointer;
 }
 
 .scroll-button-right {
   all: unset;
   height: 100%;
   cursor: pointer;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .container-scroll-button-left {
-  height: 80%;
+  height: 100%;
   display: flex;
   align-items: center;
   min-width: 30px;
   justify-content: center;
+  cursor: pointer;
 }
 
 .container-scroll-button-left:hover {
@@ -101,6 +110,9 @@
   height: 100%;
   all: unset;
   cursor: pointer;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 @media screen and (max-width: 1000px) {

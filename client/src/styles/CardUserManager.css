@@ -26,7 +26,7 @@
 
 .user-avatar-admin {
   border-radius: 70px;
-  border: 3px dashed #31d0d9;
+  border: 3px solid #31d0d9;
   object-fit: cover;
   min-width: 70px;
   height: 70px;
@@ -48,4 +48,19 @@
   font-family: var(--secondary-font);
   font-size: 12px;
   font-weight: 400;
+}
+
+.avatar-container {
+  position: relative;
+  min-width: 70px;
+  height: 70px;
+}
+
+.badge {
+  position: absolute;
+  height: 2rem;
+  width: 2rem;
+  top: -0.5rem;
+  right: -0.5rem;
+  border-radius: 50%;
 }
