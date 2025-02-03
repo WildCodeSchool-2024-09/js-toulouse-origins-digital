@@ -20,7 +20,7 @@ const CarouselPrimary = ({ onCategorySelect }: CarouselPrimaryProps) => {
   const [categories, setCategories] = useState<Category[]>([]);
 
   useEffect(() => {
-    fetch("http://localhost:3310/api/categories")
+    fetch(`${import.meta.env.VITE_API_URL}/api/categories`)
       .then((response) => response.json())
       .then((data) => setCategories(data))
       .catch((error) => console.error("Error", error));
