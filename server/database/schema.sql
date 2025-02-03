@@ -139,7 +139,8 @@ INSERT INTO video_category (id_video, id_category) VALUES
 (14, 6);
 
 INSERT INTO user (email, hashed_password, pseudo, is_admin, avatar_url) VALUES
-('julien.joecker@gmail.com', '1234', 'Jujock004', TRUE, 'https://img.freepik.com/vecteurs-libre/jeu-astronaute-mignon-joystick-casque-dessin-anime-icone-vectorielle-illustration-science-techno_138676-9648.jpg'),
+('admin@jestone.com', '$argon2id$v=19$m=19456,t=2,p=1$B3kMZxuZHlpvbPKhFzUuaQ$A3wqLjxYzDPTXe+9bhFGCVpPtUm1OScZ3PDRrOMOTb0
+', 'Jujock004', TRUE, 'https://img.freepik.com/vecteurs-libre/jeu-astronaute-mignon-joystick-casque-dessin-anime-icone-vectorielle-illustration-science-techno_138676-9648.jpg'),
 ('tom.schricke@gmail.com', '1234', 'Toto', FALSE, 'https://store.playstation.com/store/api/chihiro/00_09_000/container/US/en/19/UP2136-CUSA02727_00-AV00000000000061/image?w=320&h=320&bg_color=000000&opacity=100&_version=00_09_000');
 
 INSERT INTO playlist (name, id_user) VALUES

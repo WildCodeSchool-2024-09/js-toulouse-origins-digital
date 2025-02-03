@@ -24,6 +24,11 @@ export default function CardUserManager({
   onDelete,
 }: CardUserManagerProps) {
   const deleteUser = useDeleteUser();
+
+  const fullAvatarUrl = avatar_url.startsWith("http")
+    ? avatar_url
+    : `${import.meta.env.VITE_API_URL}${avatar_url}`;
+
   const handleDelete = async () => {
     if (
       window.confirm(
@@ -40,11 +45,11 @@ export default function CardUserManager({
     <div className="admin-card user-card">
       {is_admin ? (
         <div className="avatar-container">
-          <img className="user-avatar-admin" src={avatar_url} alt="" />
+          <img className="user-avatar-admin" src={fullAvatarUrl} alt="" />
           {is_admin && <img className="badge" src={adminBadge} alt="" />}
         </div>
       ) : (
-        <img className="user-avatar" src={avatar_url} alt="" />
+        <img className="user-avatar" src={fullAvatarUrl} alt="" />
       )}
       <div className="user-info">
         <p className="user-name">{pseudo}</p>
