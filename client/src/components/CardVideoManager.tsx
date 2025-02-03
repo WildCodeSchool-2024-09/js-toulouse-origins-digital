@@ -11,6 +11,7 @@ interface CardVideoManagerProps {
   video_url: string;
   date: string;
   views: number;
+  onEdit: () => void;
   onDelete: (deletedId: number) => void;
 }
 
@@ -34,6 +35,7 @@ export default function CardVideoManager({
   video_url,
   date,
   views,
+  onEdit,
   onDelete,
 }: CardVideoManagerProps) {
   const deleteVideo = useDeleteVideo();
@@ -64,7 +66,8 @@ export default function CardVideoManager({
             </ul>
           </div>
           <div className="video-actions">
-            <img width={30} className="edit" src={editPicto} alt="" />
+            <img width={30} className="edit" src={editPicto} alt="Modifier" onClick={onEdit}
+              onKeyDown={onEdit} />
             <img
               width={30}
               className="delete"

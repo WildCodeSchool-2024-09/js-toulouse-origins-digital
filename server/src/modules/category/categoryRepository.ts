@@ -24,7 +24,7 @@ class categoryRepository {
 
   async update(category: Category) {
     const [result] = await databaseClient.query<Result>(
-      "update program set name = ?, url_image = ?, description = ? where id = ?",
+      "update category set name = ?, url_image = ?, description = ? where id = ?",
       [category.name, category.url_image, category.description, category.id],
     );
     return result.affectedRows;

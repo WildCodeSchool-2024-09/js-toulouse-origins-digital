@@ -4,7 +4,7 @@ import type { Result, Rows } from "../../../database/client";
 type User = {
   id: number;
   email: string;
-  hashed_password: string;
+  hashed_password?: string;
   pseudo: string;
   is_admin: boolean;
   avatar_url: string;
@@ -34,15 +34,8 @@ class userRepository {
 
   async update(user: User) {
     const [result] = await databaseClient.query<Result>(
-      "update user set email = ?, hashed_password = ?, pseudo = ?, is_admin = ?, avatar_url = ? where id = ?",
-      [
-        user.email,
-        user.hashed_password,
-        user.pseudo,
-        user.is_admin,
-        user.avatar_url,
-        user.id,
-      ],
+      "update user set email = ?, pseudo = ?, is_admin = ?, avatar_url = ? where id = ?",
+      [user.email, user.pseudo, user.is_admin, user.avatar_url, user.id],
     );
     return result.affectedRows;
   }

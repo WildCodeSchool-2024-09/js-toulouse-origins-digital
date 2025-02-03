@@ -30,7 +30,6 @@ const edit: RequestHandler = async (req, res, next) => {
     const user = {
       id: Number(req.params.id),
       email: req.body.email,
-      hashed_password: req.body.hashed_password,
       pseudo: req.body.pseudo,
       is_admin: req.body.is_admin,
       avatar_url: req.body.avatar_url,

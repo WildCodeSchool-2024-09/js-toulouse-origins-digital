@@ -66,7 +66,7 @@ router.delete("/api/favorites/:userId", favoriteActions.remove);
 
 router.get("/api/users", userActions.browse);
 router.get("/api/users/:id", userActions.read);
-router.put("/api/users/:id", authActions.hashPassword, userActions.edit);
+router.put("/api/users/:id", userActions.edit);
 router.post("/api/users/", authActions.hashPassword, userActions.add);
 router.post("/api/users/login", authActions.login, userActions.edit);
 router.delete("/api/users/:id", userActions.destroy);

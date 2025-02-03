@@ -7,9 +7,11 @@ import "../styles/Admin.css";
 import categoriesPic from "../assets/images/category-management.png";
 import usersPic from "../assets/images/users-management.png";
 import videosPic from "../assets/images/video-management.png";
-import AdminModal from "../components/AdminModal";
+import ModalCategoryManager from "../components/ModalCategoryManager";
 import NavBar from "../components/NavBar";
 import useModal from "../services/useModal";
+import ModalUserManager from "../components/ModalUserManager";
+import ModalVideoManager from "../components/ModalVideoManager";
 
 const truncateText = (text: string, maxLength = 80) => {
   if (text.length <= maxLength) return text;
@@ -78,7 +80,25 @@ export default function Admin() {
     setVideo((prevVideos) => prevVideos.filter((vid) => vid.id !== deletedId));
   };
 
-  const { isShowing, toggle } = useModal();
+  const {
+    isShowing: isShowingCategory,
+    editingId: editingCategoryId,
+    toggle: toggleCategory,
+  } = useModal();
+  const {
+    isShowing: isShowingUser,
+    editingId: editingUserId,
+    toggle: toggleUser,
+  } = useModal();
+  const {
+    isShowing: isShowingVideo,
+    editingId: editingVideoId,
+    toggle: toggleVideo,
+  } = useModal();
+
+  const editingCategory = category.find((cat) => cat.id === editingCategoryId);
+  const editingUser = user.find((u) => u.id === editingUserId);
+  const editingVideo = video.find((vid) => vid.id === editingVideoId);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -109,7 +129,116 @@ export default function Admin() {
 
   return (
     <>
-      <AdminModal isShowing={isShowing} hide={toggle} />
+      <ModalCategoryManager
+        isShowing={isShowingCategory}
+        hide={() => toggleCategory()}
+        category={editingCategory}
+        onSubmit={async (categoryData) => {
+          try {
+            const response = await fetch(
+              `${import.meta.env.VITE_API_URL}/api/categories/${editingCategory?.id}`,
+              {
+                method: "PUT",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  name: categoryData.name,
+                  description: categoryData.description,
+                  url_image: categoryData.url_image,
+                }),
+              },
+            );
+            if (response.ok) {
+              setCategory((categories) =>
+                categories.map((cat) =>
+                  cat.id === editingCategory?.id
+                    ? { ...cat, ...categoryData }
+                    : cat,
+                ),
+              );
+              toggleCategory();
+            } else {
+              console.error("Erreur lors de la mise à jour");
+            }
+          } catch (error) {
+            console.error("Erreur:", error);
+          }
+        }}
+      />
+      <ModalUserManager
+        isShowing={isShowingUser}
+        hide={() => toggleUser()}
+        user={editingUser}
+        onSubmit={async (userData) => {
+          try {
+            const response = await fetch(
+              `${import.meta.env.VITE_API_URL}/api/users/${editingUser?.id}`,
+              {
+                method: "PUT",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  email: userData.email,
+                  pseudo: userData.pseudo,
+                  is_admin: userData.is_admin,
+                  avatar_url: userData.avatar_url,
+                }),
+              },
+            );
+            if (response.ok) {
+              setUser((users) =>
+                users.map((u) =>
+                  u.id === editingUser?.id ? { ...u, ...userData } : u,
+                ),
+              );
+              toggleUser();
+            } else {
+              console.error("Erreur lors de la mise à jour");
+            }
+          } catch (error) {
+            console.error("Erreur:", error);
+          }
+        }}
+      />
+      <ModalVideoManager
+        isShowing={isShowingVideo}
+        hide={() => toggleVideo()}
+        video={editingVideo}
+        onSubmit={async (videoData) => {
+          try {
+            const response = await fetch(
+              `${import.meta.env.VITE_API_URL}/api/videos/${editingVideo?.id}`,
+              {
+                method: "PUT",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  title: videoData.title,
+                  description: videoData.description,
+                  video_url: editingVideo?.video_url,
+                  date: editingVideo?.date,
+                  views: editingVideo?.views,
+                }),
+              },
+            );
+            if (response.ok) {
+              setVideo((videos) =>
+                videos.map((vid) =>
+                  vid.id === editingVideo?.id ? { ...vid, ...videoData } : vid,
+                ),
+              );
+              toggleVideo();
+            } else {
+              console.error("Erreur lors de la mise à jour");
+            }
+          } catch (error) {
+            console.error("Erreur:", error);
+          }
+        }}
+      />
       <Header />
       <div className="admin-page">
         <nav className="nav-admin">
@@ -147,9 +276,11 @@ export default function Admin() {
               : "utilisateurs"}
         </h2>
 
-        <button className="add-card-manager" type="button">
-          + Ajouter
-        </button>
+        {adminSection !== "users" && (
+          <button className="add-card-manager" type="button">
+            + Ajouter
+          </button>
+        )}
         {isLoading ? (
           <div>Chargement en cours...</div>
         ) : (
@@ -162,7 +293,7 @@ export default function Admin() {
                   name={cat.name}
                   description={cat.description}
                   url_image={cat.url_image}
-                  onEdit={toggle}
+                  onEdit={() => toggleCategory(cat.id)}
                   onDelete={handleCategoryDelete}
                 />
               ))}
@@ -177,6 +308,7 @@ export default function Admin() {
                   video_url={vid.video_url}
                   date={formatDate(vid.date.toString())}
                   views={vid.views}
+                  onEdit={() => toggleVideo(vid.id)}
                   onDelete={handleVideoDelete}
                 />
               ))}
@@ -189,6 +321,7 @@ export default function Admin() {
                   email={user.email}
                   avatar_url={user.avatar_url}
                   is_admin={user.is_admin}
+                  onEdit={() => toggleUser(user.id)}
                   onDelete={handleUserDelete}
                 />
               ))}

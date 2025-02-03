@@ -10,6 +10,7 @@ interface CardUserManagerProps {
   email: string;
   avatar_url: string;
   is_admin: boolean;
+  onEdit: () => void;
   onDelete: (deletedId: number) => void;
 }
 
@@ -19,6 +20,7 @@ export default function CardUserManager({
   email,
   avatar_url,
   is_admin,
+  onEdit,
   onDelete,
 }: CardUserManagerProps) {
   const deleteUser = useDeleteUser();
@@ -49,7 +51,8 @@ export default function CardUserManager({
         <p className="user-email">{email}</p>
       </div>
       <div className="user-actions">
-        <img width={30} className="edit" src={editPicto} alt="" />
+        <img width={30} className="edit" src={editPicto} alt="Modifier" onClick={onEdit}
+          onKeyDown={onEdit} />
         <img
           width={30}
           className="delete"
