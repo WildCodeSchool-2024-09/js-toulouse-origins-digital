@@ -220,11 +220,11 @@ body.modal-open {
   border-radius: 50%;
 }
 
-input:checked+.slider {
+input:checked + .slider {
   background-color: #31d0d9;
 }
 
-input:checked+.slider:before {
+input:checked + .slider:before {
   transform: translateX(21px);
 }
 

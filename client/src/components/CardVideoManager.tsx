@@ -66,8 +66,14 @@ export default function CardVideoManager({
             </ul>
           </div>
           <div className="video-actions">
-            <img width={30} className="edit" src={editPicto} alt="Modifier" onClick={onEdit}
-              onKeyDown={onEdit} />
+            <img
+              width={30}
+              className="edit"
+              src={editPicto}
+              alt="Modifier"
+              onClick={onEdit}
+              onKeyDown={onEdit}
+            />
             <img
               width={30}
               className="delete"

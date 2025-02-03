@@ -8,10 +8,10 @@ import categoriesPic from "../assets/images/category-management.png";
 import usersPic from "../assets/images/users-management.png";
 import videosPic from "../assets/images/video-management.png";
 import ModalCategoryManager from "../components/ModalCategoryManager";
-import NavBar from "../components/NavBar";
-import useModal from "../services/useModal";
 import ModalUserManager from "../components/ModalUserManager";
 import ModalVideoManager from "../components/ModalVideoManager";
+import NavBar from "../components/NavBar";
+import useModal from "../services/useModal";
 
 const truncateText = (text: string, maxLength = 80) => {
   if (text.length <= maxLength) return text;

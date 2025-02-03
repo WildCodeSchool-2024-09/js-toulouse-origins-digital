@@ -1,7 +1,7 @@
 import { Upload } from "lucide-react";
 import "../styles/ModalManager.css";
-import ReactDOM from "react-dom";
 import { useEffect } from "react";
+import ReactDOM from "react-dom";
 
 type UserData = {
   id: number;

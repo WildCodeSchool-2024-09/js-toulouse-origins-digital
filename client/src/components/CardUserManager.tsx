@@ -51,8 +51,14 @@ export default function CardUserManager({
         <p className="user-email">{email}</p>
       </div>
       <div className="user-actions">
-        <img width={30} className="edit" src={editPicto} alt="Modifier" onClick={onEdit}
-          onKeyDown={onEdit} />
+        <img
+          width={30}
+          className="edit"
+          src={editPicto}
+          alt="Modifier"
+          onClick={onEdit}
+          onKeyDown={onEdit}
+        />
         <img
           width={30}
           className="delete"
