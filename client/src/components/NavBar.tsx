@@ -60,7 +60,7 @@ export default function NavBar() {
             onKeyDown={() => setIsOpenLogin(true)}
             src={spreadProfileImage || imgProfile}
             alt="Profile"
-            className="nav-icon-profile-style"
+            className="nav-icon nav-icon-profile-style"
           />
         </nav>
       </div>

@@ -7,7 +7,11 @@ import "../styles/Admin.css";
 import categoriesPic from "../assets/images/category-management.png";
 import usersPic from "../assets/images/users-management.png";
 import videosPic from "../assets/images/video-management.png";
+import ModalCategoryManager from "../components/ModalCategoryManager";
+import ModalUserManager from "../components/ModalUserManager";
+import ModalVideoManager from "../components/ModalVideoManager";
 import NavBar from "../components/NavBar";
+import useModal from "../services/useModal";
 
 const truncateText = (text: string, maxLength = 80) => {
   if (text.length <= maxLength) return text;
@@ -62,6 +66,39 @@ export default function Admin() {
   const [user, setUser] = useState<User[]>([]);
   const [adminSection, setAdminSection] = useState("users");
   const [isLoading, setIsLoading] = useState(true);
+  const handleCategoryDelete = (deletedId: number) => {
+    setCategory((prevCategories) =>
+      prevCategories.filter((cat) => cat.id !== deletedId),
+    );
+  };
+
+  const handleUserDelete = (deletedId: number) => {
+    setUser((prevUsers) => prevUsers.filter((user) => user.id !== deletedId));
+  };
+
+  const handleVideoDelete = (deletedId: number) => {
+    setVideo((prevVideos) => prevVideos.filter((vid) => vid.id !== deletedId));
+  };
+
+  const {
+    isShowing: isShowingCategory,
+    editingId: editingCategoryId,
+    toggle: toggleCategory,
+  } = useModal();
+  const {
+    isShowing: isShowingUser,
+    editingId: editingUserId,
+    toggle: toggleUser,
+  } = useModal();
+  const {
+    isShowing: isShowingVideo,
+    editingId: editingVideoId,
+    toggle: toggleVideo,
+  } = useModal();
+
+  const editingCategory = category.find((cat) => cat.id === editingCategoryId);
+  const editingUser = user.find((u) => u.id === editingUserId);
+  const editingVideo = video.find((vid) => vid.id === editingVideoId);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -92,11 +129,118 @@ export default function Admin() {
 
   return (
     <>
+      <ModalCategoryManager
+        isShowing={isShowingCategory}
+        hide={() => toggleCategory()}
+        category={editingCategory}
+        onSubmit={async (categoryData) => {
+          if (!editingCategory?.id) return;
+
+          try {
+            const response = await fetch(
+              `${import.meta.env.VITE_API_URL}/api/categories/${editingCategory.id}`,
+              {
+                method: "PUT",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify(categoryData),
+              },
+            );
+
+            if (response.ok) {
+              setCategory((prevCategories) =>
+                prevCategories.map((c) =>
+                  c.id === editingCategory.id ? { ...c, ...categoryData } : c,
+                ),
+              );
+              toggleCategory();
+            } else {
+              console.error("Erreur lors de la mise à jour");
+            }
+          } catch (error) {
+            console.error("Erreur:", error);
+          }
+        }}
+      />
+      <ModalUserManager
+        isShowing={isShowingUser}
+        hide={() => toggleUser()}
+        user={editingUser}
+        onSubmit={async (userData) => {
+          try {
+            const response = await fetch(
+              `${import.meta.env.VITE_API_URL}/api/users/${editingUser?.id}`,
+              {
+                method: "PUT",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  email: userData.email,
+                  pseudo: userData.pseudo,
+                  is_admin: userData.is_admin,
+                  avatar_url: userData.avatar_url,
+                }),
+              },
+            );
+            if (response.ok) {
+              setUser((users) =>
+                users.map((u) =>
+                  u.id === editingUser?.id ? { ...u, ...userData } : u,
+                ),
+              );
+              toggleUser();
+            } else {
+              console.error("Erreur lors de la mise à jour");
+            }
+          } catch (error) {
+            console.error("Erreur:", error);
+          }
+        }}
+      />
+      <ModalVideoManager
+        isShowing={isShowingVideo}
+        hide={() => toggleVideo()}
+        video={editingVideo}
+        onSubmit={async (videoData) => {
+          try {
+            const response = await fetch(
+              `${import.meta.env.VITE_API_URL}/api/videos/${editingVideo?.id}`,
+              {
+                method: "PUT",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  title: videoData.title,
+                  description: videoData.description,
+                  video_url: editingVideo?.video_url,
+                  date: editingVideo?.date,
+                  views: editingVideo?.views,
+                }),
+              },
+            );
+            if (response.ok) {
+              setVideo((videos) =>
+                videos.map((vid) =>
+                  vid.id === editingVideo?.id ? { ...vid, ...videoData } : vid,
+                ),
+              );
+              toggleVideo();
+            } else {
+              console.error("Erreur lors de la mise à jour");
+            }
+          } catch (error) {
+            console.error("Erreur:", error);
+          }
+        }}
+      />
       <Header />
       <div className="admin-page">
         <nav className="nav-admin">
           <button
-            className="button-nav-admin"
+            className={`button-nav-admin ${adminSection === "users" ? "button-nav-admin-active" : ""}`}
             type="button"
             onClick={() => setAdminSection("users")}
           >
@@ -104,7 +248,7 @@ export default function Admin() {
             <p>Users</p>
           </button>
           <button
-            className="button-nav-admin"
+            className={`button-nav-admin ${adminSection === "categories" ? "button-nav-admin-active" : ""}`}
             type="button"
             onClick={() => setAdminSection("categories")}
           >
@@ -112,7 +256,7 @@ export default function Admin() {
             <p>Categories</p>
           </button>
           <button
-            className="button-nav-admin"
+            className={`button-nav-admin ${adminSection === "videos" ? "button-nav-admin-active" : ""}`}
             type="button"
             onClick={() => setAdminSection("videos")}
           >
@@ -129,9 +273,11 @@ export default function Admin() {
               : "utilisateurs"}
         </h2>
 
-        <button className="add-card-manager" type="button">
-          + Ajouter
-        </button>
+        {adminSection !== "users" && (
+          <button className="add-card-manager" type="button">
+            + Ajouter
+          </button>
+        )}
         {isLoading ? (
           <div>Chargement en cours...</div>
         ) : (
@@ -140,14 +286,18 @@ export default function Admin() {
               category.map((cat) => (
                 <CardCategoryManager
                   key={cat.id}
+                  id={cat.id}
                   name={cat.name}
                   description={cat.description}
                   url_image={cat.url_image}
+                  onEdit={() => toggleCategory(cat.id)}
+                  onDelete={handleCategoryDelete}
                 />
               ))}
             {adminSection === "videos" &&
               video.map((vid) => (
                 <CardVideoManager
+                  id={vid.id}
                   key={vid.id}
                   title={vid.title}
                   description={truncateText(vid.description)}
@@ -155,16 +305,21 @@ export default function Admin() {
                   video_url={vid.video_url}
                   date={formatDate(vid.date.toString())}
                   views={vid.views}
+                  onEdit={() => toggleVideo(vid.id)}
+                  onDelete={handleVideoDelete}
                 />
               ))}
             {adminSection === "users" &&
               user.map((user) => (
                 <CardUserManager
+                  id={user.id}
                   key={user.id}
                   pseudo={user.pseudo}
                   email={user.email}
                   avatar_url={user.avatar_url}
                   is_admin={user.is_admin}
+                  onEdit={() => toggleUser(user.id)}
+                  onDelete={handleUserDelete}
                 />
               ))}
           </>

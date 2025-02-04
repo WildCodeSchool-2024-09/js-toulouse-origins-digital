@@ -34,7 +34,7 @@
 
 .nav-admin {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   padding: 10px;
 }
 
@@ -45,11 +45,19 @@
   align-items: center;
   padding: 10px;
   cursor: pointer;
+  width: 25%;
 }
 
 .button-nav-admin:hover {
   border-radius: 20px;
   background-color: #474756;
+  transform: scale(1.05);
+}
+
+.button-nav-admin-active {
+  border-radius: 20px;
+  background-color: #474756;
+  transform: scale(1.05);
 }
 
 .button-nav-admin p {

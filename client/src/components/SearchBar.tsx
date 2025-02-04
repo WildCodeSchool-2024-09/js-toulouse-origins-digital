@@ -29,6 +29,7 @@ export default function SearchBar() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [selectedVideo, setSelectedVideo] = useState<Video | null>(null);
+  const handleCloseVideo = () => setSelectedVideo(null);
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -103,7 +104,7 @@ export default function SearchBar() {
         )}
       </div>
 
-      <VideoCard video={selectedVideo ?? null} />
+      <VideoCard video={selectedVideo ?? null} onClose={handleCloseVideo} />
     </>
   );
 }

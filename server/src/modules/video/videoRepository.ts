@@ -5,8 +5,7 @@ type Video = {
   id: number;
   title: string;
   description: string;
-  duration: number;
-  url: string;
+  video_url: string;
   date: string;
   views: number;
 };
@@ -34,14 +33,18 @@ class videoRepository {
   }
 
   async update(video: Video) {
+    const formattedDate = new Date(video.date)
+      .toISOString()
+      .slice(0, 19)
+      .replace("T", " ");
+
     const [result] = await databaseClient.query<Result>(
-      "update video set title = ?, description = ?, duration = ?, url = ?, date = ?, views = ? where id = ?",
+      "update video set title = ?, description = ?, video_url = ?, date = ?, views = ? where id = ?",
       [
         video.title,
         video.description,
-        video.duration,
-        video.url,
-        video.date,
+        video.video_url,
+        formattedDate,
         video.views,
         video.id,
       ],
@@ -59,12 +62,11 @@ class videoRepository {
   async create(video: Omit<Video, "id">) {
     try {
       const query =
-        "insert into video (title, description, duration, url, date, views) values (?, ?, ?, ?, ?, ?)";
+        "insert into video (title, description, video_url, date, views) values (?, ?, ?, ?, ?, ?)";
       const params = [
         video.title,
         video.description,
-        video.duration,
-        video.url,
+        video.video_url,
         video.date,
         video.views,
       ];

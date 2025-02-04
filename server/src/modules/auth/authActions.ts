@@ -22,6 +22,13 @@ const login: RequestHandler = async (
       return;
     }
 
+    if (!user.hashed_password) {
+      res
+        .status(422)
+        .json({ message: "Utilisateur ou mot de passe incorrect." });
+      return;
+    }
+
     const verified = await argon2.verify(
       user.hashed_password,
       req.body.password,

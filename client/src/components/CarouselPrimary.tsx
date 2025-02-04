@@ -17,10 +17,10 @@ interface CarouselPrimaryProps {
 
 const CarouselPrimary = ({ onCategorySelect }: CarouselPrimaryProps) => {
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1024px)" });
-
   const [categories, setCategories] = useState<Category[]>([]);
+
   useEffect(() => {
-    fetch("http://localhost:3310/api/categories")
+    fetch(`${import.meta.env.VITE_API_URL}/api/categories`)
       .then((response) => response.json())
       .then((data) => setCategories(data))
       .catch((error) => console.error("Error", error));
@@ -33,6 +33,10 @@ const CarouselPrimary = ({ onCategorySelect }: CarouselPrimaryProps) => {
     }
   };
 
+  if (categories.length === 0) {
+    return null;
+  }
+
   return (
     <>
       <Carousel
@@ -42,6 +46,9 @@ const CarouselPrimary = ({ onCategorySelect }: CarouselPrimaryProps) => {
         className="category-carousel"
         onChange={handleChange}
         showArrows={!isTabletOrMobile}
+        selectedItem={0}
+        emulateTouch={true}
+        swipeable={true}
       >
         {categories.map((category) => (
           <div key={category.id}>

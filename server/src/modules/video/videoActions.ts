@@ -39,9 +39,8 @@ const edit: RequestHandler = async (req, res, next) => {
     const video = {
       id: Number(req.params.id),
       title: req.body.title,
-      url: req.body.url,
+      video_url: req.body.video_url,
       description: req.body.description,
-      duration: req.body.duration,
       date: req.body.date,
       views: req.body.views,
     };
@@ -74,9 +73,8 @@ const add: RequestHandler = async (req, res, next) => {
   try {
     const newVideo = {
       title: req.body.title,
-      url: req.body.url,
+      video_url: req.body.url,
       description: req.body.description,
-      duration: req.body.duration,
       date: req.body.date,
       views: req.body.views,
     };

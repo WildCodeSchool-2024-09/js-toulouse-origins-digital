@@ -6,11 +6,9 @@ import NavBar from "../components/NavBar";
 import "../styles/HomePage.css";
 
 export default function HomePage() {
-  const [selectedCategory, setSelectedCategory] = useState<string>(
-    "Catégorie sélectionnée",
-  );
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(
-    null,
+    0,
   );
 
   const handleCategorySelect = (name: string, id: number) => {
@@ -23,9 +21,13 @@ export default function HomePage() {
       <Header />
       <div className="container container-home-page">
         <CarouselPrimary onCategorySelect={handleCategorySelect} />
-        <h2 className="title-home-page">{selectedCategory} &#x27E9;</h2>
-        <hr className="line" />
-        <CarouselVideo categoryId={selectedCategoryId} />
+        {selectedCategory && (
+          <>
+            <h2 className="title-home-page">{selectedCategory} &#x27E9;</h2>
+            <hr className="line" />
+            <CarouselVideo categoryId={selectedCategoryId} />
+          </>
+        )}
         <h2 className="title-home-page">Toutes les vidéos &#x27E9;</h2>
         <hr className="line" />
         <CarouselVideo />

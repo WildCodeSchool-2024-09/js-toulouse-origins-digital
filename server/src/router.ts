@@ -11,6 +11,7 @@ import categoryActions from "./modules/category/categoryActions";
 import favoriteActions from "./modules/favorite/favoriteActions";
 import itemActions from "./modules/item/itemActions";
 import playlistsActions from "./modules/playlists/playlistsActions";
+import uploadActions from "./modules/upload/uploadActions";
 import userActions from "./modules/user/userActions";
 import videoActions from "./modules/video/videoActions";
 import videoAndPlaylistActions from "./modules/videoPlaylist/videoAndPlaylistActions";
@@ -63,7 +64,6 @@ router.post("/api/users/", authActions.hashPassword, userActions.add);
 router.post("/api/users/login", authActions.login, userActions.edit);
 router.delete("/api/users/:id", userActions.destroy);
 router.post("/api/users/logout", authActions.logout, userActions.edit);
-
 router.get("/api/videos", videoActions.browse);
 router.get("/api/videos/:id", videoActions.read);
 router.post("/api/videos", videoActions.add);
@@ -74,8 +74,9 @@ router.get("/api/videos/search/:term", videoActions.search);
 router.post(
   "/api/users/:id/upload-avatar",
   userActions.upload.single("avatar_url"),
-  userActions.uploadAvatar,
+  userActions.uploadAvatar
 );
+
 
 router.use(authActions.verifyToken);
 

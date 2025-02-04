@@ -11,7 +11,6 @@ CREATE TABLE video (
   id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT NOT NULL,
   title VARCHAR(100) NOT NULL,
   description TEXT NOT NULL,
-  duration TIME NOT NULL,
   video_url VARCHAR(2048) NOT NULL,
   date DATETIME NOT NULL,
   views INT UNSIGNED NOT NULL DEFAULT 0
@@ -28,30 +27,37 @@ CREATE TABLE favorite (
   id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT NOT NULL,
   id_video INT UNSIGNED NOT NULL,
   id_user INT UNSIGNED NOT NULL,
-  FOREIGN KEY (id_video) REFERENCES video(id),
+  FOREIGN KEY (id_video) REFERENCES video(id)
+  ON DELETE CASCADE,
   FOREIGN KEY (id_user) REFERENCES user(id)
+  ON DELETE CASCADE
 );
 
 CREATE TABLE video_category (
   id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT NOT NULL,
   id_video INT UNSIGNED NOT NULL,
   id_category INT UNSIGNED NOT NULL,
-  FOREIGN KEY (id_video) REFERENCES video(id),
+  FOREIGN KEY (id_video) REFERENCES video(id)
+  ON DELETE CASCADE,
   FOREIGN KEY (id_category) REFERENCES category(id)
-);
+  ON DELETE CASCADE
+  ON UPDATE CASCADE
+ );
 
 CREATE TABLE playlist (
   id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT NOT NULL,
   name VARCHAR(255) NOT NULL,
   id_user INT UNSIGNED NOT NULL,
   FOREIGN KEY (id_user) REFERENCES user(id)
+  ON DELETE CASCADE
 );
 
 CREATE TABLE video_playlist (
   id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT NOT NULL,
   id_video INT UNSIGNED NOT NULL,
   id_playlist INT UNSIGNED NOT NULL,
-  FOREIGN KEY (id_video) REFERENCES video(id),
+  FOREIGN KEY (id_video) REFERENCES video(id)
+  ON DELETE CASCADE,
   FOREIGN KEY (id_playlist) REFERENCES playlist(id)
     ON DELETE CASCADE
     ON UPDATE CASCADE
@@ -73,21 +79,21 @@ values
 ('Sport', 'https://cdn.videas.fr/v-medias/uploads/67484d5a-12ff-4482-9631-d647bd5f893f', "Ressens l'adrénaline du sport et participe à des compétitions palpitantes avec des amis !"),
 ('Indie', 'https://cdn.videas.fr/v-medias/uploads/6c3b7f62-3f7a-46d4-8a3e-14a71fb5e6f2', "Explore des jeux originaux et innovants, créés par des développeurs passionnés !");
 
-INSERT INTO video (title, description, duration, video_url, date, views) VALUES
-('Chef RPG', 'Chef RPG : Construisez votre empire culinaire. Prenez les rênes d''un restaurant dans un monde ouvert RPG. Parcourez des villages pittoresques pour récolter des ingrédients frais et impressionnez vos clients. Stratégie, exploration et cuisine se rencontrent dans cette aventure unique.', '00:00:00', 'https://app.videas.fr/embed/media/217e7081-eaa2-4eb8-ae75-17c2af5a364d/', NOW(), 0),
-('Fable 4', 'Fable 4 : La magie et les choix d''un monde fantastique. Retournez à Albion dans cette suite tant attendue. Forgez votre légende en explorant un monde ouvert vivant et rempli d''aventures. Chaque décision que vous prenez influencera votre destin et celui du royaume.', '00:00:00', 'https://app.videas.fr/embed/media/345739a4-1dec-489b-85e3-cb2e2f0875af/', NOW(), 0),
-('Super Mario RPG', 'Super Mario RPG : L’aventure légendaire renaît. Découvrez ou redécouvrez l’un des classiques de Mario avec une touche de RPG. Plongez dans une quête captivante avec Mario, Bowser et la princesse Peach. Une combinaison parfaite d''action, de stratégie et de nostalgie.', '00:00:00', 'https://app.videas.fr/embed/media/05bbfb5f-22a8-4da0-bd26-318c2bd00395/', NOW(), 0),
-('Illusion Carnival', 'Illusion Carnival : Un voyage dans l''étrange et le mystérieux. Entrez dans un carnaval fantastique où rien n''est ce qu''il paraît. Résolvez des énigmes complexes et révélez des secrets cachés. Une expérience immersive et captivante pour les amateurs de mystères.', '00:00:00', 'https://app.videas.fr/embed/media/04989c8d-19e1-44d9-9a24-733f0d3b7e73/', NOW(), 0),
-('PROJECT HP', 'PROJECT HP : Batailles médiévales réinventées. Plongez dans un monde où magie et combat médiéval fusionnent. Prenez part à des batailles épiques avec des personnages puissants et des stratégies uniques. Un mélange captivant d''action et de tactique.', '00:00:00', 'https://app.videas.fr/embed/media/b64517c2-ca89-44ef-8059-9f369d3d318a/', NOW(), 0),
-('Throne and Liberty', 'Throne and Liberty : Luttez pour le pouvoir dans un univers fantastique. Explorez un monde ouvert gigantesque rempli de quêtes, de batailles et d''intrigues. Forgez des alliances, défiez des ennemis redoutables et bâtissez votre empire. Un MMORPG épique qui repousse les limites du genre.', '00:00:00', 'https://app.videas.fr/embed/media/bd151759-bc01-4c1a-9ca2-14de78335896/', NOW(), 0),
-('Wakfu', 'Wakfu : Une aventure RPG stratégique et envoûtante. Partez à la découverte de contrées magiques dans Wakfu. Rejoignez des compagnons, combattez des ennemis et découvrez des mystères anciens. Un RPG tactique et coloré à l''humour unique.', '00:00:00', 'https://app.videas.fr/embed/media/3785f737-4c9d-4ea1-a21e-8a98b9b5058b/', NOW(), 0),
-('Eden Eternal', 'Eden Eternal : Aventurez-vous dans un monde magique et vibrant. Créez votre héros, changez de classe et partez explorer un univers fantastique. Combattez des boss puissants et formez des alliances stratégiques. Une aventure MMORPG inoubliable qui offre une liberté totale.', '00:00:00', 'https://app.videas.fr/embed/media/a0d4d45d-edc9-47fe-b2ed-778f27587220/', NOW(), 0),
-('Shadowgun Legends', 'Shadowgun Legends : Combattez pour votre survie dans un futur dystopique. Affrontez des hordes d''ennemis dans un monde de science-fiction époustouflant. Débloquez des armes futuristes et gravissez les échelons pour devenir une légende. Un FPS intense et palpitant.', '00:00:00', 'https://app.videas.fr/embed/media/ce8bd78e-5747-4316-b007-53155f93dcde/', NOW(), 0),
-('Bright Memory Infinite', 'Bright Memory Infinite : Une aventure d''action futuriste spectaculaire. Combinez compétences et armes dans ce jeu d''action rapide. Explorez un monde où la science et le surnaturel se mêlent. Une expérience visuellement impressionnante et dynamique.', '00:00:00', 'https://app.videas.fr/embed/media/0cacf9cb-008b-46ae-b8ca-3a1fa42de63e/', NOW(), 0),
-('Unrecord', 'Unrecord : Enquêtez dans un FPS ultra réaliste. Plongez dans la peau d''un détective dans ce FPS captivant. Résolvez des crimes en utilisant des compétences d''observation et de stratégie. Une immersion totale grâce à ses graphismes époustouflants.', '00:00:00', 'https://app.videas.fr/embed/media/c228cfab-cc65-4bf7-9bd0-5c8c8e400d0a/', NOW(), 0),
-('Mouse P.I. For Hire', 'Mouse P.I. For Hire : Résolvez des mystères avec une touche de fun. Incarnez une souris détective dans des enquêtes pleines d''humour et de défis. Parcourez des scènes complexes et interrogez des témoins pour élucider des affaires. Un jeu unique qui mêle casse-têtes et aventure.', '00:00:00', 'https://app.videas.fr/embed/media/8099ecfd-2b52-42fc-88f6-d8af68d82db2/', NOW(), 0),
-('Mullet Madjack', 'Mullet Madjack : Une aventure rétro pleine d''action. Rejoignez Madjack dans des niveaux remplis d''action et de surprises. Combattez des ennemis loufoques avec des armes uniques. Une expérience nostalgique qui célèbre les jeux d''arcade classiques.', '00:00:00', 'https://app.videas.fr/embed/media/8ff91c36-d154-4635-9faa-536b24dd5b21/', NOW(), 0),
-('Fortnite Balistic', 'Découvrez les nouveautés de Fortnite avec des armes inédites et des lieux à explorer. Dominez vos adversaires dans des combats intenses et stratégiques. La bataille royale la plus populaire continue d''évoluer.', '00:00:00', 'https://app.videas.fr/embed/media/6399eea2-41ef-4840-ad91-3dfb386ba45c/', NOW(), 0);
+INSERT INTO video (title, description, video_url, date, views) VALUES
+('Chef RPG', 'Chef RPG : Construisez votre empire culinaire. Prenez les rênes d''un restaurant dans un monde ouvert RPG. Parcourez des villages pittoresques pour récolter des ingrédients frais et impressionnez vos clients. Stratégie, exploration et cuisine se rencontrent dans cette aventure unique.', 'https://app.videas.fr/embed/media/217e7081-eaa2-4eb8-ae75-17c2af5a364d/', NOW(), 0),
+('Fable 4', 'Fable 4 : La magie et les choix d''un monde fantastique. Retournez à Albion dans cette suite tant attendue. Forgez votre légende en explorant un monde ouvert vivant et rempli d''aventures. Chaque décision que vous prenez influencera votre destin et celui du royaume.', 'https://app.videas.fr/embed/media/345739a4-1dec-489b-85e3-cb2e2f0875af/', NOW(), 0),
+('Super Mario RPG', 'Super Mario RPG : L’aventure légendaire renaît. Découvrez ou redécouvrez l’un des classiques de Mario avec une touche de RPG. Plongez dans une quête captivante avec Mario, Bowser et la princesse Peach. Une combinaison parfaite d''action, de stratégie et de nostalgie.', 'https://app.videas.fr/embed/media/05bbfb5f-22a8-4da0-bd26-318c2bd00395/', NOW(), 0),
+('Illusion Carnival', 'Illusion Carnival : Un voyage dans l''étrange et le mystérieux. Entrez dans un carnaval fantastique où rien n''est ce qu''il paraît. Résolvez des énigmes complexes et révélez des secrets cachés. Une expérience immersive et captivante pour les amateurs de mystères.', 'https://app.videas.fr/embed/media/04989c8d-19e1-44d9-9a24-733f0d3b7e73/', NOW(), 0),
+('PROJECT HP', 'PROJECT HP : Batailles médiévales réinventées. Plongez dans un monde où magie et combat médiéval fusionnent. Prenez part à des batailles épiques avec des personnages puissants et des stratégies uniques. Un mélange captivant d''action et de tactique.', 'https://app.videas.fr/embed/media/b64517c2-ca89-44ef-8059-9f369d3d318a/', NOW(), 0),
+('Throne and Liberty', 'Throne and Liberty : Luttez pour le pouvoir dans un univers fantastique. Explorez un monde ouvert gigantesque rempli de quêtes, de batailles et d''intrigues. Forgez des alliances, défiez des ennemis redoutables et bâtissez votre empire. Un MMORPG épique qui repousse les limites du genre.', 'https://app.videas.fr/embed/media/bd151759-bc01-4c1a-9ca2-14de78335896/', NOW(), 0),
+('Wakfu', 'Wakfu : Une aventure RPG stratégique et envoûtante. Partez à la découverte de contrées magiques dans Wakfu. Rejoignez des compagnons, combattez des ennemis et découvrez des mystères anciens. Un RPG tactique et coloré à l''humour unique.', 'https://app.videas.fr/embed/media/3785f737-4c9d-4ea1-a21e-8a98b9b5058b/', NOW(), 0),
+('Eden Eternal', 'Eden Eternal : Aventurez-vous dans un monde magique et vibrant. Créez votre héros, changez de classe et partez explorer un univers fantastique. Combattez des boss puissants et formez des alliances stratégiques. Une aventure MMORPG inoubliable qui offre une liberté totale.', 'https://app.videas.fr/embed/media/a0d4d45d-edc9-47fe-b2ed-778f27587220/', NOW(), 0),
+('Shadowgun Legends', 'Shadowgun Legends : Combattez pour votre survie dans un futur dystopique. Affrontez des hordes d''ennemis dans un monde de science-fiction époustouflant. Débloquez des armes futuristes et gravissez les échelons pour devenir une légende. Un FPS intense et palpitant.', 'https://app.videas.fr/embed/media/ce8bd78e-5747-4316-b007-53155f93dcde/', NOW(), 0),
+('Bright Memory Infinite', 'Bright Memory Infinite : Une aventure d''action futuriste spectaculaire. Combinez compétences et armes dans ce jeu d''action rapide. Explorez un monde où la science et le surnaturel se mêlent. Une expérience visuellement impressionnante et dynamique.', 'https://app.videas.fr/embed/media/0cacf9cb-008b-46ae-b8ca-3a1fa42de63e/', NOW(), 0),
+('Unrecord', 'Unrecord : Enquêtez dans un FPS ultra réaliste. Plongez dans la peau d''un détective dans ce FPS captivant. Résolvez des crimes en utilisant des compétences d''observation et de stratégie. Une immersion totale grâce à ses graphismes époustouflants.', 'https://app.videas.fr/embed/media/c228cfab-cc65-4bf7-9bd0-5c8c8e400d0a/', NOW(), 0),
+('Mouse P.I. For Hire', 'Mouse P.I. For Hire : Résolvez des mystères avec une touche de fun. Incarnez une souris détective dans des enquêtes pleines d''humour et de défis. Parcourez des scènes complexes et interrogez des témoins pour élucider des affaires. Un jeu unique qui mêle casse-têtes et aventure.', 'https://app.videas.fr/embed/media/8099ecfd-2b52-42fc-88f6-d8af68d82db2/', NOW(), 0),
+('Mullet Madjack', 'Mullet Madjack : Une aventure rétro pleine d''action. Rejoignez Madjack dans des niveaux remplis d''action et de surprises. Combattez des ennemis loufoques avec des armes uniques. Une expérience nostalgique qui célèbre les jeux d''arcade classiques.', 'https://app.videas.fr/embed/media/8ff91c36-d154-4635-9faa-536b24dd5b21/', NOW(), 0),
+('Fortnite Balistic', 'Découvrez les nouveautés de Fortnite avec des armes inédites et des lieux à explorer. Dominez vos adversaires dans des combats intenses et stratégiques. La bataille royale la plus populaire continue d''évoluer.', 'https://app.videas.fr/embed/media/6399eea2-41ef-4840-ad91-3dfb386ba45c/', NOW(), 0);
 
 INSERT INTO video_category (id_video, id_category) VALUES
 -- Chef RPG
@@ -133,7 +139,8 @@ INSERT INTO video_category (id_video, id_category) VALUES
 (14, 6);
 
 INSERT INTO user (email, hashed_password, pseudo, is_admin, avatar_url) VALUES
-('julien.joecker@gmail.com', '1234', 'Jujock004', TRUE, 'https://img.freepik.com/vecteurs-libre/jeu-astronaute-mignon-joystick-casque-dessin-anime-icone-vectorielle-illustration-science-techno_138676-9648.jpg'),
+('admin@jestone.com', '$argon2id$v=19$m=19456,t=2,p=1$B3kMZxuZHlpvbPKhFzUuaQ$A3wqLjxYzDPTXe+9bhFGCVpPtUm1OScZ3PDRrOMOTb0
+', 'Jujock004', TRUE, 'https://img.freepik.com/vecteurs-libre/jeu-astronaute-mignon-joystick-casque-dessin-anime-icone-vectorielle-illustration-science-techno_138676-9648.jpg'),
 ('tom.schricke@gmail.com', '1234', 'Toto', FALSE, 'https://store.playstation.com/store/api/chihiro/00_09_000/container/US/en/19/UP2136-CUSA02727_00-AV00000000000061/image?w=320&h=320&bg_color=000000&opacity=100&_version=00_09_000');
 
 INSERT INTO playlist (name, id_user) VALUES
