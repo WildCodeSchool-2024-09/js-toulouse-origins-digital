@@ -85,7 +85,11 @@ export default function UserLogout() {
   return (
     <>
       <div>
-        <button type="button" className="last-button" onClick={handleLogout}>
+        <button
+          type="button"
+          className="last-button disconnect"
+          onClick={handleLogout}
+        >
           Se déconnecter
         </button>
         <button
