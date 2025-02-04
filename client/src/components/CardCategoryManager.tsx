@@ -21,6 +21,11 @@ export default function CardCategoryManager({
   onDelete,
 }: CardCategoryManagerProps) {
   const deleteCategory = useDeleteCategory();
+
+  const fullImageUrl = url_image.startsWith("http")
+    ? url_image
+    : `${import.meta.env.VITE_API_URL}${url_image}`;
+
   const handleDelete = async () => {
     if (
       window.confirm(
@@ -36,7 +41,7 @@ export default function CardCategoryManager({
 
   return (
     <div className="category-card">
-      <img className="category-avatar" src={url_image} alt="" />
+      <img className="category-avatar" src={fullImageUrl} alt="" />
       <div className="category-info">
         <p className="category-title">{name}</p>
         <p className="category-description">{description}</p>

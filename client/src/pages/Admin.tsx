@@ -134,27 +134,24 @@ export default function Admin() {
         hide={() => toggleCategory()}
         category={editingCategory}
         onSubmit={async (categoryData) => {
+          if (!editingCategory?.id) return;
+
           try {
             const response = await fetch(
-              `${import.meta.env.VITE_API_URL}/api/categories/${editingCategory?.id}`,
+              `${import.meta.env.VITE_API_URL}/api/categories/${editingCategory.id}`,
               {
                 method: "PUT",
                 headers: {
                   "Content-Type": "application/json",
                 },
-                body: JSON.stringify({
-                  name: categoryData.name,
-                  description: categoryData.description,
-                  url_image: categoryData.url_image,
-                }),
+                body: JSON.stringify(categoryData),
               },
             );
+
             if (response.ok) {
-              setCategory((categories) =>
-                categories.map((cat) =>
-                  cat.id === editingCategory?.id
-                    ? { ...cat, ...categoryData }
-                    : cat,
+              setCategory((prevCategories) =>
+                prevCategories.map((c) =>
+                  c.id === editingCategory.id ? { ...c, ...categoryData } : c,
                 ),
               );
               toggleCategory();

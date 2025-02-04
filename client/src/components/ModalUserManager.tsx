@@ -1,7 +1,8 @@
 import { Upload } from "lucide-react";
 import "../styles/ModalManager.css";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
+import { uploadFile } from "../services/uploadService";
 
 type UserData = {
   id: number;
@@ -24,6 +25,9 @@ export default function ModalUserManager({
   user,
   onSubmit,
 }: ModalUserManagerProps) {
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
+
   useEffect(() => {
     if (isShowing) {
       document.body.classList.add("modal-open");
@@ -34,19 +38,44 @@ export default function ModalUserManager({
     };
   }, [isShowing]);
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const objectUrl = URL.createObjectURL(file);
+      setPreviewUrl(objectUrl);
+    }
+  };
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const formData = new FormData(event.currentTarget);
+    setIsUploading(true);
 
-    const userData: UserData = {
-      id: user?.id || 0,
-      pseudo: formData.get("pseudo") as string,
-      email: formData.get("email") as string,
-      is_admin: formData.get("is_admin") === "on",
-      avatar_url: user?.avatar_url || "",
-    };
+    try {
+      const formData = new FormData(event.currentTarget);
+      const avatarFile = (
+        event.currentTarget.querySelector("#avatar_url") as HTMLInputElement
+      ).files?.[0];
 
-    onSubmit(userData);
+      let avatar_url = user?.avatar_url;
+
+      if (avatarFile) {
+        avatar_url = await uploadFile(avatarFile);
+      }
+
+      const userData: UserData = {
+        id: user?.id || 0,
+        pseudo: formData.get("pseudo") as string,
+        email: formData.get("email") as string,
+        is_admin: formData.get("is_admin") === "on",
+        avatar_url: avatar_url || "",
+      };
+
+      await onSubmit(userData);
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+      setIsUploading(false);
+    }
   };
 
   return isShowing
@@ -103,11 +132,11 @@ export default function ModalUserManager({
                 <div className="form-group">
                   <label htmlFor="image-upload">Image</label>
                   <div className="image-upload-container">
-                    {user?.avatar_url && (
+                    {(previewUrl || user?.avatar_url) && (
                       <div className="current-image">
                         <img
-                          src={user.avatar_url}
-                          alt="Current"
+                          src={previewUrl || user?.avatar_url}
+                          alt="Preview"
                           style={{ maxWidth: "200px", marginBottom: "10px" }}
                         />
                       </div>
@@ -118,10 +147,15 @@ export default function ModalUserManager({
                       className="hidden"
                       id="avatar_url"
                       name="avatar_url"
+                      onChange={handleFileChange}
                     />
-                    <label htmlFor="image-upload">
+                    <label htmlFor="avatar_url" className="upload-label">
                       <Upload className="image-upload-icon" />
-                      <p className="upload-text">Uploder une image</p>
+                      <p className="upload-text">
+                        {isUploading
+                          ? "Téléchargement..."
+                          : "Uploader une image"}
+                      </p>
                       <p className="upload-subtext">PNG, JPG jusqu'à 10MB</p>
                     </label>
                   </div>

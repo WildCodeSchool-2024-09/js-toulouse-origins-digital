@@ -1,7 +1,8 @@
 import { Upload } from "lucide-react";
 import "../styles/ModalManager.css";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
+import { uploadFile } from "../services/uploadService";
 
 type CategoryData = {
   id: number;
@@ -14,7 +15,7 @@ interface ModalCategoryManagerProps {
   isShowing: boolean;
   hide: () => void;
   category?: CategoryData;
-  onSubmit: (user: CategoryData) => void;
+  onSubmit: (category: CategoryData) => void;
 }
 
 export default function ModalCategoryManager({
@@ -23,6 +24,9 @@ export default function ModalCategoryManager({
   category,
   onSubmit,
 }: ModalCategoryManagerProps) {
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
+
   useEffect(() => {
     if (isShowing) {
       document.body.classList.add("modal-open");
@@ -33,18 +37,44 @@ export default function ModalCategoryManager({
     };
   }, [isShowing]);
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const objectUrl = URL.createObjectURL(file);
+      setPreviewUrl(objectUrl);
+    }
+  };
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const formData = new FormData(event.currentTarget);
+    setIsUploading(true);
 
-    const categoryData: CategoryData = {
-      id: category?.id || 0,
-      name: formData.get("name") as string,
-      description: formData.get("description") as string,
-      url_image: category?.url_image || "",
-    };
+    try {
+      const formData = new FormData(event.currentTarget);
+      const imageFile = (
+        event.currentTarget.querySelector("#url_image") as HTMLInputElement
+      ).files?.[0];
 
-    onSubmit(categoryData);
+      let url_image = category?.url_image;
+
+      if (imageFile) {
+        url_image = await uploadFile(imageFile);
+      }
+
+      const categoryData: CategoryData = {
+        id: category?.id || 0,
+        name: formData.get("name") as string,
+        description: formData.get("description") as string,
+        url_image: url_image || "",
+      };
+
+      await onSubmit(categoryData);
+      hide();
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+      setIsUploading(false);
+    }
   };
 
   return isShowing
@@ -53,7 +83,9 @@ export default function ModalCategoryManager({
           <div className="modify-category-wrapper">
             <div className="category-form">
               <header className="modal-header">
-                <h2 className="title-admin-modal">Modifier une catégorie</h2>
+                <h2 className="title-admin-modal">
+                  {category ? "Modifier" : "Ajouter"} une catégorie
+                </h2>
                 <button
                   type="button"
                   className="modal-close-button"
@@ -85,11 +117,11 @@ export default function ModalCategoryManager({
                 <div className="form-group">
                   <label htmlFor="image-upload">Image</label>
                   <div className="image-upload-container">
-                    {category?.url_image && (
+                    {(previewUrl || category?.url_image) && (
                       <div className="current-image">
                         <img
-                          src={category.url_image}
-                          alt="Current"
+                          src={previewUrl || category?.url_image}
+                          alt="Preview"
                           style={{ maxWidth: "200px", marginBottom: "10px" }}
                         />
                       </div>
@@ -100,10 +132,15 @@ export default function ModalCategoryManager({
                       className="hidden"
                       id="url_image"
                       name="url_image"
+                      onChange={handleFileChange}
                     />
-                    <label htmlFor="image-upload">
+                    <label htmlFor="url_image" className="upload-label">
                       <Upload className="image-upload-icon" />
-                      <p className="upload-text">Uploder une image</p>
+                      <p className="upload-text">
+                        {isUploading
+                          ? "Téléchargement..."
+                          : "Uploader une image"}
+                      </p>
                       <p className="upload-subtext">PNG, JPG jusqu'à 10MB</p>
                     </label>
                   </div>
