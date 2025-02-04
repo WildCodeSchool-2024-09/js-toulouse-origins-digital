@@ -9,6 +9,15 @@ const browse: RequestHandler = async (req, res, next) => {
     next(error);
   }
 };
+const search: RequestHandler = async (req, res, next) => {
+  try {
+    const videos = await videoRepository.search(req.params.term as string);
+
+    res.status(200).json(videos);
+  } catch (error) {
+    next(error);
+  }
+};
 
 const read: RequestHandler = async (req, res, next) => {
   try {
@@ -30,9 +39,8 @@ const edit: RequestHandler = async (req, res, next) => {
     const video = {
       id: Number(req.params.id),
       title: req.body.title,
-      url: req.body.url,
+      video_url: req.body.video_url,
       description: req.body.description,
-      duration: req.body.duration,
       date: req.body.date,
       views: req.body.views,
     };
@@ -47,13 +55,26 @@ const edit: RequestHandler = async (req, res, next) => {
   }
 };
 
+const incrementViews: RequestHandler = async (req, res, next) => {
+  try {
+    const videoId = Number(req.params.id);
+    const affectedRows = await videoRepository.incrementViews(videoId);
+    if (affectedRows === 0) {
+      res.sendStatus(404);
+    } else {
+      res.sendStatus(204);
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
 const add: RequestHandler = async (req, res, next) => {
   try {
     const newVideo = {
       title: req.body.title,
-      url: req.body.url,
+      video_url: req.body.url,
       description: req.body.description,
-      duration: req.body.duration,
       date: req.body.date,
       views: req.body.views,
     };
@@ -78,4 +99,4 @@ const destroy: RequestHandler = async (req, res, next) => {
     next(error);
   }
 };
-export default { browse, read, edit, add, destroy };
+export default { browse, read, edit, add, destroy, search, incrementViews };

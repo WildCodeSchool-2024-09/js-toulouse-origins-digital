@@ -13,9 +13,19 @@ import {
   fetchVideos,
 } from "../services/playlistService";
 import "../styles/Playlists.css";
+import { useOutletContext } from "react-router-dom";
 import type { Playlist, Video, VideoPlaylist } from "../types/types";
 
-const userId = 1;
+type User = {
+  id: number;
+  email: string;
+  is_admin: boolean;
+};
+
+type Auth = {
+  user: User;
+  token: string;
+};
 
 const GamePlaylists = () => {
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
@@ -27,6 +37,18 @@ const GamePlaylists = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [playlistName, setPlaylistName] = useState("");
+  const { auth } = useOutletContext() as { auth: Auth | null };
+
+  const userId =
+    auth?.user.id ||
+    (() => {
+      const userData = localStorage.getItem("user");
+      if (userData) {
+        const user = JSON.parse(userData);
+        return user.id;
+      }
+      return 0;
+    })();
 
   useEffect(() => {
     const loadPlaylists = async () => {
@@ -41,7 +63,7 @@ const GamePlaylists = () => {
       }
     };
     loadPlaylists();
-  }, []);
+  }, [userId]);
 
   const handleAddPlaylist = async (e: React.FormEvent) => {
     e.preventDefault();

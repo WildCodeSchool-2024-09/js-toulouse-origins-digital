@@ -3,13 +3,26 @@
   flex-direction: column;
   align-items: center;
   gap: 40px;
+  padding: 20px;
 }
 
-.favorite-video {
-  display: flex;
-  align-items: center;
+.favorite-video-container {
+  width: 100%;
+  max-width: 800px;
+}
+
+.favorite-video-frame {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: none;
   border-radius: 20px;
-  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+.favorite-video-title {
+  font-family: var(--primary-font);
+  font-size: 18px;
+  margin: 10px 0;
 }
 
 .no-favorites-message {

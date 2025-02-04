@@ -1,42 +1,216 @@
-import bookmarkIcon from "../assets/images/bookmark.png";
+import "../styles/VideoCard.css";
+import { useEffect, useState } from "react";
+import { useOutletContext } from "react-router-dom";
+import BookMarkIcon from "../assets/images/bookmark.png";
 import { useFavorites } from "../contexts/FavoritesContext";
+import { fetchPlaylists } from "../services/playlistService";
+import type { Playlist } from "../types/types";
 
-interface VideoProps {
-  id: number;
-  title: string;
-  url: string;
+interface VideoPlayerProps {
+  video: {
+    id: number;
+    title: string;
+    description: string;
+    video_url: string;
+    views: number;
+  } | null;
+  onClose: () => void;
 }
+type User = {
+  id: number;
+  email: string;
+  is_admin: boolean;
+};
 
-export default function VideoCard({ id, title, url }: VideoProps) {
+type Auth = {
+  user: User;
+  token: string;
+};
+
+export default function VideoCard({ video, onClose }: VideoPlayerProps) {
+  const [isOpenCardVideo, setIsOpenCardVideo] = useState(false);
+  const [isOpenPlaylists, setIsOpenPlaylists] = useState(false);
+  const [playlists, setPlaylists] = useState<Playlist[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const { auth } = useOutletContext() as { auth: Auth | null };
+  const userId =
+    auth?.user.id ||
+    (() => {
+      const userData = localStorage.getItem("user");
+      if (userData) {
+        const user = JSON.parse(userData);
+        return user.id;
+      }
+      return 0;
+    })();
   const { isFavorite, addToFavorites, removeFromFavorites } = useFavorites();
 
-  const handleFavoriteClick = (e: React.MouseEvent) => {
-    e.preventDefault();
+  useEffect(() => {
+    const loadPlaylists = async () => {
+      setIsLoading(true);
+      try {
+        const data = await fetchPlaylists(userId || 0);
+        setPlaylists(data);
+      } catch {
+        setError("Failed to load playlists");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    loadPlaylists();
+  }, [userId]);
+  useEffect(() => {
+    if (video && video.id > 0) {
+      setIsOpenCardVideo(true);
+      incrementViews(video.id);
+    }
+  }, [video]);
 
-    if (isFavorite(id)) {
-      removeFromFavorites(id);
+  async function incrementViews(videoId: number) {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/videos/views/${videoId}`,
+        {
+          method: "PUT",
+        },
+      );
+
+      if (!response.ok) {
+        throw new Error("Erreur lors de l'incrémentation des vues");
+      }
+    } catch (error) {
+      console.error("Erreur :", error);
+    }
+  }
+
+  const addVideoToPlaylist = async (playlistId: number, videoId: number) => {
+    try {
+      setIsLoading(true);
+
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/videoplaylist/${playlistId}/${videoId}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ playlistId, videoId }),
+        },
+      );
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setSuccessMessage("Vidéo ajoutée à votre playlist !");
+        setIsOpenPlaylists(false);
+      } else {
+        setError(data.error);
+      }
+    } catch (error) {
+      setError("Erreur lors de l'ajout de la vidéo à la playlist.");
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleFavoriteClick = () => {
+    if (!video) return;
+
+    if (isFavorite(video.id)) {
+      removeFromFavorites(video.id);
     } else {
-      addToFavorites({ id, title, url });
+      addToFavorites({
+        id: video.id,
+        title: video.title,
+        url: video.video_url,
+      });
     }
   };
 
   return (
-    <div className="video-card">
-      <img src={url} alt={title} />
-      <div className="video-info">
-        <h3>{title}</h3>
-        <button
-          type="button"
-          onClick={handleFavoriteClick}
-          className={`favorite-button ${isFavorite(id) ? "active" : ""}`}
-        >
-          {isFavorite(id) ? (
-            <img src={bookmarkIcon} alt="heart" />
-          ) : (
-            <img src={bookmarkIcon} alt="heart" />
-          )}
-        </button>
-      </div>
-    </div>
+    <>
+      {isOpenCardVideo && (
+        <div className="card-video-card">
+          <div className="card-content-video-card">
+            <div>
+              <iframe
+                className="frame-video"
+                src={video?.video_url}
+                title={video?.title}
+                allowFullScreen
+              />
+            </div>
+            <div className="video-header">
+              <h2 className="title-video-card">{video?.title}</h2>
+              <button
+                type="button"
+                onClick={handleFavoriteClick}
+                className="bookmark-button"
+              >
+                <img
+                  src={BookMarkIcon}
+                  alt="bookmark"
+                  className={`bookmark-icon ${video && isFavorite(video.id) ? "active" : ""}`}
+                />
+              </button>
+            </div>
+            <p className="text-view">Vues: {video?.views}</p>
+
+            <p className="card-text">{video?.description}</p>
+
+            <button
+              className="button-playlist"
+              type="button"
+              onClick={() => setIsOpenPlaylists(!isOpenPlaylists)}
+              onKeyDown={() => setIsOpenPlaylists(!isOpenPlaylists)}
+            >
+              ajouter à une playlist{" "}
+            </button>
+            {successMessage && (
+              <div className="success-message">{successMessage}</div>
+            )}
+
+            {isOpenPlaylists ? (
+              <ul className="playlist-list">
+                {isLoading ? (
+                  <li>Chargement...</li>
+                ) : error ? (
+                  <li>{error}</li>
+                ) : playlists.length > 0 ? (
+                  playlists.map((playlist) => (
+                    <li
+                      key={playlist.id}
+                      onClick={() =>
+                        video && addVideoToPlaylist(playlist.id, video.id)
+                      }
+                      onKeyDown={() =>
+                        video && addVideoToPlaylist(playlist.id, video.id)
+                      }
+                    >
+                      {playlist.name}
+                    </li>
+                  ))
+                ) : (
+                  <li>Aucune playlist disponible</li>
+                )}
+              </ul>
+            ) : null}
+          </div>
+          <button
+            onClick={() => {
+              setIsOpenCardVideo(false);
+              onClose();
+            }}
+            type="button"
+            className="button-close-video-card"
+          >
+            fermer
+          </button>
+        </div>
+      )}
+    </>
   );
 }

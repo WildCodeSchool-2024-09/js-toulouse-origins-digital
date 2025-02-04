@@ -4,6 +4,8 @@
   gap: 20px;
   padding: 20px;
   scrollbar-width: none;
+  justify-content: flex-start;
+  flex: 1;
 }
 
 .video-card {
@@ -20,6 +22,7 @@
   object-fit: cover;
   object-position: center;
   border-radius: 10px;
+  cursor: pointer;
 }
 
 .title-video {
@@ -54,4 +57,70 @@
   text-align: center;
   width: 100%;
   padding: 20px;
+}
+
+.carousel-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  height: 250px;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.container-scroll-button-right {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  min-width: 30px;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.scroll-button-right {
+  all: unset;
+  height: 100%;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.container-scroll-button-left {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  min-width: 30px;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.container-scroll-button-left:hover {
+  background-color: rgba(107, 107, 107, 0.754);
+}
+
+.container-scroll-button-right:hover {
+  background-color: rgba(107, 107, 107, 0.754);
+}
+
+.scroll-button-left {
+  height: 100%;
+  all: unset;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+@media screen and (max-width: 1000px) {
+  .container-scroll-button-right {
+    display: none;
+  }
+
+  .container-scroll-button-left {
+    display: none;
+  }
 }

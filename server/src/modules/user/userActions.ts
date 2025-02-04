@@ -30,7 +30,6 @@ const edit: RequestHandler = async (req, res, next) => {
     const user = {
       id: Number(req.params.id),
       email: req.body.email,
-      password: req.body.password,
       pseudo: req.body.pseudo,
       is_admin: req.body.is_admin,
       avatar_url: req.body.avatar_url,
@@ -50,13 +49,14 @@ const add: RequestHandler = async (req, res, next) => {
   try {
     const newUser = {
       email: req.body.email,
-      password: req.body.password,
+      hashed_password: req.body.hashed_password,
       pseudo: req.body.pseudo,
       is_admin: req.body.is_admin,
       avatar_url: req.body.avatar_url,
     };
     const insertId = await userRepository.create(newUser);
-    res.status(201).json({ insertId });
+    const response = await userRepository.read(insertId);
+    res.status(201).json(response);
   } catch (error) {
     next(error);
   }

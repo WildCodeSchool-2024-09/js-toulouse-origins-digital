@@ -8,12 +8,12 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 // Import the main app component
 import App from "./App";
 import NavProvider from "./contexts/NavProvider";
+import Admin from "./pages/Admin";
 import Favorite from "./pages/Favorite";
 import HomePage from "./pages/HomePage";
 import HomeScreen from "./pages/HomeScreen";
 import Playlists from "./pages/Playlists";
 import Search from "./pages/Search";
-import Video from "./pages/Video";
 
 // Import additional components for new routes
 // Try creating these components in the "pages" folder
@@ -34,10 +34,6 @@ const router = createBrowserRouter([
         element: <HomeScreen />,
       },
       {
-        path: "/video",
-        element: <Video />,
-      },
-      {
         path: "/home",
         element: <HomePage />,
       },
@@ -48,6 +44,10 @@ const router = createBrowserRouter([
       {
         path: "/search",
         element: <Search />,
+      },
+      {
+        path: "/admin",
+        element: <Admin />,
       },
 
       {

@@ -5,8 +5,7 @@ type Video = {
   id: number;
   title: string;
   description: string;
-  duration: number;
-  url: string;
+  video_url: string;
   date: string;
   views: number;
 };
@@ -14,6 +13,14 @@ type Video = {
 class videoRepository {
   async readAll() {
     const [rows] = await databaseClient.query<Rows>("select * from video");
+    return rows as Video[];
+  }
+  async search(query: string) {
+    const [rows] = await databaseClient.query<Rows>(
+      "SELECT * FROM video WHERE title LIKE ? OR description LIKE ?",
+      [`%${query}%`, `%${query}%`],
+    );
+
     return rows as Video[];
   }
 
@@ -26,17 +33,28 @@ class videoRepository {
   }
 
   async update(video: Video) {
+    const formattedDate = new Date(video.date)
+      .toISOString()
+      .slice(0, 19)
+      .replace("T", " ");
+
     const [result] = await databaseClient.query<Result>(
-      "update video set title = ?, description = ?, duration = ?, url = ?, date = ?, views = ? where id = ?",
+      "update video set title = ?, description = ?, video_url = ?, date = ?, views = ? where id = ?",
       [
         video.title,
         video.description,
-        video.duration,
-        video.url,
-        video.date,
+        video.video_url,
+        formattedDate,
         video.views,
         video.id,
       ],
+    );
+    return result.affectedRows;
+  }
+  async incrementViews(id: number) {
+    const [result] = await databaseClient.query<Result>(
+      "update video set views = views + 1 where id = ?",
+      [id],
     );
     return result.affectedRows;
   }
@@ -44,12 +62,11 @@ class videoRepository {
   async create(video: Omit<Video, "id">) {
     try {
       const query =
-        "insert into video (title, description, duration, url, date, views) values (?, ?, ?, ?, ?, ?)";
+        "insert into video (title, description, video_url, date, views) values (?, ?, ?, ?, ?, ?)";
       const params = [
         video.title,
         video.description,
-        video.duration,
-        video.url,
+        video.video_url,
         video.date,
         video.views,
       ];

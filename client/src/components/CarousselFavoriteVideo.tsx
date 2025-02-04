@@ -11,10 +11,14 @@ export default function CarouselFavoriteVideo() {
   return (
     <div className="carousel-favorite-video">
       {favorites.map((video) => (
-        <div key={video.id}>
-          <div>
-            <img src={video.url} alt={video.title} className="favorite-video" />
-          </div>
+        <div key={video.id} className="favorite-video-container">
+          <iframe
+            className="favorite-video-frame"
+            src={video.url}
+            title={video.title}
+            allowFullScreen
+          />
+          <h3 className="favorite-video-title">{video.title}</h3>
         </div>
       ))}
     </div>

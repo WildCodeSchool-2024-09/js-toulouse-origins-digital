@@ -1,8 +1,8 @@
 .modal-user-login-signup {
-  background-color: rgba(211, 211, 211, 0.199);
+  background-color: rgba(211, 211, 211, 0.306);
   border-radius: 30px;
   border: 1px solid white;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(20px);
   padding: 40px;
   width: 90%;
   max-width: 400px;
@@ -27,8 +27,8 @@
 
 .input-field {
   font-family: var(--secondary-font);
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.4);
+  background: rgba(100, 95, 95, 0.395);
+  border: 1px solid rgba(255, 255, 255, 0.692);
   border-radius: 25px;
   padding: 12px;
   font-size: 16px;
