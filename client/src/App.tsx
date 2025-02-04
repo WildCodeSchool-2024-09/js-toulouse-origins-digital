@@ -2,10 +2,11 @@ import "./App.css";
 import { useCallback, useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 import { useNav } from "./contexts/NavProvider";
-import "./App.css";
 
 type User = {
   id: number;
+  pseudo: string;
+  email: string;
 };
 
 type Auth = {
@@ -30,16 +31,16 @@ function App() {
     }
   }, []);
 
-  // Gestion de l'état du menu ou modal de connexion
   const { isOpenLogin, setIsOpenLogin } = useNav();
 
-  // Sauvegarder l'auth dans localStorage chaque fois qu'il change
   useEffect(() => {
     if (auth) {
       localStorage.setItem(
         "user",
         JSON.stringify({
           id: auth?.user.id,
+          pseudo: auth?.user.pseudo,
+          email: auth?.user.email,
         }),
       );
     } else {
@@ -73,11 +74,9 @@ function App() {
   return (
     <>
       <main
-        // Si le menu est ouvert, on le ferme au clic ou au clavier
         onClick={isOpenLogin ? () => setIsOpenLogin(false) : undefined}
         onKeyDown={isOpenLogin ? () => setIsOpenLogin(false) : undefined}
       >
-        {/* Outlet pour injecter les routes enfants, avec le contexte auth */}
         <Outlet context={{ auth, setAuth }} />
       </main>
     </>

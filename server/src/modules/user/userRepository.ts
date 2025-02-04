@@ -4,9 +4,9 @@ import type { Result, Rows } from "../../../database/client";
 type User = {
   id: number;
   email: string;
-  hashed_password: string;
   pseudo: string;
-  is_admin: boolean;
+  hashed_password: string;
+  is_admin: boolean | undefined;
   avatar_url: string;
 };
 
@@ -19,7 +19,7 @@ class userRepository {
   async read(id: number) {
     const [rows] = await databaseClient.query<Rows>(
       "select * from user where id = ?",
-      [id],
+      [id]
     );
     return rows[0] as User | undefined;
   }
@@ -27,22 +27,15 @@ class userRepository {
   async readByEmailWithPassword(email: string) {
     const [rows] = await databaseClient.query<Rows>(
       "select * from user where email = ?",
-      [email],
+      [email]
     );
     return rows[0] as User;
   }
 
-  async update(user: User) {
+  async update(user: Omit<User, "hashed_password">) {
     const [result] = await databaseClient.query<Result>(
-      "update user set email = ?, hashed_password = ?, pseudo = ?, is_admin = ?, avatar_url = ? where id = ?",
-      [
-        user.email,
-        user.hashed_password,
-        user.pseudo,
-        user.is_admin,
-        user.avatar_url,
-        user.id,
-      ],
+      "update user set email = ?, pseudo = ?, is_admin = ?, avatar_url = ? where id = ?",
+      [user.email, user.pseudo, user.is_admin, user.avatar_url, user.id]
     );
     return result.affectedRows;
   }
@@ -69,6 +62,15 @@ class userRepository {
   async delete(id: number) {
     const query = "delete from user where id = ?";
     const [result] = await databaseClient.query<Result>(query, [id]);
+    return result.affectedRows;
+  }
+
+  async updateProfileImage(userId: number, avatarUrl: string): Promise<number> {
+    const query = "UPDATE user SET avatar_url = ? WHERE id = ?";
+    const [result] = await databaseClient.query<Result>(query, [
+      avatarUrl,
+      userId,
+    ]);
     return result.affectedRows;
   }
 }

@@ -69,6 +69,7 @@ export default function VideoCard({ video }: VideoPlayerProps) {
         `${import.meta.env.VITE_API_URL}/api/videos/views/${videoId}`,
         {
           method: "PUT",
+          credentials: "include",
         },
       );
 

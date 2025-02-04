@@ -7,11 +7,14 @@ import userRepository from "../user/userRepository";
 const login: RequestHandler = async (
   req: Request,
   res: Response,
-  next: NextFunction,
+  next: NextFunction
 ) => {
   try {
     const user = await userRepository.readByEmailWithPassword(req.body.email);
-
+    if (!user) {
+      res.status(401).json({ message: "Email ou mot de passe incorrect" });
+      return;
+    }
     if (user == null) {
       res
         .status(422)
@@ -21,7 +24,7 @@ const login: RequestHandler = async (
 
     const verified = await argon2.verify(
       user.hashed_password,
-      req.body.password,
+      req.body.password
     );
 
     if (verified) {
@@ -29,6 +32,11 @@ const login: RequestHandler = async (
       const myPayload: MyPayload = {
         sub: user.id.toString(),
       };
+
+      if (!verified) {
+        res.status(401).json({ message: "Email ou mot de passe incorrect" });
+        return;
+      }
 
       const token = jwt.sign(myPayload, process.env.APP_SECRET as string, {
         expiresIn: "1h",
