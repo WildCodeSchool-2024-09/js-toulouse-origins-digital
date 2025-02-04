@@ -74,9 +74,8 @@ router.get("/api/videos/search/:term", videoActions.search);
 router.post(
   "/api/users/:id/upload-avatar",
   userActions.upload.single("avatar_url"),
-  userActions.uploadAvatar
+  userActions.uploadAvatar,
 );
-
 
 router.use(authActions.verifyToken);
 
