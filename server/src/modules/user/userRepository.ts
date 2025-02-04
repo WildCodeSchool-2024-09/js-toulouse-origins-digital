@@ -19,7 +19,7 @@ class userRepository {
   async read(id: number) {
     const [rows] = await databaseClient.query<Rows>(
       "select * from user where id = ?",
-      [id]
+      [id],
     );
     return rows[0] as User | undefined;
   }
@@ -27,7 +27,7 @@ class userRepository {
   async readByEmailWithPassword(email: string) {
     const [rows] = await databaseClient.query<Rows>(
       "select * from user where email = ?",
-      [email]
+      [email],
     );
     return rows[0] as User;
   }
@@ -35,7 +35,7 @@ class userRepository {
   async update(user: Omit<User, "hashed_password">) {
     const [result] = await databaseClient.query<Result>(
       "update user set email = ?, pseudo = ?, is_admin = ?, avatar_url = ? where id = ?",
-      [user.email, user.pseudo, user.is_admin, user.avatar_url, user.id]
+      [user.email, user.pseudo, user.is_admin, user.avatar_url, user.id],
     );
     return result.affectedRows;
   }

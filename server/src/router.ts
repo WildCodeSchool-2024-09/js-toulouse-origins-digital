@@ -23,7 +23,7 @@ router.delete("/api/favorites/:userId", favoriteActions.remove);
 router.get("/api/videoplaylist/:playlistId", videoAndPlaylistActions.read);
 router.post(
   "/api/videoplaylist/:playlistId/:videoId",
-  videoAndPlaylistActions.add
+  videoAndPlaylistActions.add,
 );
 router.delete("/api/videoplaylist/:id", videoAndPlaylistActions.remove);
 
@@ -43,11 +43,11 @@ router.delete("/api/categories/:id", categoryActions.destroy);
 
 router.get(
   "/api/videocategory/videos/:categoryId",
-  videoCategoryActions.readVideosByCategory
+  videoCategoryActions.readVideosByCategory,
 );
 router.get(
   "/api/videocategory/categories/:videoId",
-  videoCategoryActions.readCategoriesByVideo
+  videoCategoryActions.readCategoriesByVideo,
 );
 router.post("/api/videocategory/:categoryId", videoCategoryActions.add);
 router.delete("/api/videocategory/:categoryId", videoCategoryActions.remove);
@@ -74,7 +74,7 @@ router.get("/api/videos/search/:term", videoActions.search);
 router.post(
   "/api/users/:id/upload-avatar",
   userActions.upload.single("avatar_url"),
-  userActions.uploadAvatar
+  userActions.uploadAvatar,
 );
 
 router.use(authActions.verifyToken);

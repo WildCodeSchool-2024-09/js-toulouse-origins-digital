@@ -1,7 +1,7 @@
-import type { RequestHandler } from "express";
-import userRepository from "./userRepository";
-import multer from "multer";
 import path from "node:path";
+import type { RequestHandler } from "express";
+import multer from "multer";
+import userRepository from "./userRepository";
 
 const browse: RequestHandler = async (req, res, next) => {
   try {
@@ -93,20 +93,20 @@ const uploadAvatar: RequestHandler = async (req, res, next) => {
   try {
     if (!req.file) {
       res.status(400).json({ error: "Aucun fichier téléchargé" });
-      return; 
+      return;
     }
 
     const avatarUrl = `/uploads/${req.file.filename}`;
-    const userId = Number(req.params.id); 
+    const userId = Number(req.params.id);
 
     const affectedRows = await userRepository.updateProfileImage(
       userId,
-      avatarUrl
+      avatarUrl,
     );
 
     if (affectedRows === 0) {
       res.status(404).json({ error: "Utilisateur non trouvé" });
-      return; 
+      return;
     }
 
     res.status(200).json({ avatar_url: avatarUrl });
