@@ -1,55 +1,19 @@
 import "../styles/CarousselFavoriteVideo.css";
+import { useFavorites } from "../contexts/FavoritesContext";
 
 export default function CarouselFavoriteVideo() {
-  const favorite = [
-    {
-      id: 1,
-      title: "Titre",
-      url: "Video Favorite",
-    },
-    {
-      id: 2,
-      title: "Titre",
-      url: "Video Favorite",
-    },
-    {
-      id: 3,
-      title: "Titre",
-      url: "Video Favorite",
-    },
-    {
-      id: 4,
-      title: "Titre",
-      url: "Video Favorite",
-    },
-    {
-      id: 5,
-      title: "Titre",
-      url: "Video Favorite",
-    },
-    {
-      id: 6,
-      title: "Titre",
-      url: "Video Favorite",
-    },
-    {
-      id: 7,
-      title: "Titre",
-      url: "Video Favorite",
-    },
-    {
-      id: 8,
-      title: "Titre",
-      url: "Video Favorite",
-    },
-  ];
+  const { favorites } = useFavorites();
+
+  if (favorites.length === 0) {
+    return <div className="no-favorites-message">Aucune vidéo en favoris.</div>;
+  }
 
   return (
     <div className="carousel-favorite-video">
-      {favorite.map((item) => (
-        <div key={item.id}>
+      {favorites.map((video) => (
+        <div key={video.id}>
           <div>
-            <img src={item.url} alt={item.title} className="favorite-video" />
+            <img src={video.url} alt={video.title} className="favorite-video" />
           </div>
         </div>
       ))}

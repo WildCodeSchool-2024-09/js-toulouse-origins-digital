@@ -11,3 +11,22 @@
   border-radius: 20px;
   object-fit: cover;
 }
+
+.no-favorites-message {
+  text-align: center;
+  padding: 2rem;
+  color: #666;
+  font-size: 1.1rem;
+}
+
+.favorite-button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 5px;
+  font-size: 1.2rem;
+}
+
+.favorite-button.active {
+  color: red;
+}

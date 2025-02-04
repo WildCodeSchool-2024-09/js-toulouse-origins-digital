@@ -19,7 +19,9 @@ export default function NavBar() {
           <Link to="/home">
             <img src={homeIcon} alt="Home" className="nav-icon" />
           </Link>
-          <img src={bookmarkIcon} alt="Bookmark" className="nav-icon" />
+          <Link to="/favorite">
+            <img src={bookmarkIcon} alt="Bookmark" className="nav-icon" />
+          </Link>
           <a href="/playlists">
             <img src={addIcon} alt="Add" className="nav-icon" />
           </a>
