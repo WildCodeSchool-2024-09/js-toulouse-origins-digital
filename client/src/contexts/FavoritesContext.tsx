@@ -4,7 +4,10 @@ import { createContext, useContext, useState } from "react";
 interface Video {
   id: number;
   title: string;
-  url: string;
+  description: string;
+  video_url: string;
+  date: Date;
+  views: number;
 }
 
 interface FavoritesContextType {

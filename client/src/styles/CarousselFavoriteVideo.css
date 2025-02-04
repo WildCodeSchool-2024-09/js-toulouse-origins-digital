@@ -4,11 +4,12 @@
   align-items: center;
   gap: 40px;
   padding: 20px;
+  width: 100%;
 }
 
 .favorite-video-container {
   width: 100%;
-  max-width: 800px;
+  max-width: 1400px;
 }
 
 .favorite-video-frame {
@@ -40,6 +41,28 @@
   font-size: 1.2rem;
 }
 
-.favorite-button.active {
-  color: red;
+.favorite-video-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+}
+
+.delete-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+}
+
+.delete-icon {
+  width: 24px;
+  height: 24px;
+  transition: transform 0.2s ease;
+}
+
+.delete-button:hover .delete-icon {
+  transform: scale(1.1);
 }

@@ -1,7 +1,7 @@
 import "../styles/VideoCard.css";
 import { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
-import BookMarkIcon from "../assets/images/bookmark.png";
+import bookMarkIcon from "../assets/images/bookmark.png";
 import { useFavorites } from "../contexts/FavoritesContext";
 import { fetchPlaylists } from "../services/playlistService";
 import type { Playlist } from "../types/types";
@@ -125,7 +125,10 @@ export default function VideoCard({ video, onClose }: VideoPlayerProps) {
       addToFavorites({
         id: video.id,
         title: video.title,
-        url: video.video_url,
+        video_url: video.video_url,
+        description: video.description,
+        date: new Date(),
+        views: video.views,
       });
     }
   };
@@ -151,7 +154,7 @@ export default function VideoCard({ video, onClose }: VideoPlayerProps) {
                 className="bookmark-button"
               >
                 <img
-                  src={BookMarkIcon}
+                  src={bookMarkIcon}
                   alt="bookmark"
                   className={`bookmark-icon ${video && isFavorite(video.id) ? "active" : ""}`}
                 />

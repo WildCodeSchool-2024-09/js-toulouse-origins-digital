@@ -38,3 +38,29 @@
   flex-direction: column;
   gap: 20px;
 }
+
+.favorite-container .favorite-video-frame {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: none;
+  border-radius: 20px;
+  margin-bottom: 10px;
+}
+
+.favorite-container .favorite-video-container {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.favorite-container .carousel-favorite-video {
+  width: 100%;
+  padding: 0 20px;
+}
+
+.favorite-video {
+  width: 100%;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+}
