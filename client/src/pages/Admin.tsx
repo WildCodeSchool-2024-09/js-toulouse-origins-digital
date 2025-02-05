@@ -267,7 +267,11 @@ export default function Admin() {
               isEditing
                 ? prevVideos.map((vid) =>
                     vid.id === editingVideo?.id
-                      ? { ...vid, ...updatedVideo }
+                      ? {
+                          ...vid,
+                          ...updatedVideo,
+                          categories: updatedVideo.categories,
+                        }
                       : vid,
                   )
                 : [...prevVideos, updatedVideo],
