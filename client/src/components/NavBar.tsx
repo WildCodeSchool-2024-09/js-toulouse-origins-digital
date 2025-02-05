@@ -46,7 +46,7 @@ export default function NavBar() {
 
   return (
     <>
-      {isOpenLogin ? auth ? <UserLogin /> : <UserLogout /> : null}
+      {isOpenLogin ? !isLoggedIn ? <UserLogin /> : <UserLogout /> : null}
       <div className="nav-bar-container">
         <nav className={navbarClass}>
           <Link to="/home">
@@ -60,7 +60,6 @@ export default function NavBar() {
               <Link to="/favorite">
                 <img src={bookmarkIcon} alt="Bookmark" className="nav-icon" />
               </Link>
-              <img src={bookmarkIcon} alt="Bookmark" className="nav-icon" />
               <Link to="/playlists">
                 <img src={addIcon} alt="Add" className="nav-icon" />
               </Link>
