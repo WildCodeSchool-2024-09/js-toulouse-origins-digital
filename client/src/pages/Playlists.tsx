@@ -15,6 +15,7 @@ import {
 import "../styles/Playlists.css";
 import { useOutletContext } from "react-router-dom";
 import type { Playlist, Video, VideoPlaylist } from "../types/types";
+import AccessDenied from "./AccessDenied";
 
 type User = {
   id: number;
@@ -108,37 +109,43 @@ const GamePlaylists = () => {
 
   return (
     <>
-      <Header />
-      <main className="playlists-container">
-        <h1 className="page-title">
-          {selectedPlaylist ? selectedPlaylist.name : "Mes Playlists"}
-        </h1>
-        {error && <div className="error-message">{error}</div>}
-        {isLoading && <div className="loading">Loading...</div>}
-        {!selectedPlaylist ? (
-          <PlaylistList
-            playlists={playlists}
-            onPlaylistClick={handlePlaylistClick}
-            onAddPlaylist={handleAddPlaylist}
-            onDeletePlaylist={handleDeletePlaylist}
-            playlistName={playlistName}
-            setPlaylistName={setPlaylistName}
-          />
-        ) : (
-          <VideosGrid
-            videos={videos}
-            videoPlaylists={videoPlaylists}
-            selectedPlaylist={selectedPlaylist}
-            onBack={() => setSelectedPlaylist(null)}
-            onDeleteVideo={(videoId) =>
-              deleteVideoFromPlaylist(videoId).then(() => {
-                handlePlaylistClick(selectedPlaylist);
-              })
-            }
-          />
-        )}
-      </main>
-      <NavBar />
+      {auth ? (
+        <>
+          <Header />
+          <main className="playlists-container">
+            <h1 className="page-title">
+              {selectedPlaylist ? selectedPlaylist.name : "Mes Playlists"}
+            </h1>
+            {error && <div className="error-message">{error}</div>}
+            {isLoading && <div className="loading">Loading...</div>}
+            {!selectedPlaylist ? (
+              <PlaylistList
+                playlists={playlists}
+                onPlaylistClick={handlePlaylistClick}
+                onAddPlaylist={handleAddPlaylist}
+                onDeletePlaylist={handleDeletePlaylist}
+                playlistName={playlistName}
+                setPlaylistName={setPlaylistName}
+              />
+            ) : (
+              <VideosGrid
+                videos={videos}
+                videoPlaylists={videoPlaylists}
+                selectedPlaylist={selectedPlaylist}
+                onBack={() => setSelectedPlaylist(null)}
+                onDeleteVideo={(videoId) =>
+                  deleteVideoFromPlaylist(videoId).then(() => {
+                    handlePlaylistClick(selectedPlaylist);
+                  })
+                }
+              />
+            )}
+          </main>
+          <NavBar />
+        </>
+      ) : (
+        <AccessDenied />
+      )}
     </>
   );
 };

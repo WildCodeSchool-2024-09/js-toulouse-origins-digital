@@ -1,0 +1,9 @@
+p {
+  font-family: var(--primary-font);
+  color: white;
+  font-size: 25px;
+  padding: 20px;
+  margin-top: 20px;
+  margin-left: 30px;
+  margin-right: 30px;
+}
