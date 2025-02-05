@@ -92,7 +92,9 @@ export default function ModalVideoManager({
           <div className="modify-category-wrapper">
             <div className="category-form">
               <header className="modal-header">
-                <h2 className="title-admin-modal">Modifier une vidéo</h2>
+                <h2 className="title-admin-modal">
+                  {video ? "Modifier" : "Ajouter"} une vidéo
+                </h2>
                 <button
                   type="button"
                   className="modal-close-button"
@@ -147,7 +149,7 @@ export default function ModalVideoManager({
                     Annuler
                   </button>
                   <button className="btn btn-submit" type="submit">
-                    Enregistrer
+                    {video ? "Enregistrer" : "Ajouter"}
                   </button>
                 </div>
               </form>

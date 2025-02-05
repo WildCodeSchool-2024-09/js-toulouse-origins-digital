@@ -146,30 +146,38 @@ export default function Admin() {
         isShowing={isShowingCategory}
         hide={() => toggleCategory()}
         category={editingCategory}
+        isEdit={!!editingCategory}
         onSubmit={async (categoryData) => {
-          if (!editingCategory?.id) return;
-
           try {
-            const response = await fetch(
-              `${import.meta.env.VITE_API_URL}/api/categories/${editingCategory.id}`,
-              {
-                method: "PUT",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify(categoryData),
+            const url = editingCategory?.id
+              ? `${import.meta.env.VITE_API_URL}/api/categories/${editingCategory.id}`
+              : `${import.meta.env.VITE_API_URL}/api/categories`;
+
+            const response = await fetch(url, {
+              method: editingCategory?.id ? "PUT" : "POST",
+              headers: {
+                "Content-Type": "application/json",
               },
-            );
+              body: JSON.stringify(categoryData),
+            });
 
             if (response.ok) {
+              const result = await response.json();
+              const categoryResponse = await fetch(
+                `${import.meta.env.VITE_API_URL}/api/categories/${result.insertId}`,
+              );
+              const newCategory = await categoryResponse.json();
+
               setCategory((prevCategories) =>
-                prevCategories.map((c) =>
-                  c.id === editingCategory.id ? { ...c, ...categoryData } : c,
-                ),
+                editingCategory?.id
+                  ? prevCategories.map((c) =>
+                      c.id === editingCategory.id
+                        ? { ...c, ...categoryData }
+                        : c,
+                    )
+                  : [...prevCategories, newCategory],
               );
               toggleCategory();
-            } else {
-              console.error("Erreur lors de la mise à jour");
             }
           } catch (error) {
             console.error("Erreur:", error);
@@ -293,7 +301,17 @@ export default function Admin() {
         </h2>
 
         {adminSection !== "users" && (
-          <button className="add-card-manager" type="button">
+          <button
+            className="add-card-manager"
+            type="button"
+            onClick={
+              adminSection === "categories"
+                ? () => toggleCategory()
+                : adminSection === "videos"
+                  ? () => toggleVideo()
+                  : undefined
+            }
+          >
             + Ajouter
           </button>
         )}

@@ -15,6 +15,7 @@ interface ModalCategoryManagerProps {
   isShowing: boolean;
   hide: () => void;
   category?: CategoryData;
+  isEdit?: boolean;
   onSubmit: (category: CategoryData) => void;
 }
 
@@ -22,6 +23,7 @@ export default function ModalCategoryManager({
   isShowing,
   hide,
   category,
+  isEdit,
   onSubmit,
 }: ModalCategoryManagerProps) {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -84,7 +86,7 @@ export default function ModalCategoryManager({
             <div className="category-form">
               <header className="modal-header">
                 <h2 className="title-admin-modal">
-                  {category ? "Modifier" : "Ajouter"} une catégorie
+                  {isEdit ? "Modifier" : "Ajouter"} une catégorie
                 </h2>
                 <button
                   type="button"
@@ -154,7 +156,7 @@ export default function ModalCategoryManager({
                     Annuler
                   </button>
                   <button className="btn btn-submit" type="submit">
-                    Enregistrer
+                    {isEdit ? "Enregistrer" : "Ajouter"}
                   </button>
                 </div>
               </form>
