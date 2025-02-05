@@ -80,6 +80,20 @@
   font-size: 14px;
   cursor: pointer;
   padding: 5px 10px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.filter-button::after {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-left: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(-45deg);
+  margin-top: -4px;
 }
 
 .filter-dropdown {
@@ -141,4 +155,15 @@ input[type="checkbox"] {
 .filter-dropdown::-webkit-scrollbar-thumb {
   background: var(--button-color);
   border-radius: 3px;
+}
+
+.reset-filter-button {
+  background: none;
+  border: none;
+  color: var(--button-color);
+  font-family: "Exo", sans-serif;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 5px;
+  margin-left: 10px;
 }

@@ -10,7 +10,7 @@ const gameCategories = [
   { id: 3, name: "FPS" },
   { id: 4, name: "Battle Royal" },
   { id: 5, name: "Sport" },
-  { id: 6, name: "Stratégie" },
+  { id: 6, name: "Strégie" },
   { id: 7, name: "Sandbox" },
   { id: 8, name: "Aventure" },
   { id: 9, name: "Combat" },
@@ -32,10 +32,28 @@ export default function Favorite() {
     });
   };
 
+  const handleClickOutside = (e: React.MouseEvent) => {
+    const target = e.target as HTMLElement;
+    if (!target.closest(".filter-container")) {
+      setIsFilterOpen(false);
+    }
+  };
+
+  const resetFilters = () => {
+    setSelectedCategories([]);
+    setIsFilterOpen(false);
+  };
+
   return (
     <>
       <Header />
-      <div className="favorite-container">
+      <section
+        className="favorite-container"
+        onClick={handleClickOutside}
+        onKeyDown={(e) => {
+          if (e.key === "Escape") setIsFilterOpen(false);
+        }}
+      >
         <div className="favorite-section">
           <h2 className="title-fovarite-page">Favoris &#x27E9;</h2>
           <div className="filter-sort-out">
@@ -45,8 +63,17 @@ export default function Favorite() {
                 className="filter-button"
                 onClick={() => setIsFilterOpen(!isFilterOpen)}
               >
-                Filtrer
+                {selectedCategories.length > 0 ? "Filtres actifs" : "Filtrer"}
               </button>
+              {selectedCategories.length > 0 && (
+                <button
+                  type="button"
+                  className="reset-filter-button"
+                  onClick={resetFilters}
+                >
+                  Réinitialiser
+                </button>
+              )}
               {isFilterOpen && (
                 <div className="filter-dropdown">
                   <div className="categories-list">
@@ -72,7 +99,7 @@ export default function Favorite() {
           <CarouselFavoriteVideo selectedCategories={selectedCategories} />
         </div>
         <NavBar />
-      </div>
+      </section>
     </>
   );
 }
