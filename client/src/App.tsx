@@ -1,5 +1,5 @@
 import "./App.css";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 import { FavoritesProvider } from "./contexts/FavoritesContext";
 import { useNav } from "./contexts/NavProvider";
@@ -48,19 +48,18 @@ function App() {
     }
   }, [auth]);
 
-  const getCookie = useCallback((name: string) => {
-    const cookieArr = document.cookie.split("; ");
-    for (let i = 0; i < cookieArr.length; i++) {
-      const cookie = cookieArr[i].split("=");
-      if (cookie[0] === name) {
-        return cookie[1];
-      }
-    }
-    return null;
-  }, []);
-
   useEffect(() => {
-    const token = getCookie("token");
+    const getCookie = (name: string) => {
+      const cookieArr = document.cookie.split("; ");
+      for (let i = 0; i < cookieArr.length; i++) {
+        const cookie = cookieArr[i].split("=");
+        if (cookie[0] === name) {
+          return cookie[1];
+        }
+      }
+      return null;
+    };
+    const token = getCookie("auth_token");
     const savedUser = localStorage.getItem("user");
 
     if (token && savedUser) {
@@ -69,7 +68,7 @@ function App() {
     } else {
       setAuth(null);
     }
-  }, [getCookie]);
+  }, []);
 
   return (
     <FavoritesProvider>
