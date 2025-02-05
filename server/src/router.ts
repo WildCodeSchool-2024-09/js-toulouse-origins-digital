@@ -16,6 +16,7 @@ import userActions from "./modules/user/userActions";
 import videoActions from "./modules/video/videoActions";
 import videoAndPlaylistActions from "./modules/videoPlaylist/videoAndPlaylistActions";
 import videoCategoryActions from "./modules/videocategory/videoCategoryActions";
+import videoCategoryRepository from "./modules/videocategory/videoCategoryRepository";
 
 router.get("/api/items", itemActions.browse);
 router.get("/api/items/:id", itemActions.read);
@@ -37,6 +38,7 @@ router.get(
 );
 router.post("/api/videocategory/:categoryId", videoCategoryActions.add);
 router.delete("/api/videocategory/:categoryId", videoCategoryActions.remove);
+router.put("/api/videocategory/:id", videoCategoryActions.update);
 
 router.get("/api/favorites/:userId", favoriteActions.read);
 router.post("/api/favorites/:userId", favoriteActions.add);

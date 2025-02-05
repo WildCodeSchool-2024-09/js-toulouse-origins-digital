@@ -220,6 +220,7 @@ export default function UserProfileSettings() {
           onChange={handleImageChange}
           style={{ display: "none" }}
         />
+        <img src={imgProfile} alt="Profile" className="profile-picture" />
       </div>
       {imageError && <p className="error">{imageError}</p>}
       {imageSuccess && <p className="success">{imageSuccess}</p>}

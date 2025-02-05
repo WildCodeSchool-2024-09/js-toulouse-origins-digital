@@ -1,6 +1,7 @@
 import "./App.css";
 import { useCallback, useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
+import { FavoritesProvider } from "./contexts/FavoritesContext";
 import { useNav } from "./contexts/NavProvider";
 
 type User = {
@@ -15,7 +16,6 @@ type Auth = {
 };
 
 function App() {
-  // Charger l'authentification depuis localStorage
   const [auth, setAuth] = useState<Auth | null>(() => {
     const savedAuth = localStorage.getItem("auth");
     return savedAuth ? JSON.parse(savedAuth) : null;
@@ -72,14 +72,14 @@ function App() {
   }, [getCookie]);
 
   return (
-    <>
+    <FavoritesProvider>
       <main
         onClick={isOpenLogin ? () => setIsOpenLogin(false) : undefined}
         onKeyDown={isOpenLogin ? () => setIsOpenLogin(false) : undefined}
       >
         <Outlet context={{ auth, setAuth }} />
       </main>
-    </>
+    </FavoritesProvider>
   );
 }
 

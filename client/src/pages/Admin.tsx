@@ -50,6 +50,7 @@ interface Video {
   video_url: string;
   date: string;
   views: number;
+  categories: number[];
 }
 
 interface User {
@@ -113,9 +114,21 @@ export default function Admin() {
         const categories = await categoriesRes.json();
         const videos = await videosRes.json();
         const users = await usersRes.json();
+        const videosWithCategories = await Promise.all(
+          videos.map(async (video: Video) => {
+            const categoriesResponse = await fetch(
+              `${import.meta.env.VITE_API_URL}/api/videocategory/categories/${video.id}`,
+            );
+            const videoCategories = await categoriesResponse.json();
+            return {
+              ...video,
+              categories: videoCategories.map((cat: Category) => cat.id),
+            };
+          }),
+        );
 
         setCategory(categories);
-        setVideo(videos);
+        setVideo(videosWithCategories);
         setUser(users);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -205,31 +218,37 @@ export default function Admin() {
         video={editingVideo}
         onSubmit={async (videoData) => {
           try {
-            const response = await fetch(
+            const videoResponse = await fetch(
               `${import.meta.env.VITE_API_URL}/api/videos/${editingVideo?.id}`,
               {
                 method: "PUT",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                  title: videoData.title,
-                  description: videoData.description,
-                  video_url: editingVideo?.video_url,
-                  date: editingVideo?.date,
-                  views: editingVideo?.views,
-                }),
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(videoData),
               },
             );
-            if (response.ok) {
+            const categoriesResponse = await fetch(
+              `${import.meta.env.VITE_API_URL}/api/videocategory/${editingVideo?.id}`,
+              {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ categoryIds: videoData.categories }),
+              },
+            );
+
+            if (videoResponse.ok && categoriesResponse.ok) {
               setVideo((videos) =>
-                videos.map((vid) =>
-                  vid.id === editingVideo?.id ? { ...vid, ...videoData } : vid,
-                ),
+                videos.map((vid) => {
+                  if (vid.id === editingVideo?.id) {
+                    return {
+                      ...vid,
+                      ...videoData,
+                      categories: videoData.categories, // Inclure les catégories mises à jour
+                    };
+                  }
+                  return vid;
+                }),
               );
               toggleVideo();
-            } else {
-              console.error("Erreur lors de la mise à jour");
             }
           } catch (error) {
             console.error("Erreur:", error);
@@ -305,6 +324,7 @@ export default function Admin() {
                   video_url={vid.video_url}
                   date={formatDate(vid.date.toString())}
                   views={vid.views}
+                  categories={vid.categories}
                   onEdit={() => toggleVideo(vid.id)}
                   onDelete={handleVideoDelete}
                 />

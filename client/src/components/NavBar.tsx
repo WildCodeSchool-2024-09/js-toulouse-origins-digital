@@ -23,6 +23,16 @@ type Auth = {
 export default function NavBar() {
   const { isOpenLogin, setIsOpenLogin } = useNav();
   const { auth } = useOutletContext() as { auth: Auth | null };
+
+  let userId = auth?.user.id;
+
+  if (!userId) {
+    const userData = localStorage.getItem("user");
+    if (userData) {
+      const user = JSON.parse(userData);
+      userId = user.id;
+    }
+  }
   const { spreadProfileImage } = useSpreadProfileImage();
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
@@ -43,6 +53,12 @@ export default function NavBar() {
         <nav className={navbarClass}>
           <Link to="/home">
             <img src={homeIcon} alt="Home" className="nav-icon" />
+          </Link>
+          <Link to="/favorite">
+            <img src={bookmarkIcon} alt="Bookmark" className="nav-icon" />
+          </Link>
+          <Link to="/playlists">
+            <img src={addIcon} alt="Add" className="nav-icon" />
           </Link>
           <Link to="/search">
             <img src={searchIcon} alt="Search" className="nav-icon" />
