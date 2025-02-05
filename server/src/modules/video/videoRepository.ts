@@ -62,7 +62,7 @@ class videoRepository {
   async create(video: Omit<Video, "id">) {
     try {
       const query =
-        "insert into video (title, description, video_url, date, views) values (?, ?, ?, ?, ?, ?)";
+        "insert into video (title, description, video_url, date, views) values (?, ?, ?, ?, ?)";
       const params = [
         video.title,
         video.description,

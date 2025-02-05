@@ -22,6 +22,7 @@ interface ModalVideoManagerProps {
   isShowing: boolean;
   hide: () => void;
   video?: VideoData;
+  isEdit?: boolean;
   onSubmit: (video: VideoData) => void;
 }
 
@@ -29,6 +30,7 @@ export default function ModalVideoManager({
   isShowing,
   hide,
   video,
+  isEdit,
   onSubmit,
 }: ModalVideoManagerProps) {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -64,20 +66,29 @@ export default function ModalVideoManager({
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const videoUrl = formData.get("video_url") as string;
 
     if (selectedCategories.length === 0) {
       alert("Veuillez sélectionner au moins 1 catégorie");
       return;
     }
 
-    const formData = new FormData(event.currentTarget);
+    const videaUrlRegex =
+      /^https:\/\/app\.videas\.fr\/embed\/media\/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}\/$/;
+    if (!isEdit && !videaUrlRegex.test(videoUrl)) {
+      alert(
+        "L'URL doit être au format : https://app.videas.fr/embed/media/XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX/",
+      );
+      return;
+    }
 
     const videoData: VideoData = {
       id: video?.id || 0,
       title: formData.get("title") as string,
       description: formData.get("description") as string,
       categories: selectedCategories,
-      video_url: video?.video_url || "",
+      video_url: videoUrl,
       duration: video?.duration || "",
       date: video?.date || "",
       views: video?.views || 0,
@@ -93,7 +104,7 @@ export default function ModalVideoManager({
             <div className="category-form">
               <header className="modal-header">
                 <h2 className="title-admin-modal">
-                  {video ? "Modifier" : "Ajouter"} une vidéo
+                  {isEdit ? "Modifier" : "Ajouter"} une vidéo
                 </h2>
                 <button
                   type="button"
@@ -123,6 +134,17 @@ export default function ModalVideoManager({
                     defaultValue={video?.description}
                   />
                 </div>
+                {!isEdit && (
+                  <div className="form-group">
+                    <label htmlFor="video-video_url">Video</label>
+                    <input
+                      id="video_url"
+                      name="video_url"
+                      className="form-input"
+                      defaultValue={video?.video_url}
+                    />
+                  </div>
+                )}
 
                 <div className="form-group">
                   <label htmlFor="video-description">Catégories</label>
@@ -149,7 +171,7 @@ export default function ModalVideoManager({
                     Annuler
                   </button>
                   <button className="btn btn-submit" type="submit">
-                    {video ? "Enregistrer" : "Ajouter"}
+                    {isEdit ? "Enregistrer" : "Ajouter"}
                   </button>
                 </div>
               </form>

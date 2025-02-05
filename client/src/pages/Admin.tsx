@@ -142,6 +142,42 @@ export default function Admin() {
 
   return (
     <>
+      <ModalUserManager
+        isShowing={isShowingUser}
+        hide={() => toggleUser()}
+        user={editingUser}
+        onSubmit={async (userData) => {
+          try {
+            const response = await fetch(
+              `${import.meta.env.VITE_API_URL}/api/users/${editingUser?.id}`,
+              {
+                method: "PUT",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  email: userData.email,
+                  pseudo: userData.pseudo,
+                  is_admin: userData.is_admin,
+                  avatar_url: userData.avatar_url,
+                }),
+              },
+            );
+            if (response.ok) {
+              setUser((users) =>
+                users.map((u) =>
+                  u.id === editingUser?.id ? { ...u, ...userData } : u,
+                ),
+              );
+              toggleUser();
+            } else {
+              console.error("Erreur lors de la mise à jour");
+            }
+          } catch (error) {
+            console.error("Erreur:", error);
+          }
+        }}
+      />
       <ModalCategoryManager
         isShowing={isShowingCategory}
         hide={() => toggleCategory()}
@@ -184,58 +220,35 @@ export default function Admin() {
           }
         }}
       />
-      <ModalUserManager
-        isShowing={isShowingUser}
-        hide={() => toggleUser()}
-        user={editingUser}
-        onSubmit={async (userData) => {
-          try {
-            const response = await fetch(
-              `${import.meta.env.VITE_API_URL}/api/users/${editingUser?.id}`,
-              {
-                method: "PUT",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                  email: userData.email,
-                  pseudo: userData.pseudo,
-                  is_admin: userData.is_admin,
-                  avatar_url: userData.avatar_url,
-                }),
-              },
-            );
-            if (response.ok) {
-              setUser((users) =>
-                users.map((u) =>
-                  u.id === editingUser?.id ? { ...u, ...userData } : u,
-                ),
-              );
-              toggleUser();
-            } else {
-              console.error("Erreur lors de la mise à jour");
-            }
-          } catch (error) {
-            console.error("Erreur:", error);
-          }
-        }}
-      />
       <ModalVideoManager
         isShowing={isShowingVideo}
         hide={() => toggleVideo()}
         video={editingVideo}
+        isEdit={!!editingVideo}
         onSubmit={async (videoData) => {
           try {
-            const videoResponse = await fetch(
-              `${import.meta.env.VITE_API_URL}/api/videos/${editingVideo?.id}`,
-              {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(videoData),
-              },
-            );
+            const isEditing = !!editingVideo?.id;
+            const url = isEditing
+              ? `${import.meta.env.VITE_API_URL}/api/videos/${editingVideo.id}`
+              : `${import.meta.env.VITE_API_URL}/api/videos`;
+
+            const response = await fetch(url, {
+              method: isEditing ? "PUT" : "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(videoData),
+            });
+
+            if (!response.ok) {
+              console.error(
+                "Erreur lors de la mise à jour/création de la vidéo",
+              );
+              return;
+            }
+            const result = await response.json();
+            const videoId = isEditing ? editingVideo.id : result.insertId;
+
             const categoriesResponse = await fetch(
-              `${import.meta.env.VITE_API_URL}/api/videocategory/${editingVideo?.id}`,
+              `${import.meta.env.VITE_API_URL}/api/videocategory/${videoId}`,
               {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
@@ -243,21 +256,23 @@ export default function Admin() {
               },
             );
 
-            if (videoResponse.ok && categoriesResponse.ok) {
-              setVideo((videos) =>
-                videos.map((vid) => {
-                  if (vid.id === editingVideo?.id) {
-                    return {
-                      ...vid,
-                      ...videoData,
-                      categories: videoData.categories, // Inclure les catégories mises à jour
-                    };
-                  }
-                  return vid;
-                }),
-              );
-              toggleVideo();
+            if (!categoriesResponse.ok) {
+              console.error("Erreur lors de la mise à jour des catégories");
+              return;
             }
+
+            const updatedVideo = { ...videoData, id: videoId };
+
+            setVideo((prevVideos) =>
+              isEditing
+                ? prevVideos.map((vid) =>
+                    vid.id === editingVideo?.id
+                      ? { ...vid, ...updatedVideo }
+                      : vid,
+                  )
+                : [...prevVideos, updatedVideo],
+            );
+            toggleVideo();
           } catch (error) {
             console.error("Erreur:", error);
           }
