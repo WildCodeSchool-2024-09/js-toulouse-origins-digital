@@ -34,6 +34,8 @@ export default function UserLogout() {
         credentials: "include",
       });
       localStorage.clear();
+      document.cookie =
+        "auth_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
       setSpreadProfileImage(null);
       setIsOpenLogin(false);
       setAuth(null);
