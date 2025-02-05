@@ -8,6 +8,7 @@ interface Video {
   video_url: string;
   date: Date;
   views: number;
+  categories?: number[];
 }
 
 interface FavoritesContextType {
