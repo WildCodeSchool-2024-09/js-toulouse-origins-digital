@@ -88,3 +88,9 @@
   color: #ffffff;
   background: #c5c5c596;
 }
+
+.video-card-categories-containter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}

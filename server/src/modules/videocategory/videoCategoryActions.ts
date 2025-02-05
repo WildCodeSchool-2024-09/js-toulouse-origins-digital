@@ -72,4 +72,22 @@ const remove: RequestHandler = async (req, res, next) => {
   }
 };
 
-export default { readVideosByCategory, readCategoriesByVideo, add, remove };
+const update: RequestHandler = async (req, res, next) => {
+  try {
+    const videoId = Number.parseInt(req.params.id);
+    const { categoryIds } = req.body;
+
+    await videoCategoryRepository.updateCategories(videoId, categoryIds);
+    res.status(200).json({ message: "Categories updated successfully" });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export default {
+  readVideosByCategory,
+  readCategoriesByVideo,
+  add,
+  remove,
+  update,
+};
