@@ -7,7 +7,6 @@ import { useNav } from "../contexts/NavProvider";
 import "../styles/NavBar.css";
 import { useEffect, useState } from "react";
 import { Link, useOutletContext } from "react-router-dom";
-import { useSpreadProfileImage } from "../contexts/ProfileImageProvider";
 import UserLogin from "./UserLogin";
 import UserLogout from "./UserModal";
 
@@ -33,7 +32,6 @@ export default function NavBar() {
       userId = user.id;
     }
   }
-  const { spreadProfileImage } = useSpreadProfileImage();
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
   useEffect(() => {
@@ -48,33 +46,30 @@ export default function NavBar() {
 
   return (
     <>
-      {isOpenLogin ? !isLoggedIn ? <UserLogin /> : <UserLogout /> : null}
+      {isOpenLogin ? auth ? <UserLogin /> : <UserLogout /> : null}
       <div className="nav-bar-container">
         <nav className={navbarClass}>
           <Link to="/home">
             <img src={homeIcon} alt="Home" className="nav-icon" />
-          </Link>
-          <Link to="/favorite">
-            <img src={bookmarkIcon} alt="Bookmark" className="nav-icon" />
-          </Link>
-          <Link to="/playlists">
-            <img src={addIcon} alt="Add" className="nav-icon" />
           </Link>
           <Link to="/search">
             <img src={searchIcon} alt="Search" className="nav-icon" />
           </Link>
           {isLoggedIn && (
             <>
+              <Link to="/favorite">
+                <img src={bookmarkIcon} alt="Bookmark" className="nav-icon" />
+              </Link>
               <img src={bookmarkIcon} alt="Bookmark" className="nav-icon" />
-              <a href="/playlists">
+              <Link to="/playlists">
                 <img src={addIcon} alt="Add" className="nav-icon" />
-              </a>
+              </Link>
             </>
           )}
           <img
             onClick={() => setIsOpenLogin(true)}
             onKeyDown={() => setIsOpenLogin(true)}
-            src={spreadProfileImage || imgProfile}
+            src={imgProfile}
             alt="Profile"
             className="nav-icon nav-icon-profile-style"
           />
