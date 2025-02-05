@@ -22,7 +22,6 @@ export default function NavBar() {
   const { isOpenLogin, setIsOpenLogin } = useNav();
   const { auth } = useOutletContext() as { auth: Auth | null };
 
-  // Récupérer userId directement dans auth ou depuis localStorage
   let userId = auth?.user.id;
 
   if (!userId) {
@@ -40,7 +39,9 @@ export default function NavBar() {
           <Link to="/home">
             <img src={homeIcon} alt="Home" className="nav-icon" />
           </Link>
-          <img src={bookmarkIcon} alt="Bookmark" className="nav-icon" />
+          <Link to="/favorite">
+            <img src={bookmarkIcon} alt="Bookmark" className="nav-icon" />
+          </Link>
           <a href="/playlists">
             <img src={addIcon} alt="Add" className="nav-icon" />
           </a>

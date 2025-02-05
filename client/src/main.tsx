@@ -9,6 +9,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import App from "./App";
 import NavProvider from "./contexts/NavProvider";
 import Admin from "./pages/Admin";
+import Favorite from "./pages/Favorite";
 import HomePage from "./pages/HomePage";
 import HomeScreen from "./pages/HomeScreen";
 import Playlists from "./pages/Playlists";
@@ -47,6 +48,11 @@ const router = createBrowserRouter([
       {
         path: "/admin",
         element: <Admin />,
+      },
+
+      {
+        path: "/favorite",
+        element: <Favorite />,
       },
     ], // Renders the App component for the home page
   },

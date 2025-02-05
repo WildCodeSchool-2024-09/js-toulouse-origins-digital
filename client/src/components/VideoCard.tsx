@@ -1,6 +1,8 @@
 import "../styles/VideoCard.css";
 import { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
+import bookMarkIcon from "../assets/images/bookmark.png";
+import { useFavorites } from "../contexts/FavoritesContext";
 import { fetchPlaylists } from "../services/playlistService";
 import type { Playlist } from "../types/types";
 
@@ -43,6 +45,8 @@ export default function VideoCard({ video, onClose }: VideoPlayerProps) {
       }
       return 0;
     })();
+  const { isFavorite, addToFavorites, removeFromFavorites } = useFavorites();
+
   useEffect(() => {
     const loadPlaylists = async () => {
       setIsLoading(true);
@@ -112,6 +116,23 @@ export default function VideoCard({ video, onClose }: VideoPlayerProps) {
     }
   };
 
+  const handleFavoriteClick = () => {
+    if (!video) return;
+
+    if (isFavorite(video.id)) {
+      removeFromFavorites(video.id);
+    } else {
+      addToFavorites({
+        id: video.id,
+        title: video.title,
+        video_url: video.video_url,
+        description: video.description,
+        date: new Date(),
+        views: video.views,
+      });
+    }
+  };
+
   return (
     <>
       {isOpenCardVideo && (
@@ -125,7 +146,20 @@ export default function VideoCard({ video, onClose }: VideoPlayerProps) {
                 allowFullScreen
               />
             </div>
-            <h2 className="title-video-card">{video?.title}</h2>
+            <div className="video-header">
+              <h2 className="title-video-card">{video?.title}</h2>
+              <button
+                type="button"
+                onClick={handleFavoriteClick}
+                className="bookmark-button"
+              >
+                <img
+                  src={bookMarkIcon}
+                  alt="bookmark"
+                  className={`bookmark-icon ${video && isFavorite(video.id) ? "active" : ""}`}
+                />
+              </button>
+            </div>
             <p className="text-view">Vues: {video?.views}</p>
 
             <p className="card-text">{video?.description}</p>

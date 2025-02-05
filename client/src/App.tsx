@@ -1,6 +1,7 @@
 import "./App.css";
 import { useCallback, useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
+import { FavoritesProvider } from "./contexts/FavoritesContext";
 import { useNav } from "./contexts/NavProvider";
 import "./App.css";
 
@@ -14,7 +15,6 @@ type Auth = {
 };
 
 function App() {
-  // Charger l'authentification depuis localStorage
   const [auth, setAuth] = useState<Auth | null>(() => {
     const savedAuth = localStorage.getItem("auth");
     return savedAuth ? JSON.parse(savedAuth) : null;
@@ -30,10 +30,8 @@ function App() {
     }
   }, []);
 
-  // Gestion de l'état du menu ou modal de connexion
   const { isOpenLogin, setIsOpenLogin } = useNav();
 
-  // Sauvegarder l'auth dans localStorage chaque fois qu'il change
   useEffect(() => {
     if (auth) {
       localStorage.setItem(
@@ -71,16 +69,14 @@ function App() {
   }, [getCookie]);
 
   return (
-    <>
+    <FavoritesProvider>
       <main
-        // Si le menu est ouvert, on le ferme au clic ou au clavier
         onClick={isOpenLogin ? () => setIsOpenLogin(false) : undefined}
         onKeyDown={isOpenLogin ? () => setIsOpenLogin(false) : undefined}
       >
-        {/* Outlet pour injecter les routes enfants, avec le contexte auth */}
         <Outlet context={{ auth, setAuth }} />
       </main>
-    </>
+    </FavoritesProvider>
   );
 }
 

@@ -8,7 +8,6 @@ interface Video {
   description: string;
   video_url: string;
   date: Date;
-  duration: string;
   views: number;
 }
 
