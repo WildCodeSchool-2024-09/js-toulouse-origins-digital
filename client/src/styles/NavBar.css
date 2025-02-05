@@ -15,6 +15,23 @@
   z-index: 2;
 }
 
+.reduced-navbar-size {
+  padding: 5px;
+  width: 70%;
+  max-width: 200px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border-radius: 50px;
+  background: rgba(211, 211, 211, 0.306);
+  backdrop-filter: blur(2px);
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+}
+
 .nav-icon {
   width: 30px;
   height: 30px;

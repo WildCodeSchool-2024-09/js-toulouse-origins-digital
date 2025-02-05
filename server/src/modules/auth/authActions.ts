@@ -11,7 +11,10 @@ const login: RequestHandler = async (
 ) => {
   try {
     const user = await userRepository.readByEmailWithPassword(req.body.email);
-
+    if (!user) {
+      res.status(401).json({ message: "Email ou mot de passe incorrect" });
+      return;
+    }
     if (user == null) {
       res
         .status(422)
@@ -63,8 +66,9 @@ const verifyToken: RequestHandler = (req, res, next) => {
   try {
     const token = req.cookies.auth_token;
 
-    if (!token == null) {
-      throw new Error("Accès non autorisé, token manquant");
+    if (!token) {
+      res.status(401).json({ message: "Accès non autorisé, token manquant" });
+      return;
     }
 
     req.auth = jwt.verify(token, process.env.APP_SECRET as string) as MyPayload;
@@ -77,7 +81,7 @@ const verifyToken: RequestHandler = (req, res, next) => {
 };
 
 const logout: RequestHandler = (req, res) => {
-  res.clearCookie("token", {
+  res.clearCookie("auth_token", {
     httpOnly: true,
     secure: true,
     sameSite: "strict",

@@ -5,9 +5,10 @@ import searchIcon from "../assets/images/search.png";
 import imgProfile from "../assets/images/user-solid.svg";
 import { useNav } from "../contexts/NavProvider";
 import "../styles/NavBar.css";
+import { useEffect, useState } from "react";
 import { Link, useOutletContext } from "react-router-dom";
 import UserLogin from "./UserLogin";
-import UserLogout from "./UserLogout";
+import UserLogout from "./UserModal";
 
 type User = {
   id: number;
@@ -31,23 +32,39 @@ export default function NavBar() {
       userId = user.id;
     }
   }
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (auth) {
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+    }
+  }, [auth]);
+
+  const navbarClass = !isLoggedIn ? "reduced-navbar-size" : "nav-bar";
+
   return (
     <>
-      {isOpenLogin ? !userId ? <UserLogin /> : <UserLogout /> : null}
+      {isOpenLogin ? !isLoggedIn ? <UserLogin /> : <UserLogout /> : null}
       <div className="nav-bar-container">
-        <nav className="nav-bar">
+        <nav className={navbarClass}>
           <Link to="/home">
             <img src={homeIcon} alt="Home" className="nav-icon" />
           </Link>
-          <Link to="/favorite">
-            <img src={bookmarkIcon} alt="Bookmark" className="nav-icon" />
-          </Link>
-          <a href="/playlists">
-            <img src={addIcon} alt="Add" className="nav-icon" />
-          </a>
           <Link to="/search">
             <img src={searchIcon} alt="Search" className="nav-icon" />
           </Link>
+          {isLoggedIn && (
+            <>
+              <Link to="/favorite">
+                <img src={bookmarkIcon} alt="Bookmark" className="nav-icon" />
+              </Link>
+              <Link to="/playlists">
+                <img src={addIcon} alt="Add" className="nav-icon" />
+              </Link>
+            </>
+          )}
           <img
             onClick={() => setIsOpenLogin(true)}
             onKeyDown={() => setIsOpenLogin(true)}

@@ -1,10 +1,13 @@
-import { useState } from "react";
-import imgProfile from "../assets/images/user-solid.svg";
-import "../styles/UserLogout.css";
+import { useEffect, useState } from "react";
+import "../styles/UserModal.css";
 import { useNavigate, useOutletContext } from "react-router-dom";
+import { useNav } from "../contexts/NavProvider";
+import { useSpreadProfileImage } from "../contexts/ProfileImageProvider";
 
 type User = {
   id: number;
+  pseudo: string;
+  email: string;
 };
 
 type Auth = {
@@ -13,18 +16,16 @@ type Auth = {
 };
 
 export default function UserLogout() {
+  const localUser = localStorage.getItem("user");
+  const parsedUser = localUser ? JSON.parse(localUser) : null;
   const { setAuth } = useOutletContext() as {
-    setAuth: (auth: Auth | null) => void;
+    setAuth: React.Dispatch<React.SetStateAction<Auth | null>>;
   };
+
   const navigate = useNavigate();
-
-  const [password, setPassword] = useState(false);
-  const [pseudo, setPseudo] = useState(false);
-  const [email, setEmail] = useState(false);
-
-  const togglePassword = () => setPassword((visible) => !visible);
-  const togglePseudo = () => setPseudo((visible) => !visible);
-  const toggleEmail = () => setEmail((visible) => !visible);
+  const [showModal, setShowModal] = useState(false);
+  const { setIsOpenLogin } = useNav();
+  const { setSpreadProfileImage } = useSpreadProfileImage();
 
   const handleLogout = async () => {
     try {
@@ -32,7 +33,11 @@ export default function UserLogout() {
         method: "POST",
         credentials: "include",
       });
-
+      localStorage.clear();
+      document.cookie =
+        "auth_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
+      setSpreadProfileImage(null);
+      setIsOpenLogin(false);
       setAuth(null);
       navigate("/home");
     } catch (error) {
@@ -40,75 +45,68 @@ export default function UserLogout() {
     }
   };
 
+  useEffect(() => {
+    let timeout: NodeJS.Timeout;
+    if (showModal) {
+      timeout = setTimeout(() => {
+        setShowModal(false);
+        navigate("/home");
+      }, 3000);
+    }
+    return () => clearTimeout(timeout);
+  }, [showModal, navigate]);
+
+  const handleSuppressProfile = async () => {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/users/${parsedUser.id}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        },
+      );
+
+      if (response.ok) {
+        localStorage.clear();
+        setSpreadProfileImage(null);
+        setIsOpenLogin(false);
+        setAuth(null);
+
+        setShowModal(true);
+      } else {
+        console.error("Erreur lors de la suppression du compte");
+      }
+    } catch (error) {
+      console.error("Erreur lors de la suppression de votre profil", error);
+    }
+  };
+
   return (
-    <div
-      className="modal-container"
-      onClick={(e) => e.stopPropagation()}
-      onKeyDown={(e) => e.stopPropagation()}
-    >
-      <div className="user-login-out">
-        <h1 className="login-signup-title">Mon profil</h1>
-        <button type="button" className="first-button">
-          Modifier l'image
-        </button>
-        <img src={imgProfile} alt="Profile" className="profile-picture" />
-        <button type="button" className="first-button" onClick={togglePassword}>
-          {password
-            ? "Fermer l'onglet mot de passe "
-            : "Changer le mot de passe"}
-        </button>
-        {password && (
-          <div>
-            <input
-              type="password"
-              placeholder="Nouveau mot de passe*"
-              className="input-area"
-            />
-            <input
-              type="password"
-              placeholder="Confirmer le nouveau mot de passe*"
-              className="input-area"
-            />
-            <button type="button" className="input-area button">
-              Valider
-            </button>
-          </div>
-        )}
-        <button type="button" className="first-button" onClick={togglePseudo}>
-          {pseudo ? "Fermer l'onglet pseudo" : "Changer de pseudo"}
-        </button>
-        {pseudo && (
-          <div>
-            <input type="text" placeholder="Pseudo*" className="input-area" />
-            <button type="button" className="input-area button">
-              Valider
-            </button>
-          </div>
-        )}
-        <button type="button" className="first-button" onClick={toggleEmail}>
-          {email ? "Fermer l'onglet email" : "Changer l'adresse email"}
-        </button>
-        {email && (
-          <div>
-            <input
-              type="text"
-              placeholder="Nouvel email*"
-              className="input-area"
-            />
-            <input
-              type="text"
-              placeholder="Confirmation du nouvel email*"
-              className="input-area"
-            />
-            <button type="button" className="input-area button">
-              Valider
-            </button>
-          </div>
-        )}
-        <button type="button" className="last-button" onClick={handleLogout}>
+    <>
+      <div>
+        <button
+          type="button"
+          className="last-button disconnect"
+          onClick={handleLogout}
+        >
           Se déconnecter
         </button>
+        <button
+          type="button"
+          className="last-button suppress"
+          onClick={handleSuppressProfile}
+        >
+          Supprimer définitivement son compte
+        </button>
       </div>
-    </div>
+      {showModal && (
+        <div className="confirmation-modal">
+          <p>Votre compte a été supprimé avec succès.</p>
+        </div>
+      )}
+    </>
   );
 }
