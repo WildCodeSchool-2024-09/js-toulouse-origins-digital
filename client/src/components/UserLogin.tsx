@@ -34,6 +34,7 @@ export default function UserLogin() {
   const { setAuth } = useOutletContext() as {
     setAuth: (auth: Auth | null) => void;
   };
+
   const validateEmail = (value: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(value)) {
@@ -57,6 +58,14 @@ export default function UserLogin() {
     event: React.FormEvent<HTMLFormElement>,
   ) => {
     event.preventDefault();
+    setError("");
+    setResponseMessage("");
+
+    if (user.password !== user.confirmPassword) {
+      setError("Les mots de passe ne correspondent pas.");
+      return;
+    }
+
     try {
       const response = await fetch(
         `${import.meta.env.VITE_API_URL}/api/users/`,
@@ -66,19 +75,23 @@ export default function UserLogin() {
           body: JSON.stringify(user),
         },
       );
-      if (response) {
+      if (response.ok) {
         const responseData = await response.json();
         setResponseMessage(
           `Compte créé avec succès! pseudo:${responseData.pseudo}`,
         );
-        navigate("/home");
+        setError("");
+
+        setTimeout(() => navigate("/home"), 1500);
       } else {
+        const errorData = await response.json();
         setResponseMessage(
-          "Une erreur inconnue s'est produite. Veuillez réessayer",
+          errorData.message ||
+            "Une erreur inconnue s'est produite. Veuillez réessayer.",
         );
       }
     } catch (error) {
-      setResponseMessage("Une erreur s'est produite. Veuillez réessayer");
+      setResponseMessage("Une erreur s'est produite. Veuillez réessayer.");
     }
   };
 
@@ -86,6 +99,7 @@ export default function UserLogin() {
     event: React.FormEvent<HTMLFormElement>,
   ) => {
     event.preventDefault();
+    setResponseMessage("");
 
     if (!user.email || !user.password) {
       setResponseMessage("Veuillez remplir tous les champs.");
@@ -113,13 +127,16 @@ export default function UserLogin() {
           "user",
           JSON.stringify({
             id: user.id,
+            pseudo: user.pseudo,
+            email: user.email,
           }),
         );
         setIsOpenLogin(!isOpenLogin);
         navigate("/home");
+        setResponseMessage("Connexion réussie !");
       } else {
         const errorData = await response.json();
-        setResponseMessage(errorData.message || "Une erreur est survenue.");
+        setResponseMessage(errorData.message || "Identifiants incorrects.");
       }
     } catch (error) {
       setResponseMessage("Une erreur s'est produite. Veuillez réessayer.");
@@ -160,11 +177,20 @@ export default function UserLogin() {
               >
                 Mot de passe oublié ?
               </button>
+              {responseMessage && (
+                <div
+                  className={`modal-message ${
+                    responseMessage.includes("erreur") ? "error" : "success"
+                  }`}
+                >
+                  {responseMessage}
+                </div>
+              )}
               <button type="submit" className="primary-button">
                 Se connecter
               </button>
               <p className="switch-link">
-                Pas encore de compte ?{" "}
+                Pas encore de compte ?
                 <button
                   type="button"
                   className="switch-button"
@@ -213,20 +239,25 @@ export default function UserLogin() {
                 onChange={handleChange}
                 required
               />
-              {error && <p style={{ color: "red" }}>{error}</p>}
-              <button type="submit" className="primary-button">
-                S'inscrire
-              </button>
+              {error && <div className="modal-message error">{error}</div>}
               {responseMessage && (
-                <p
-                  className="response-message"
-                  style={{ color: "red", marginTop: "10px" }}
+                <div
+                  className={`modal-message ${
+                    responseMessage.includes("erreur") ? "error" : "success"
+                  }`}
                 >
                   {responseMessage}
-                </p>
+                </div>
               )}
+              <button
+                type="submit"
+                className="primary-button"
+                disabled={user.password !== user.confirmPassword}
+              >
+                S'inscrire
+              </button>
               <p className="switch-link">
-                Déjà un compte ?{" "}
+                Déjà un compte ?
                 <button
                   type="button"
                   className="switch-button"

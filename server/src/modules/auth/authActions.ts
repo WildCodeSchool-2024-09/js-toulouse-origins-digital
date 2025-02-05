@@ -11,7 +11,10 @@ const login: RequestHandler = async (
 ) => {
   try {
     const user = await userRepository.readByEmailWithPassword(req.body.email);
-
+    if (!user) {
+      res.status(401).json({ message: "Email ou mot de passe incorrect" });
+      return;
+    }
     if (user == null) {
       res
         .status(422)
@@ -36,6 +39,11 @@ const login: RequestHandler = async (
       const myPayload: MyPayload = {
         sub: user.id.toString(),
       };
+
+      if (!verified) {
+        res.status(401).json({ message: "Email ou mot de passe incorrect" });
+        return;
+      }
 
       const token = jwt.sign(myPayload, process.env.APP_SECRET as string, {
         expiresIn: "1h",

@@ -3,10 +3,11 @@ import { useCallback, useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 import { FavoritesProvider } from "./contexts/FavoritesContext";
 import { useNav } from "./contexts/NavProvider";
-import "./App.css";
 
 type User = {
   id: number;
+  pseudo: string;
+  email: string;
 };
 
 type Auth = {
@@ -38,6 +39,8 @@ function App() {
         "user",
         JSON.stringify({
           id: auth?.user.id,
+          pseudo: auth?.user.pseudo,
+          email: auth?.user.email,
         }),
       );
     } else {

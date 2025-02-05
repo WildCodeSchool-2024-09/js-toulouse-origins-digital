@@ -1,0 +1,126 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+.user-login-out {
+  font-family: var(--secondary-font);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #121221;
+  border-radius: 30px;
+  border: 1px solid white;
+  backdrop-filter: blur(20px);
+  width: 100%;
+  max-width: 400px;
+  margin: auto;
+  top: 10%;
+  left: 50%;
+  text-align: center;
+  transform: translate(-50%);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  animation: scaleIn 0.4s ease-out;
+  position: absolute;
+  gap: 10px;
+  padding: 20px;
+}
+
+div {
+  margin: 5px;
+}
+
+.login-signout-title {
+  font-size: 30px;
+  margin-top: 10px;
+}
+
+.first-button,
+.input-area {
+  font-size: 16px;
+  font-family: var(--secondary-font);
+  color: white;
+  border-radius: 25px;
+  padding: 12px;
+  width: 90%;
+  margin: 5px;
+}
+
+.second-button {
+  border-radius: 25px;
+  padding: 12px;
+}
+.input-area {
+  background-color: rgba(100, 95, 95, 0.395);
+  border: 1px solid rgba(255, 255, 255, 0.692);
+}
+
+.last-button {
+  font-family: var(--secondary-font);
+  color: white;
+  border-radius: 25px;
+  padding: 12px;
+  font-size: 16px;
+  width: 90%;
+  outline: none;
+}
+
+.suppress {
+  margin-bottom: 10px;
+}
+
+.disconnect {
+  margin-bottom: 10px;
+}
+
+.button.input-area {
+  margin-bottom: 10px;
+}
+
+.profile-picture {
+  width: 100%;
+  border-radius: 100%;
+  border: 3px solid #31d0d9;
+  cursor: pointer;
+}
+
+.first-button {
+  background-color: #40243bb4;
+  margin: 5px;
+}
+
+.first-button:hover {
+  background-color: #713e68b4;
+}
+
+.button {
+  background-color: #9de6ea;
+  color: black;
+}
+
+.button:hover {
+  background-color: #00fbff;
+}
+
+.last-button {
+  background-color: rgb(94, 16, 16);
+}
+
+.last-button:hover {
+  background-color: rgb(146, 25, 25);
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+  }
+  25% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}

@@ -8,6 +8,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 // Import the main app component
 import App from "./App";
 import NavProvider from "./contexts/NavProvider";
+import { SpreadProfileImageProvider } from "./contexts/ProfileImageProvider";
 import Admin from "./pages/Admin";
 import Favorite from "./pages/Favorite";
 import HomePage from "./pages/HomePage";
@@ -71,7 +72,9 @@ if (rootElement == null) {
 createRoot(rootElement).render(
   <StrictMode>
     <NavProvider>
-      <RouterProvider router={router} />
+      <SpreadProfileImageProvider>
+        <RouterProvider router={router} />
+      </SpreadProfileImageProvider>
     </NavProvider>
   </StrictMode>,
 );
