@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 type SpreadProfileImageContextProps = {
   spreadProfileImage: string | null;
@@ -15,6 +15,14 @@ export const SpreadProfileImageProvider = ({
   const [spreadProfileImage, setSpreadProfileImage] = useState<string | null>(
     localStorage.getItem("profileImage") || null,
   );
+
+  useEffect(() => {
+    if (spreadProfileImage) {
+      localStorage.setItem("profileImage", spreadProfileImage);
+    } else {
+      localStorage.removeItem("profileImage");
+    }
+  }, [spreadProfileImage]);
 
   return (
     <SpreadProfileImageContext.Provider

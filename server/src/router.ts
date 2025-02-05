@@ -17,21 +17,6 @@ import videoActions from "./modules/video/videoActions";
 import videoAndPlaylistActions from "./modules/videoPlaylist/videoAndPlaylistActions";
 import videoCategoryActions from "./modules/videocategory/videoCategoryActions";
 
-router.get("/api/favorites/:userId", favoriteActions.read);
-router.post("/api/favorites/:userId", favoriteActions.add);
-router.delete("/api/favorites/:userId", favoriteActions.remove);
-
-router.get("/api/videoplaylist/:playlistId", videoAndPlaylistActions.read);
-router.post(
-  "/api/videoplaylist/:playlistId/:videoId",
-  videoAndPlaylistActions.add,
-);
-router.delete("/api/videoplaylist/:id", videoAndPlaylistActions.remove);
-
-router.get("/api/playlists/:userId", playlistsActions.read);
-router.post("/api/playlists/:userId", playlistsActions.add);
-router.delete("/api/playlists/:id", playlistsActions.remove);
-
 router.get("/api/items", itemActions.browse);
 router.get("/api/items/:id", itemActions.read);
 router.post("/api/items", itemActions.add);
@@ -59,11 +44,8 @@ router.delete("/api/favorites/:userId", favoriteActions.remove);
 
 router.get("/api/users", userActions.browse);
 router.get("/api/users/:id", userActions.read);
-router.put("/api/users/:id", userActions.edit);
 router.post("/api/users/", authActions.hashPassword, userActions.add);
 router.post("/api/users/login", authActions.login, userActions.edit);
-router.delete("/api/users/:id", userActions.destroy);
-router.post("/api/users/logout", authActions.logout, userActions.edit);
 router.get("/api/videos", videoActions.browse);
 router.get("/api/videos/:id", videoActions.read);
 router.post("/api/videos", videoActions.add);
@@ -71,12 +53,30 @@ router.put("/api/videos/:id", videoActions.edit);
 router.put("/api/videos/views/:id", videoActions.incrementViews);
 router.delete("/api/videos/:id", videoActions.destroy);
 router.get("/api/videos/search/:term", videoActions.search);
+
+router.use(authActions.verifyToken);
+
 router.post(
   "/api/users/:id/upload-avatar",
   userActions.upload.single("avatar_url"),
   userActions.uploadAvatar,
 );
+router.delete("/api/users/:id", userActions.destroy);
+router.post("/api/users/logout", authActions.logout, userActions.edit);
+router.put("/api/users/:id", userActions.edit);
+router.get("/api/favorites/:userId", favoriteActions.read);
+router.post("/api/favorites/:userId", favoriteActions.add);
+router.delete("/api/favorites/:userId", favoriteActions.remove);
 
-router.use(authActions.verifyToken);
+router.get("/api/videoplaylist/:playlistId", videoAndPlaylistActions.read);
+router.post(
+  "/api/videoplaylist/:playlistId/:videoId",
+  videoAndPlaylistActions.add,
+);
+router.delete("/api/videoplaylist/:id", videoAndPlaylistActions.remove);
+
+router.get("/api/playlists/:userId", playlistsActions.read);
+router.post("/api/playlists/:userId", playlistsActions.add);
+router.delete("/api/playlists/:id", playlistsActions.remove);
 
 export default router;

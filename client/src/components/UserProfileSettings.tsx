@@ -1,5 +1,5 @@
 import { useState } from "react";
-import imgProfile from "../assets/images/user-solid.svg";
+import imgProfile from "/src/assets/images/user-solid.svg";
 import "../styles/UserModal.css";
 import { useOutletContext } from "react-router-dom";
 import { useSpreadProfileImage } from "../contexts/ProfileImageProvider";
@@ -22,15 +22,13 @@ export default function UserProfileSettings() {
   };
 
   const { spreadProfileImage, setSpreadProfileImage } = useSpreadProfileImage();
-
   const localUser = localStorage.getItem("user");
   const parsedUser: User = localUser
     ? JSON.parse(localUser)
     : {
-        id: 0,
         email: "",
         pseudo: "",
-        avatar_url: imgProfile,
+        avatar_url: undefined,
       };
 
   const [user, setUser] = useState<User>({
@@ -41,6 +39,7 @@ export default function UserProfileSettings() {
   });
 
   const [__, setSelectedImage] = useState<string | null>(spreadProfileImage);
+
   const [imageError, setImageError] = useState<string | null>(null);
   const [imageSuccess, setImageSuccess] = useState<string | null>(null);
 
@@ -49,6 +48,7 @@ export default function UserProfileSettings() {
   ) => {
     event.preventDefault();
     const file = event.target.files?.[0];
+
     if (!file) {
       setImageError("Aucun fichier sélectionné");
       return;
@@ -86,12 +86,11 @@ export default function UserProfileSettings() {
 
       setUser((prev) => ({ ...prev, avatar_url: data.avatar_url }));
       setSpreadProfileImage(data.avatar_url);
+      setUser((prev) => ({ ...prev, avatar_url: data.avatar_url }));
       setSelectedImage(data.avatar_url);
 
-      localStorage.setItem(
-        "user",
-        JSON.stringify({ ...parsedUser, avatar_url: data.avatar_url }),
-      );
+      const updatedUser = { ...parsedUser, avatar_url: data.avatar_url };
+      localStorage.setItem("user", JSON.stringify(updatedUser));
     } catch (error) {
       console.error("Erreur de mise à jour d'image :", error);
       setImageError("Erreur lors de l'envoi de l'image.");
@@ -174,7 +173,7 @@ export default function UserProfileSettings() {
           body: JSON.stringify({
             email: user.email,
             pseudo: user.pseudo,
-            avatar_url: imgProfile,
+            avatar_url: user.avatar_url,
           }),
         },
       );
@@ -220,11 +219,6 @@ export default function UserProfileSettings() {
           accept="image/*"
           onChange={handleImageChange}
           style={{ display: "none" }}
-        />
-        <img
-          src={imgProfile || user.avatar_url}
-          alt="Profile"
-          className="profile-picture"
         />
       </div>
       {imageError && <p className="error">{imageError}</p>}
