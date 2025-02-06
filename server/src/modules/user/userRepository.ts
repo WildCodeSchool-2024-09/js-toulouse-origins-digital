@@ -42,8 +42,7 @@ class userRepository {
 
   async create(user: Omit<User, "id">) {
     try {
-      const query =
-        'insert into user (email, hashed_password, pseudo, is_admin, avatar_url) values (?, ?, ?, ?, "https://img.freepik.com/vecteurs-libre/jeu-astronaute-mignon-joystick-casque-dessin-anime-icone-vectorielle-illustration-science-techno_138676-9648.jpg")';
+      const query = `insert into user (email, hashed_password, pseudo, is_admin, avatar_url) values (?, ?, ?, ?, "https://images-ext-1.discordapp.net/external/Wm6KsZl_iebEBuXjiRPIG_mWBPxecfHMUqUC6Hgu8bI/https/img.freepik.com/vecteurs-libre/jeu-astronaute-mignon-joystick-casque-dessin-anime-icone-vectorielle-illustration-science-techno_138676-9648.jpg")`;
       const params = [
         user.email,
         user.hashed_password,
