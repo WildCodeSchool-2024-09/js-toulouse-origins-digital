@@ -81,7 +81,8 @@ div {
 }
 
 .profile-picture {
-  width: 100%;
+  width: 40%;
+  height: 40%;
   border-radius: 100%;
   border: 3px solid #31d0d9;
   cursor: pointer;
