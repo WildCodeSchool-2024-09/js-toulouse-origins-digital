@@ -16,7 +16,8 @@ import userActions from "./modules/user/userActions";
 import videoActions from "./modules/video/videoActions";
 import videoAndPlaylistActions from "./modules/videoPlaylist/videoAndPlaylistActions";
 import videoCategoryActions from "./modules/videocategory/videoCategoryActions";
-import videoCategoryRepository from "./modules/videocategory/videoCategoryRepository";
+
+router.post("/api/upload", uploadActions.uploadFile);
 
 router.get("/api/items", itemActions.browse);
 router.get("/api/items/:id", itemActions.read);

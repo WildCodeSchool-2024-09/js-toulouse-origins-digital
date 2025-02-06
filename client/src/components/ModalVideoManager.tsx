@@ -95,6 +95,8 @@ export default function ModalVideoManager({
     };
 
     onSubmit(videoData);
+    (event.target as HTMLFormElement).reset();
+    setSelectedCategories([]);
   };
 
   return isShowing

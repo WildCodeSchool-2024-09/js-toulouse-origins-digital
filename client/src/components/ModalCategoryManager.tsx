@@ -71,6 +71,8 @@ export default function ModalCategoryManager({
       };
 
       await onSubmit(categoryData);
+      setPreviewUrl(null);
+      (event.target as HTMLFormElement).reset();
       hide();
     } catch (error) {
       console.error("Error:", error);

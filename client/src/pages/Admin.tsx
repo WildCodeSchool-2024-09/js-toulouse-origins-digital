@@ -169,17 +169,13 @@ export default function Admin() {
                 headers: {
                   "Content-Type": "application/json",
                 },
-                body: JSON.stringify({
-                  email: userData.email,
-                  pseudo: userData.pseudo,
-                  is_admin: userData.is_admin,
-                  avatar_url: userData.avatar_url,
-                }),
+                body: JSON.stringify(userData),
               },
             );
+
             if (response.ok) {
-              setUser((users) =>
-                users.map((u) =>
+              setUser((prevUsers) =>
+                prevUsers.map((u) =>
                   u.id === editingUser?.id ? { ...u, ...userData } : u,
                 ),
               );
@@ -199,12 +195,13 @@ export default function Admin() {
         isEdit={!!editingCategory}
         onSubmit={async (categoryData) => {
           try {
-            const url = editingCategory?.id
+            const isEditing = !!editingCategory?.id;
+            const url = isEditing
               ? `${import.meta.env.VITE_API_URL}/api/categories/${editingCategory.id}`
               : `${import.meta.env.VITE_API_URL}/api/categories`;
 
             const response = await fetch(url, {
-              method: editingCategory?.id ? "PUT" : "POST",
+              method: isEditing ? "PUT" : "POST",
               headers: {
                 "Content-Type": "application/json",
               },
@@ -212,21 +209,23 @@ export default function Admin() {
             });
 
             if (response.ok) {
-              const result = await response.json();
-              const categoryResponse = await fetch(
-                `${import.meta.env.VITE_API_URL}/api/categories/${result.insertId}`,
-              );
-              const newCategory = await categoryResponse.json();
-
-              setCategory((prevCategories) =>
-                editingCategory?.id
-                  ? prevCategories.map((c) =>
-                      c.id === editingCategory.id
-                        ? { ...c, ...categoryData }
-                        : c,
-                    )
-                  : [...prevCategories, newCategory],
-              );
+              if (isEditing) {
+                setCategory((prevCategories) =>
+                  prevCategories.map((c) =>
+                    c.id === editingCategory.id ? { ...c, ...categoryData } : c,
+                  ),
+                );
+              } else {
+                const result = await response.json();
+                const categoryResponse = await fetch(
+                  `${import.meta.env.VITE_API_URL}/api/categories/${result.insertId}`,
+                );
+                const newCategory = await categoryResponse.json();
+                setCategory((prevCategories) => [
+                  ...prevCategories,
+                  newCategory,
+                ]);
+              }
               toggleCategory();
             }
           } catch (error) {

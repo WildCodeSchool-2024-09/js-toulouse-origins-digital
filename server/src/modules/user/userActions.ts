@@ -35,7 +35,8 @@ const edit: RequestHandler = async (req, res, next) => {
       id: Number(req.params.id),
       email: req.body.email,
       pseudo: req.body.pseudo,
-      is_admin: dbUser?.is_admin,
+      is_admin:
+        req.body.is_admin !== undefined ? req.body.is_admin : dbUser?.is_admin,
       avatar_url: req.body.avatar_url,
     };
 
@@ -43,7 +44,7 @@ const edit: RequestHandler = async (req, res, next) => {
     if (affectedRows === 0) {
       res.sendStatus(404);
     } else {
-      res.status(204);
+      res.sendStatus(204);
     }
   } catch (error) {
     next(error);

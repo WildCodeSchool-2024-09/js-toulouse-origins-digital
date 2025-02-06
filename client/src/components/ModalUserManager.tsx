@@ -71,6 +71,8 @@ export default function ModalUserManager({
       };
 
       await onSubmit(userData);
+      setPreviewUrl(null);
+      (event.target as HTMLFormElement).reset();
     } catch (error) {
       console.error("Error:", error);
     } finally {
