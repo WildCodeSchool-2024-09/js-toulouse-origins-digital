@@ -52,6 +52,21 @@ export default function ModalUserManager({
 
     try {
       const formData = new FormData(event.currentTarget);
+      if (!formData.get("pseudo")?.toString().trim()) {
+        alert("Le pseudo est requis");
+        return;
+      }
+      if (!formData.get("email")?.toString().trim()) {
+        alert("L'email est requis");
+        return;
+      }
+
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(formData.get("email")?.toString() || "")) {
+        alert("Veuillez entrer un email valide");
+        return;
+      }
+
       const avatarFile = (
         event.currentTarget.querySelector("#avatar_url") as HTMLInputElement
       ).files?.[0];

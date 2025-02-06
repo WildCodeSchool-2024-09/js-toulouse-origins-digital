@@ -16,11 +16,13 @@ import useModal from "../services/useModal";
 import AccessDenied from "./AccessDenied";
 
 const truncateText = (text: string, maxLength = 80) => {
+  if (!text) return "";
   if (text.length <= maxLength) return text;
   return `${text.slice(0, maxLength).trim()}...`;
 };
 
-const formatDate = (dateString: string) => {
+const formatDate = (dateString: string | undefined) => {
+  if (!dateString) return new Date().toLocaleDateString("fr-FR");
   try {
     const date = new Date(dateString);
     if (Number.isNaN(date.getTime()))
@@ -31,7 +33,12 @@ const formatDate = (dateString: string) => {
   }
 };
 
-const formatTime = (dateString: string) => {
+const formatTime = (dateString: string | undefined) => {
+  if (!dateString)
+    return new Date().toLocaleTimeString("fr-FR", {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
   try {
     const date = new Date(dateString);
     if (Number.isNaN(date.getTime()))
@@ -384,21 +391,25 @@ export default function Admin() {
                     />
                   ))}
                 {adminSection === "videos" &&
-                  video.map((vid) => (
-                    <CardVideoManager
-                      id={vid.id}
-                      key={vid.id}
-                      title={vid.title}
-                      description={truncateText(vid.description)}
-                      duration={formatTime(vid.date.toString())}
-                      video_url={vid.video_url}
-                      date={formatDate(vid.date.toString())}
-                      views={vid.views}
-                      categories={vid.categories}
-                      onEdit={() => toggleVideo(vid.id)}
-                      onDelete={handleVideoDelete}
-                    />
-                  ))}
+                  video.map((vid) => {
+                    if (!vid || !vid.date) return null; // Skip invalid videos
+
+                    return (
+                      <CardVideoManager
+                        id={vid.id}
+                        key={vid.id}
+                        title={vid.title}
+                        description={truncateText(vid.description)}
+                        duration={formatTime(vid.date?.toString())}
+                        video_url={vid.video_url}
+                        date={formatDate(vid.date?.toString())}
+                        views={vid.views || 0}
+                        categories={vid.categories || []}
+                        onEdit={() => toggleVideo(vid.id)}
+                        onDelete={handleVideoDelete}
+                      />
+                    );
+                  })}
                 {adminSection === "users" &&
                   user.map((user) => (
                     <CardUserManager

@@ -67,12 +67,25 @@ export default function ModalVideoManager({
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    const videoUrl = formData.get("video_url") as string;
 
-    if (selectedCategories.length === 0) {
-      alert("Veuillez sélectionner au moins 1 catégorie");
+    if (!formData.get("title")?.toString().trim()) {
+      alert("Le titre est requis");
       return;
     }
+    if (!formData.get("description")?.toString().trim()) {
+      alert("La description est requise");
+      return;
+    }
+    if (!formData.get("video_url")?.toString().trim() && !isEdit) {
+      alert("L'URL de la vidéo est requise");
+      return;
+    }
+    if (selectedCategories.length === 0) {
+      alert("Veuillez sélectionner au moins une catégorie");
+      return;
+    }
+
+    const videoUrl = formData.get("video_url") as string;
 
     const videaUrlRegex =
       /^https:\/\/app\.videas\.fr\/embed\/media\/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}\/$/;
