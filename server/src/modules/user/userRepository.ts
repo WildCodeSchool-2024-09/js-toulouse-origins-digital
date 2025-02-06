@@ -4,9 +4,9 @@ import type { Result, Rows } from "../../../database/client";
 type User = {
   id: number;
   email: string;
-  hashed_password?: string;
   pseudo: string;
-  is_admin: boolean;
+  hashed_password: string;
+  is_admin: boolean | undefined;
   avatar_url: string;
 };
 
@@ -32,7 +32,7 @@ class userRepository {
     return rows[0] as User;
   }
 
-  async update(user: User) {
+  async update(user: Omit<User, "hashed_password">) {
     const [result] = await databaseClient.query<Result>(
       "update user set email = ?, pseudo = ?, is_admin = ?, avatar_url = ? where id = ?",
       [user.email, user.pseudo, user.is_admin, user.avatar_url, user.id],
@@ -43,7 +43,7 @@ class userRepository {
   async create(user: Omit<User, "id">) {
     try {
       const query =
-        'insert into user (email, hashed_password, pseudo, is_admin, avatar_url) values (?, ?, ?, ?, "https://img.freepik.com/vecteurs-libre/jeu-astronaute-mignon-joystick-casque-dessin-anime-icone-vectorielle-illustration-science-techno_138676-9648.jpg")';
+        "insert into user (email, hashed_password, pseudo, is_admin, avatar_url) values (?, ?, ?, ?, ?)";
       const params = [
         user.email,
         user.hashed_password,
@@ -62,6 +62,15 @@ class userRepository {
   async delete(id: number) {
     const query = "delete from user where id = ?";
     const [result] = await databaseClient.query<Result>(query, [id]);
+    return result.affectedRows;
+  }
+
+  async updateProfileImage(userId: number, avatarUrl: string): Promise<number> {
+    const query = "UPDATE user SET avatar_url = ? WHERE id = ?";
+    const [result] = await databaseClient.query<Result>(query, [
+      avatarUrl,
+      userId,
+    ]);
     return result.affectedRows;
   }
 }

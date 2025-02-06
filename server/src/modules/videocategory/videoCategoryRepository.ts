@@ -34,8 +34,30 @@ class VideoCategoryRepository {
 
   async delete(videoCategory: VideoCategory): Promise<Result> {
     const [result] = await databaseClient.query<Result>(
-      "delete from video_category where id_category = ? ans id_video = ?",
+      "delete from video_category where id_category = ? and id_video = ?",
       [videoCategory.id_category, videoCategory.id_video],
+    );
+    return result;
+  }
+
+  async updateCategories(
+    videoId: number,
+    categoryIds: number[],
+  ): Promise<Result> {
+    await databaseClient.query(
+      "DELETE FROM video_category WHERE id_video = ?",
+      [videoId],
+    );
+
+    if (categoryIds.length > 0) {
+      const values = categoryIds.map((id) => [videoId, id]);
+      await databaseClient.query(
+        "INSERT INTO video_category (id_video, id_category) VALUES ?",
+        [values],
+      );
+    }
+    const [result] = await databaseClient.query<Result>(
+      "SELECT ROW_COUNT() as affectedRows",
     );
     return result;
   }

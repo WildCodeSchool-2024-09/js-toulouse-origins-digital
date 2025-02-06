@@ -10,7 +10,7 @@ const gameCategories = [
   { id: 3, name: "FPS" },
   { id: 4, name: "Battle Royal" },
   { id: 5, name: "Sport" },
-  { id: 6, name: "Strégie" },
+  { id: 6, name: "Stratégie" },
   { id: 7, name: "Sandbox" },
   { id: 8, name: "Aventure" },
   { id: 9, name: "Combat" },

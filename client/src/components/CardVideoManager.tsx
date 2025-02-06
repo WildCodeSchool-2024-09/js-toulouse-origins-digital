@@ -1,7 +1,13 @@
+import { useEffect, useState } from "react";
 import editPicto from "../assets/images/pencil-management.png";
 import deletePicto from "../assets/images/trash-management.png";
 import useDeleteVideo from "../services/deleteVideo";
 import "../styles/CardVideoManager.css";
+
+interface Category {
+  id: number;
+  name: string;
+}
 
 interface CardVideoManagerProps {
   id: number;
@@ -11,6 +17,7 @@ interface CardVideoManagerProps {
   video_url: string;
   date: string;
   views: number;
+  categories: number[];
   onEdit: () => void;
   onDelete: (deletedId: number) => void;
 }
@@ -35,10 +42,34 @@ export default function CardVideoManager({
   video_url,
   date,
   views,
+  categories,
   onEdit,
   onDelete,
 }: CardVideoManagerProps) {
+  const [categoryNames, setCategoryNames] = useState<Category[]>([]);
   const deleteVideo = useDeleteVideo();
+
+  useEffect(() => {
+    const fetchCategoryNames = async () => {
+      try {
+        const fetchedCategories = await Promise.all(
+          categories.map((categoryId) =>
+            fetch(`http://localhost:3310/api/categories/${categoryId}`).then(
+              (res) => res.json(),
+            ),
+          ),
+        );
+        setCategoryNames(fetchedCategories);
+      } catch (error) {
+        console.error("Error fetching category names:", error);
+      }
+    };
+
+    if (categories?.length) {
+      fetchCategoryNames();
+    }
+  }, [categories]);
+
   const handleDelete = async () => {
     if (
       window.confirm(`Êtes-vous sûr de vouloir supprimer la vidéo "${title}" ?`)
@@ -58,7 +89,13 @@ export default function CardVideoManager({
           <div className="video-card-content">
             <h2 className="video-card-title">{title}</h2>
             <p className="video-card-description">{description}</p>
-            <p className="category-video-admin">Action/aventure</p>
+            <div className="video-card-categories-containter">
+              {categoryNames.map((category) => (
+                <p key={category.id} className="category-video-admin">
+                  {category.name}
+                </p>
+              ))}
+            </div>
             <ul className="video-details">
               <li>{date}</li>
               <li>{duration}</li>
