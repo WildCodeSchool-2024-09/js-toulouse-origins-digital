@@ -28,10 +28,12 @@ function getVideasThumbnail(url: string): string {
 
 interface CarouselFavoriteVideoProps {
   selectedCategories: number[];
+  sortBy: string;
 }
 
 export default function CarouselFavoriteVideo({
   selectedCategories,
+  sortBy,
 }: CarouselFavoriteVideoProps) {
   const handleCloseVideo = () => setSelectedVideo(null);
   const { favorites, removeFromFavorites } = useFavorites();
@@ -66,6 +68,25 @@ export default function CarouselFavoriteVideo({
         )
       : favorites;
 
+  const sortedFavorites = [...filteredFavorites].sort((a, b) => {
+    switch (sortBy) {
+      case "recent":
+        return new Date(b.date).getTime() - new Date(a.date).getTime();
+      case "oldest":
+        return new Date(a.date).getTime() - new Date(b.date).getTime();
+      case "az":
+        return a.title.localeCompare(b.title);
+      case "za":
+        return b.title.localeCompare(a.title);
+      case "views":
+        return b.views - a.views;
+      case "less-views":
+        return a.views - b.views;
+      default:
+        return 0;
+    }
+  });
+
   if (filteredFavorites.length === 0) {
     return (
       <div className="no-favorites-message">
@@ -78,7 +99,7 @@ export default function CarouselFavoriteVideo({
 
   return (
     <div className="carousel-favorite-video">
-      {filteredFavorites.map((video) => (
+      {sortedFavorites.map((video) => (
         <div key={video.id} className="favorite-video-container">
           <div
             key={video.id}

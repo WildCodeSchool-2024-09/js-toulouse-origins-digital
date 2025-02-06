@@ -19,9 +19,20 @@ const gameCategories = [
   { id: 12, name: "Simulation" },
 ];
 
+const sortOptions = [
+  { id: "recent", name: "Plus récent" },
+  { id: "oldest", name: "Plus ancien" },
+  { id: "views", name: "Populaire" },
+  { id: "less-views", name: "Moins populaire" },
+  { id: "az", name: "A-Z" },
+  { id: "za", name: "Z-A" },
+];
+
 export default function Favorite() {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [isSortOpen, setIsSortOpen] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
+  const [sortBy, setSortBy] = useState<string>("recent");
 
   const handleCategoryToggle = (categoryId: number) => {
     setSelectedCategories((prev) => {
@@ -37,11 +48,19 @@ export default function Favorite() {
     if (!target.closest(".filter-container")) {
       setIsFilterOpen(false);
     }
+    if (!target.closest(".sort-container")) {
+      setIsSortOpen(false);
+    }
   };
 
   const resetFilters = () => {
     setSelectedCategories([]);
     setIsFilterOpen(false);
+  };
+
+  const handleSortClick = (sortId: string) => {
+    setSortBy(sortId);
+    setIsSortOpen(false);
   };
 
   return (
@@ -91,12 +110,39 @@ export default function Favorite() {
                 </div>
               )}
             </div>
-            <h3>Trier</h3>
+            <div className="sort-container">
+              <button
+                type="button"
+                className="sort-button"
+                onClick={() => setIsSortOpen(!isSortOpen)}
+              >
+                {sortOptions.find((opt) => opt.id === sortBy)?.name || "Trier"}
+              </button>
+              {isSortOpen && (
+                <div className="sort-dropdown">
+                  <div className="sort-list">
+                    {sortOptions.map((option) => (
+                      <button
+                        key={option.id}
+                        type="button"
+                        className={`sort-item ${sortBy === option.id ? "active" : ""}`}
+                        onClick={() => handleSortClick(option.id)}
+                      >
+                        {option.name}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </div>
         <hr className="line" />
         <div className="favorite-video">
-          <CarouselFavoriteVideo selectedCategories={selectedCategories} />
+          <CarouselFavoriteVideo
+            selectedCategories={selectedCategories}
+            sortBy={sortBy}
+          />
         </div>
         <NavBar />
       </section>

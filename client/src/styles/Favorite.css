@@ -128,7 +128,7 @@
 }
 
 .category-item:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(59, 130, 246, 0.3);
 }
 
 .category-name {
@@ -166,4 +166,60 @@ input[type="checkbox"] {
   cursor: pointer;
   padding: 5px;
   margin-left: 10px;
+}
+
+.sort-container {
+  position: relative;
+}
+
+.sort-button {
+  background: none;
+  border: none;
+  color: white;
+  font-family: "Exo", sans-serif;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 5px 10px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.sort-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: #2f3941;
+  border-radius: 8px;
+  padding: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  min-width: 200px;
+  margin-top: 5px;
+}
+
+.sort-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sort-item {
+  background: none;
+  border: none;
+  color: white;
+  text-align: left;
+  padding: 8px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.sort-item:hover {
+  background-color: rgba(147, 51, 234, 0.3);
+}
+
+.sort-item.active {
+  background-color: rgba(147, 51, 234, 0.5);
+  color: white;
 }
