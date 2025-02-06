@@ -186,7 +186,7 @@ export default function Admin() {
                       "Content-Type": "application/json",
                     },
                     body: JSON.stringify(categoryData),
-                  }
+                  },
                 );
 
                 if (response.ok) {
@@ -194,8 +194,8 @@ export default function Admin() {
                     prevCategories.map((c) =>
                       c.id === editingCategory.id
                         ? { ...c, ...categoryData }
-                        : c
-                    )
+                        : c,
+                    ),
                   );
                   toggleCategory();
                 } else {
@@ -227,13 +227,13 @@ export default function Admin() {
                       is_admin: userData.is_admin,
                       avatar_url: userData.avatar_url,
                     }),
-                  }
+                  },
                 );
                 if (response.ok) {
                   setUser((users) =>
                     users.map((u) =>
-                      u.id === editingUser?.id ? { ...u, ...userData } : u
-                    )
+                      u.id === editingUser?.id ? { ...u, ...userData } : u,
+                    ),
                   );
                   toggleUser();
                 } else {
@@ -270,7 +270,7 @@ export default function Admin() {
                   const categoryResponse = await fetch(
                     `${import.meta.env.VITE_API_URL}/api/categories/${
                       result.insertId
-                    }`
+                    }`,
                   );
                   const newCategory = await categoryResponse.json();
 
@@ -279,9 +279,9 @@ export default function Admin() {
                       ? prevCategories.map((c) =>
                           c.id === editingCategory.id
                             ? { ...c, ...categoryData }
-                            : c
+                            : c,
                         )
-                      : [...prevCategories, newCategory]
+                      : [...prevCategories, newCategory],
                   );
                   toggleCategory();
                 }
@@ -304,7 +304,7 @@ export default function Admin() {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(videoData),
-                  }
+                  },
                 );
                 const categoriesResponse = await fetch(
                   `${import.meta.env.VITE_API_URL}/api/videocategory/${
@@ -314,7 +314,7 @@ export default function Admin() {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ categoryIds: videoData.categories }),
-                  }
+                  },
                 );
 
                 if (videoResponse.ok && categoriesResponse.ok) {
@@ -328,7 +328,7 @@ export default function Admin() {
                         };
                       }
                       return vid;
-                    })
+                    }),
                   );
                   toggleVideo();
                 }
@@ -376,8 +376,8 @@ export default function Admin() {
               {adminSection === "categories"
                 ? "catégories"
                 : adminSection === "videos"
-                ? "vidéos"
-                : "utilisateurs"}
+                  ? "vidéos"
+                  : "utilisateurs"}
             </h2>
 
             {adminSection !== "users" && (
@@ -388,8 +388,8 @@ export default function Admin() {
                   adminSection === "categories"
                     ? () => toggleCategory()
                     : adminSection === "videos"
-                    ? () => toggleVideo()
-                    : undefined
+                      ? () => toggleVideo()
+                      : undefined
                 }
               >
                 + Ajouter
