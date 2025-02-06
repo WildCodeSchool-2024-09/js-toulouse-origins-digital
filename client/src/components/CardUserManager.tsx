@@ -42,7 +42,11 @@ export default function CardUserManager({
     }
   };
   return (
-    <div className="admin-card user-card">
+    <div
+      className={
+        id !== 1 ? "admin-card user-card" : "admin-card user-card-blocked"
+      }
+    >
       {is_admin ? (
         <div className="avatar-container">
           <img className="user-avatar-admin" src={fullAvatarUrl} alt="" />
@@ -51,28 +55,30 @@ export default function CardUserManager({
       ) : (
         <img className="user-avatar" src={fullAvatarUrl} alt="" />
       )}
-      <div className="user-info">
+      <div className={id !== 1 ? "user-info" : "user-info-blocked"}>
         <p className="user-name">{pseudo}</p>
         <p className="user-email">{email}</p>
       </div>
-      <div className="user-actions">
-        <img
-          width={30}
-          className="edit"
-          src={editPicto}
-          alt="Modifier"
-          onClick={onEdit}
-          onKeyDown={onEdit}
-        />
-        <img
-          width={30}
-          className="delete"
-          src={deletePicto}
-          alt="Supprimer"
-          onClick={handleDelete}
-          onKeyDown={handleDelete}
-        />
-      </div>
+      {id !== 1 && (
+        <div className="user-actions">
+          <img
+            width={30}
+            className="edit"
+            src={editPicto}
+            alt="Modifier"
+            onClick={onEdit}
+            onKeyDown={onEdit}
+          />
+          <img
+            width={30}
+            className="delete"
+            src={deletePicto}
+            alt="Supprimer"
+            onClick={handleDelete}
+            onKeyDown={handleDelete}
+          />
+        </div>
+      )}
     </div>
   );
 }

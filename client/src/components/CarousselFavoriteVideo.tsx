@@ -46,7 +46,7 @@ export default function CarouselFavoriteVideo({
     const fetchCategories = async () => {
       for (const video of favorites) {
         const response = await fetch(
-          `http://localhost:3310/api/videocategory/categories/${video.id}`,
+          `${import.meta.env.VITE_API_URL}/api/videocategory/categories/${video.id}`,
         );
         const data = await response.json();
         setVideoCategories((prev) => ({

@@ -22,9 +22,11 @@ export default function CardCategoryManager({
 }: CardCategoryManagerProps) {
   const deleteCategory = useDeleteCategory();
 
-  const fullImageUrl = url_image.startsWith("http")
-    ? url_image
-    : `${import.meta.env.VITE_API_URL}${url_image}`;
+  const fullImageUrl = url_image
+    ? url_image.startsWith("http")
+      ? url_image
+      : `${import.meta.env.VITE_API_URL}${url_image}`
+    : "";
 
   const handleDelete = async () => {
     if (
