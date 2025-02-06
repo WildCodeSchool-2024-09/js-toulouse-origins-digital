@@ -53,6 +53,18 @@ export default function ModalCategoryManager({
 
     try {
       const formData = new FormData(event.currentTarget);
+      if (!formData.get("name")?.toString().trim()) {
+        alert("Le nom de la catégorie est requis");
+        return;
+      }
+      if (!formData.get("description")?.toString().trim()) {
+        alert("La description est requise");
+        return;
+      }
+      if (!previewUrl && !category?.url_image) {
+        alert("Une image est requise");
+        return;
+      }
       const imageFile = (
         event.currentTarget.querySelector("#url_image") as HTMLInputElement
       ).files?.[0];
@@ -71,6 +83,8 @@ export default function ModalCategoryManager({
       };
 
       await onSubmit(categoryData);
+      setPreviewUrl(null);
+      (event.target as HTMLFormElement).reset();
       hide();
     } catch (error) {
       console.error("Error:", error);
