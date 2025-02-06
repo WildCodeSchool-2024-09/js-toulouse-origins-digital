@@ -55,9 +55,8 @@ router.put("/api/videos/:id", videoActions.edit);
 router.put("/api/videos/views/:id", videoActions.incrementViews);
 router.delete("/api/videos/:id", videoActions.destroy);
 router.get("/api/videos/search/:term", videoActions.search);
-
-router.put("/api/users/:id", userActions.edit);
 router.delete("/api/users/:id", userActions.destroy);
+router.put("/api/users/:id", userActions.edit);
 
 router.use(authActions.verifyToken);
 
@@ -66,7 +65,9 @@ router.post(
   userActions.upload.single("avatar_url"),
   userActions.uploadAvatar,
 );
+
 router.post("/api/users/logout", authActions.logout, userActions.edit);
+
 router.get("/api/favorites/:userId", favoriteActions.read);
 router.post("/api/favorites/:userId", favoriteActions.add);
 router.delete("/api/favorites/:userId", favoriteActions.remove);

@@ -21,20 +21,34 @@ const truncateText = (text: string, maxLength = 80) => {
 };
 
 const formatDate = (dateString: string) => {
-  const date = new Date(dateString);
-  return new Intl.DateTimeFormat("fr-FR", {
-    day: "numeric",
-    month: "numeric",
-    year: "numeric",
-  }).format(date);
+  try {
+    const date = new Date(dateString);
+    if (Number.isNaN(date.getTime()))
+      return new Date().toLocaleDateString("fr-FR");
+    return date.toLocaleDateString("fr-FR");
+  } catch {
+    return new Date().toLocaleDateString("fr-FR");
+  }
 };
 
 const formatTime = (dateString: string) => {
-  const date = new Date(dateString);
-  return new Intl.DateTimeFormat("fr-FR", {
-    hour: "2-digit",
-    minute: "2-digit",
-  }).format(date);
+  try {
+    const date = new Date(dateString);
+    if (Number.isNaN(date.getTime()))
+      return new Date().toLocaleTimeString("fr-FR", {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+    return date.toLocaleTimeString("fr-FR", {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  } catch {
+    return new Date().toLocaleTimeString("fr-FR", {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  }
 };
 
 interface Category {
@@ -172,7 +186,7 @@ export default function Admin() {
                       "Content-Type": "application/json",
                     },
                     body: JSON.stringify(categoryData),
-                  },
+                  }
                 );
 
                 if (response.ok) {
@@ -180,8 +194,8 @@ export default function Admin() {
                     prevCategories.map((c) =>
                       c.id === editingCategory.id
                         ? { ...c, ...categoryData }
-                        : c,
-                    ),
+                        : c
+                    )
                   );
                   toggleCategory();
                 } else {
@@ -213,17 +227,63 @@ export default function Admin() {
                       is_admin: userData.is_admin,
                       avatar_url: userData.avatar_url,
                     }),
-                  },
+                  }
                 );
                 if (response.ok) {
                   setUser((users) =>
                     users.map((u) =>
-                      u.id === editingUser?.id ? { ...u, ...userData } : u,
-                    ),
+                      u.id === editingUser?.id ? { ...u, ...userData } : u
+                    )
                   );
                   toggleUser();
                 } else {
                   console.error("Erreur lors de la mise à jour");
+                }
+              } catch (error) {
+                console.error("Erreur:", error);
+              }
+            }}
+          />
+          <ModalCategoryManager
+            isShowing={isShowingCategory}
+            hide={() => toggleCategory()}
+            category={editingCategory}
+            isEdit={!!editingCategory}
+            onSubmit={async (categoryData) => {
+              try {
+                const url = editingCategory?.id
+                  ? `${import.meta.env.VITE_API_URL}/api/categories/${
+                      editingCategory.id
+                    }`
+                  : `${import.meta.env.VITE_API_URL}/api/categories`;
+
+                const response = await fetch(url, {
+                  method: editingCategory?.id ? "PUT" : "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify(categoryData),
+                });
+
+                if (response.ok) {
+                  const result = await response.json();
+                  const categoryResponse = await fetch(
+                    `${import.meta.env.VITE_API_URL}/api/categories/${
+                      result.insertId
+                    }`
+                  );
+                  const newCategory = await categoryResponse.json();
+
+                  setCategory((prevCategories) =>
+                    editingCategory?.id
+                      ? prevCategories.map((c) =>
+                          c.id === editingCategory.id
+                            ? { ...c, ...categoryData }
+                            : c
+                        )
+                      : [...prevCategories, newCategory]
+                  );
+                  toggleCategory();
                 }
               } catch (error) {
                 console.error("Erreur:", error);
@@ -244,7 +304,7 @@ export default function Admin() {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(videoData),
-                  },
+                  }
                 );
                 const categoriesResponse = await fetch(
                   `${import.meta.env.VITE_API_URL}/api/videocategory/${
@@ -254,7 +314,7 @@ export default function Admin() {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ categoryIds: videoData.categories }),
-                  },
+                  }
                 );
 
                 if (videoResponse.ok && categoriesResponse.ok) {
@@ -268,7 +328,7 @@ export default function Admin() {
                         };
                       }
                       return vid;
-                    }),
+                    })
                   );
                   toggleVideo();
                 }
@@ -316,12 +376,22 @@ export default function Admin() {
               {adminSection === "categories"
                 ? "catégories"
                 : adminSection === "videos"
-                  ? "vidéos"
-                  : "utilisateurs"}
+                ? "vidéos"
+                : "utilisateurs"}
             </h2>
 
             {adminSection !== "users" && (
-              <button className="add-card-manager" type="button">
+              <button
+                className="add-card-manager"
+                type="button"
+                onClick={
+                  adminSection === "categories"
+                    ? () => toggleCategory()
+                    : adminSection === "videos"
+                    ? () => toggleVideo()
+                    : undefined
+                }
+              >
                 + Ajouter
               </button>
             )}
