@@ -9,6 +9,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import App from "./App";
 import NavProvider from "./contexts/NavProvider";
 import { SpreadProfileImageProvider } from "./contexts/ProfileImageProvider";
+import AccessDenied from "./pages/AccessDenied";
 import Admin from "./pages/Admin";
 import Favorite from "./pages/Favorite";
 import HomePage from "./pages/HomePage";
@@ -50,10 +51,13 @@ const router = createBrowserRouter([
         path: "/admin",
         element: <Admin />,
       },
-
       {
         path: "/favorite",
         element: <Favorite />,
+      },
+      {
+        path: "/accessdenied",
+        element: <AccessDenied />,
       },
     ], // Renders the App component for the home page
   },
