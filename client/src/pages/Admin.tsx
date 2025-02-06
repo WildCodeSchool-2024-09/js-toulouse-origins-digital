@@ -138,9 +138,7 @@ export default function Admin() {
         const videosWithCategories = await Promise.all(
           videos.map(async (video: Video) => {
             const categoriesResponse = await fetch(
-              `${import.meta.env.VITE_API_URL}/api/videocategory/categories/${
-                video.id
-              }`,
+              `${import.meta.env.VITE_API_URL}/api/videocategory/categories/${video.id}`,
             );
             const videoCategories = await categoriesResponse.json();
             return {
@@ -181,17 +179,13 @@ export default function Admin() {
                     headers: {
                       "Content-Type": "application/json",
                     },
-                    body: JSON.stringify({
-                      email: userData.email,
-                      pseudo: userData.pseudo,
-                      is_admin: userData.is_admin,
-                      avatar_url: userData.avatar_url,
-                    }),
+                    body: JSON.stringify(userData),
                   },
                 );
+
                 if (response.ok) {
-                  setUser((users) =>
-                    users.map((u) =>
+                  setUser((prevUsers) =>
+                    prevUsers.map((u) =>
                       u.id === editingUser?.id ? { ...u, ...userData } : u,
                     ),
                   );
@@ -204,7 +198,6 @@ export default function Admin() {
               }
             }}
           />
-
           <ModalCategoryManager
             isShowing={isShowingCategory}
             hide={() => toggleCategory()}
@@ -212,12 +205,13 @@ export default function Admin() {
             isEdit={!!editingCategory}
             onSubmit={async (categoryData) => {
               try {
-                const url = editingCategory?.id
+                const isEditing = !!editingCategory?.id;
+                const url = isEditing
                   ? `${import.meta.env.VITE_API_URL}/api/categories/${editingCategory.id}`
                   : `${import.meta.env.VITE_API_URL}/api/categories`;
 
                 const response = await fetch(url, {
-                  method: editingCategory?.id ? "PUT" : "POST",
+                  method: isEditing ? "PUT" : "POST",
                   headers: {
                     "Content-Type": "application/json",
                   },
@@ -225,21 +219,25 @@ export default function Admin() {
                 });
 
                 if (response.ok) {
-                  const result = await response.json();
-                  const categoryResponse = await fetch(
-                    `${import.meta.env.VITE_API_URL}/api/categories/${result.insertId}`,
-                  );
-                  const newCategory = await categoryResponse.json();
-
-                  setCategory((prevCategories) =>
-                    editingCategory?.id
-                      ? prevCategories.map((c) =>
-                          c.id === editingCategory.id
-                            ? { ...c, ...categoryData }
-                            : c,
-                        )
-                      : [...prevCategories, newCategory],
-                  );
+                  if (isEditing) {
+                    setCategory((prevCategories) =>
+                      prevCategories.map((c) =>
+                        c.id === editingCategory.id
+                          ? { ...c, ...categoryData }
+                          : c,
+                      ),
+                    );
+                  } else {
+                    const result = await response.json();
+                    const categoryResponse = await fetch(
+                      `${import.meta.env.VITE_API_URL}/api/categories/${result.insertId}`,
+                    );
+                    const newCategory = await categoryResponse.json();
+                    setCategory((prevCategories) => [
+                      ...prevCategories,
+                      newCategory,
+                    ]);
+                  }
                   toggleCategory();
                 }
               } catch (error) {
@@ -295,21 +293,23 @@ export default function Admin() {
                   },
                 );
 
-                if (videoResponse.ok && categoriesResponse.ok) {
-                  setVideo((videos) =>
-                    videos.map((vid) => {
-                      if (vid.id === editingVideo?.id) {
-                        return {
-                          ...vid,
-                          ...videoData,
-                          categories: videoData.categories, // Inclure les catégories mises à jour
-                        };
-                      }
-                      return vid;
-                    }),
-                  );
-                  toggleVideo();
+                if (!categoriesResponse.ok) {
+                  console.error("Erreur lors de la mise à jour des catégories");
+                  return;
                 }
+
+                const updatedVideo: Video = {
+                  ...updatedVideoData,
+                  id: videoId as number,
+                };
+                setVideo((prevVideos) =>
+                  isEditing
+                    ? prevVideos.map((vid) =>
+                        vid.id === videoId ? updatedVideo : vid,
+                      )
+                    : [...prevVideos, updatedVideo],
+                );
+                toggleVideo();
               } catch (error) {
                 console.error("Erreur:", error);
               }
@@ -319,9 +319,7 @@ export default function Admin() {
           <div className="admin-page">
             <nav className="nav-admin">
               <button
-                className={`button-nav-admin ${
-                  adminSection === "users" ? "button-nav-admin-active" : ""
-                }`}
+                className={`button-nav-admin ${adminSection === "users" ? "button-nav-admin-active" : ""}`}
                 type="button"
                 onClick={() => setAdminSection("users")}
               >
@@ -329,9 +327,7 @@ export default function Admin() {
                 <p>Users</p>
               </button>
               <button
-                className={`button-nav-admin ${
-                  adminSection === "categories" ? "button-nav-admin-active" : ""
-                }`}
+                className={`button-nav-admin ${adminSection === "categories" ? "button-nav-admin-active" : ""}`}
                 type="button"
                 onClick={() => setAdminSection("categories")}
               >
@@ -339,9 +335,7 @@ export default function Admin() {
                 <p>Categories</p>
               </button>
               <button
-                className={`button-nav-admin ${
-                  adminSection === "videos" ? "button-nav-admin-active" : ""
-                }`}
+                className={`button-nav-admin ${adminSection === "videos" ? "button-nav-admin-active" : ""}`}
                 type="button"
                 onClick={() => setAdminSection("videos")}
               >
