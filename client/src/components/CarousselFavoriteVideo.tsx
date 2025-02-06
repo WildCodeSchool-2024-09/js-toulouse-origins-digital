@@ -1,5 +1,5 @@
 import "../styles/CarousselFavoriteVideo.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import deleteIcon from "../assets/images/supprimer.png";
 import { useFavorites } from "../contexts/FavoritesContext";
 import VideoCard from "./VideoCard";
@@ -11,6 +11,7 @@ interface Video {
   video_url: string;
   date: Date;
   views: number;
+  categories?: number[];
 }
 
 function getVideasVideoId(url: string): string | null {
@@ -25,18 +26,80 @@ function getVideasThumbnail(url: string): string {
   return videoId ? `https://app.videas.fr/media/${videoId}/thumbnail.jpg` : "";
 }
 
-export default function CarouselFavoriteVideo() {
+interface CarouselFavoriteVideoProps {
+  selectedCategories: number[];
+  sortBy: string;
+}
+
+export default function CarouselFavoriteVideo({
+  selectedCategories,
+  sortBy,
+}: CarouselFavoriteVideoProps) {
   const handleCloseVideo = () => setSelectedVideo(null);
   const { favorites, removeFromFavorites } = useFavorites();
   const [selectedVideo, setSelectedVideo] = useState<Video | null>(null);
+  const [videoCategories, setVideoCategories] = useState<
+    Record<number, number[]>
+  >({});
 
-  if (favorites.length === 0) {
-    return <div className="no-favorites-message">Aucune vidéo en favoris.</div>;
+  useEffect(() => {
+    const fetchCategories = async () => {
+      for (const video of favorites) {
+        const response = await fetch(
+          `${import.meta.env.VITE_API_URL}/api/videocategory/categories/${video.id}`,
+        );
+        const data = await response.json();
+        setVideoCategories((prev) => ({
+          ...prev,
+          [video.id]: data.map((cat: { id: number }) => cat.id),
+        }));
+      }
+    };
+
+    fetchCategories();
+  }, [favorites]);
+
+  const filteredFavorites =
+    selectedCategories.length > 0
+      ? favorites.filter((video) =>
+          videoCategories[video.id]?.some((catId) =>
+            selectedCategories.includes(catId),
+          ),
+        )
+      : favorites;
+
+  const sortedFavorites = [...filteredFavorites].sort((a, b) => {
+    switch (sortBy) {
+      case "recent":
+        return new Date(b.date).getTime() - new Date(a.date).getTime();
+      case "oldest":
+        return new Date(a.date).getTime() - new Date(b.date).getTime();
+      case "az":
+        return a.title.localeCompare(b.title);
+      case "za":
+        return b.title.localeCompare(a.title);
+      case "views":
+        return b.views - a.views;
+      case "less-views":
+        return a.views - b.views;
+      default:
+        return 0;
+    }
+  });
+
+  if (filteredFavorites.length === 0) {
+    return (
+      <div className="no-favorites-message">
+        {favorites.length === 0
+          ? "Aucune vidéo en favoris."
+          : "Aucune vidéo ne correspond aux filtres sélectionnés."}
+      </div>
+    );
   }
 
   return (
     <div className="carousel-favorite-video">
-      {favorites.map((video) => (
+      {sortedFavorites.map((video) => (
         <div key={video.id} className="favorite-video-container">
           <div
             key={video.id}
@@ -54,7 +117,10 @@ export default function CarouselFavoriteVideo() {
             <h3 className="favorite-video-title">{video.title}</h3>
             <button
               type="button"
-              onClick={() => removeFromFavorites(video.id)}
+              onClick={(e) => {
+                e.stopPropagation();
+                removeFromFavorites(video.id);
+              }}
               className="delete-button"
             >
               <img src={deleteIcon} alt="Supprimer" className="delete-icon" />

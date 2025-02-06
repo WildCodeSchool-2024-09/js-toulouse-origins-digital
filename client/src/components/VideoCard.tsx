@@ -13,6 +13,8 @@ interface VideoPlayerProps {
     description: string;
     video_url: string;
     views: number;
+    categoryId?: number;
+    category_id?: number;
   } | null;
   onClose: () => void;
 }
@@ -123,14 +125,19 @@ export default function VideoCard({ video, onClose }: VideoPlayerProps) {
     if (isFavorite(video.id)) {
       removeFromFavorites(video.id);
     } else {
-      addToFavorites({
-        id: video.id,
-        title: video.title,
-        video_url: video.video_url,
-        description: video.description,
-        date: new Date(),
-        views: video.views,
-      });
+      fetch(`http://localhost:3310/api/videocategory/categories/${video.id}`)
+        .then((response) => response.json())
+        .then((categories) => {
+          addToFavorites({
+            id: video.id,
+            title: video.title,
+            video_url: video.video_url,
+            description: video.description,
+            date: new Date(),
+            views: video.views,
+            categories: categories.map((cat: { id: number }) => cat.id),
+          });
+        });
     }
   };
 
