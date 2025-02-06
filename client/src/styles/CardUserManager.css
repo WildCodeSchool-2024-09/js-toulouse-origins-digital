@@ -9,9 +9,28 @@
   background: rgba(69, 95, 169, 0.2);
 }
 
+.user-card-blocked {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  padding: 16px 10px;
+  border-radius: 15px;
+  border: 0.5px solid #c5c5c5;
+  background: rgba(146, 69, 169, 0.2);
+}
+
 .user-info {
   border-radius: 10px;
   background: rgba(69, 95, 169, 0.2);
+  padding: 10px;
+  width: 100%;
+  margin: 0 12px;
+}
+
+.user-info-blocked {
+  border-radius: 10px;
+  background: rgba(146, 69, 169, 0.2);
   padding: 10px;
   width: 100%;
   margin: 0 12px;
