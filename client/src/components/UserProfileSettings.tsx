@@ -28,7 +28,7 @@ export default function UserProfileSettings() {
     : {
         email: "",
         pseudo: "",
-        avatar_url: undefined,
+        avatar_url: imgProfile,
       };
 
   const [user, setUser] = useState<User>({
@@ -64,9 +64,7 @@ export default function UserProfileSettings() {
 
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/users/${
-          parsedUser?.id
-        }/upload-avatar`,
+        `${import.meta.env.VITE_API_URL}/api/upload`,
         {
           method: "POST",
           credentials: "include",
