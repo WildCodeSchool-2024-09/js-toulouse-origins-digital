@@ -42,7 +42,11 @@ export default function CardUserManager({
     }
   };
   return (
-    <div className="admin-card user-card">
+    <div
+      className={
+        id !== 1 ? "admin-card user-card" : "admin-card user-card-blocked"
+      }
+    >
       {is_admin ? (
         <div className="avatar-container">
           <img className="user-avatar-admin" src={fullAvatarUrl} alt="" />
@@ -51,7 +55,7 @@ export default function CardUserManager({
       ) : (
         <img className="user-avatar" src={fullAvatarUrl} alt="" />
       )}
-      <div className="user-info">
+      <div className={id !== 1 ? "user-info" : "user-info-blocked"}>
         <p className="user-name">{pseudo}</p>
         <p className="user-email">{email}</p>
       </div>

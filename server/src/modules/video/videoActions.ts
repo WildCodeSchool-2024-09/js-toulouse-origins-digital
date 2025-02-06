@@ -75,8 +75,8 @@ const add: RequestHandler = async (req, res, next) => {
       title: req.body.title,
       video_url: req.body.video_url,
       description: req.body.description,
-      date: req.body.date,
-      views: req.body.views,
+      date: new Date().toISOString().slice(0, 19).replace("T", " "),
+      views: 0,
     };
 
     const insertId = await videoRepository.create(newVideo);

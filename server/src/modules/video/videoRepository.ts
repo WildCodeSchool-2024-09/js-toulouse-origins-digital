@@ -61,6 +61,11 @@ class videoRepository {
 
   async create(video: Omit<Video, "id">) {
     try {
+      const formattedDate = new Date(video.date)
+        .toISOString()
+        .slice(0, 19)
+        .replace("T", " ");
+
       const query =
         "insert into video (title, description, video_url, date, views) values (?, ?, ?, ?, ?)";
       const params = [

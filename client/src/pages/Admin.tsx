@@ -19,20 +19,34 @@ const truncateText = (text: string, maxLength = 80) => {
 };
 
 const formatDate = (dateString: string) => {
-  const date = new Date(dateString);
-  return new Intl.DateTimeFormat("fr-FR", {
-    day: "numeric",
-    month: "numeric",
-    year: "numeric",
-  }).format(date);
+  try {
+    const date = new Date(dateString);
+    if (Number.isNaN(date.getTime()))
+      return new Date().toLocaleDateString("fr-FR");
+    return date.toLocaleDateString("fr-FR");
+  } catch {
+    return new Date().toLocaleDateString("fr-FR");
+  }
 };
 
 const formatTime = (dateString: string) => {
-  const date = new Date(dateString);
-  return new Intl.DateTimeFormat("fr-FR", {
-    hour: "2-digit",
-    minute: "2-digit",
-  }).format(date);
+  try {
+    const date = new Date(dateString);
+    if (Number.isNaN(date.getTime()))
+      return new Date().toLocaleTimeString("fr-FR", {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+    return date.toLocaleTimeString("fr-FR", {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  } catch {
+    return new Date().toLocaleTimeString("fr-FR", {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  }
 };
 
 interface Category {
@@ -234,18 +248,30 @@ export default function Admin() {
 
             const response = await fetch(url, {
               method: isEditing ? "PUT" : "POST",
-              headers: { "Content-Type": "application/json" },
+              headers: {
+                "Content-Type": "application/json",
+              },
               body: JSON.stringify(videoData),
             });
-
             if (!response.ok) {
-              console.error(
-                "Erreur lors de la mise à jour/création de la vidéo",
-              );
-              return;
+              throw new Error(`HTTP error! status: ${response.status}`);
             }
-            const result = await response.json();
-            const videoId = isEditing ? editingVideo.id : result.insertId;
+
+            let videoId = isEditing ? editingVideo.id : 0;
+            let updatedVideoData = { ...videoData };
+
+            if (!isEditing && response.status !== 204) {
+              const result = await response.json();
+              videoId = result.insertId;
+              const videoResponse = await fetch(
+                `${import.meta.env.VITE_API_URL}/api/videos/${videoId}`,
+              );
+              const newVideoData = await videoResponse.json();
+              updatedVideoData = {
+                ...newVideoData,
+                categories: videoData.categories,
+              };
+            }
 
             const categoriesResponse = await fetch(
               `${import.meta.env.VITE_API_URL}/api/videocategory/${videoId}`,
@@ -261,18 +287,14 @@ export default function Admin() {
               return;
             }
 
-            const updatedVideo = { ...videoData, id: videoId };
-
+            const updatedVideo: Video = {
+              ...updatedVideoData,
+              id: videoId as number,
+            };
             setVideo((prevVideos) =>
               isEditing
                 ? prevVideos.map((vid) =>
-                    vid.id === editingVideo?.id
-                      ? {
-                          ...vid,
-                          ...updatedVideo,
-                          categories: updatedVideo.categories,
-                        }
-                      : vid,
+                    vid.id === videoId ? updatedVideo : vid,
                   )
                 : [...prevVideos, updatedVideo],
             );

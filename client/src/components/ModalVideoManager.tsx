@@ -88,7 +88,7 @@ export default function ModalVideoManager({
       title: formData.get("title") as string,
       description: formData.get("description") as string,
       categories: selectedCategories,
-      video_url: videoUrl,
+      video_url: video?.video_url || videoUrl,
       duration: video?.duration || "",
       date: video?.date || "",
       views: video?.views || 0,
