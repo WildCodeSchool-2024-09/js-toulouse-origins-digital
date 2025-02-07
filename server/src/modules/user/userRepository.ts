@@ -11,6 +11,9 @@ type User = {
 };
 
 class userRepository {
+  readById(arg0: number) {
+    throw new Error("Method not implemented.");
+  }
   async readAll() {
     const [rows] = await databaseClient.query<Rows>("select * from user");
     return rows as User[];

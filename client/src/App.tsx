@@ -8,6 +8,7 @@ type User = {
   id: number;
   pseudo: string;
   email: string;
+  is_admin: boolean;
 };
 
 type Auth = {
@@ -16,10 +17,8 @@ type Auth = {
 };
 
 function App() {
-  const [auth, setAuth] = useState<Auth | null>(() => {
-    const savedAuth = localStorage.getItem("auth");
-    return savedAuth ? JSON.parse(savedAuth) : null;
-  });
+  const [auth, setAuth] = useState(null as Auth | null);
+  const { isOpenLogin, setIsOpenLogin } = useNav();
 
   useEffect(() => {
     const expiry = localStorage.getItem("expiry");
@@ -30,8 +29,6 @@ function App() {
       localStorage.setItem("expiry", (Date.now() + 60 * 60 * 1000).toString());
     }
   }, []);
-
-  const { isOpenLogin, setIsOpenLogin } = useNav();
 
   useEffect(() => {
     if (auth) {
@@ -49,25 +46,26 @@ function App() {
   }, [auth]);
 
   useEffect(() => {
-    const getCookie = (name: string) => {
-      const cookieArr = document.cookie.split("; ");
-      for (let i = 0; i < cookieArr.length; i++) {
-        const cookie = cookieArr[i].split("=");
-        if (cookie[0] === name) {
-          return cookie[1];
-        }
-      }
-      return null;
-    };
-    const token = getCookie("auth_token");
-    const savedUser = localStorage.getItem("user");
+    const fetchUser = async () => {
+      try {
+        const response = await fetch(
+          `${import.meta.env.VITE_API_URL}/api/users/me`,
+          { credentials: "include" },
+        );
 
-    if (token && savedUser) {
-      const user = JSON.parse(savedUser);
-      setAuth({ user, token });
-    } else {
-      setAuth(null);
-    }
+        if (response.ok) {
+          const user = await response.json();
+          setAuth({ user, token: "auth_token" });
+        } else {
+          setAuth(null);
+        }
+      } catch (error) {
+        console.error("Erreur de récupération de l'utilisateur :", error);
+        setAuth(null);
+      }
+    };
+
+    fetchUser();
   }, []);
 
   return (

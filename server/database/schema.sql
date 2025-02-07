@@ -141,27 +141,3 @@ INSERT INTO video_category (id_video, id_category) VALUES
 INSERT INTO user (email, hashed_password, pseudo, is_admin, avatar_url) VALUES
 ('admin@jestone.com', '$argon2id$v=19$m=19456,t=2,p=1$mPhIaR4bxOjhqIY9Pdfq/Q$S++1Gr5bdkAVk9HD/gMfd24w+r0mQAODPdQMR1v0BPA', 'Admin', TRUE, 'https://img.freepik.com/vecteurs-libre/jeu-astronaute-mignon-joystick-casque-dessin-anime-icone-vectorielle-illustration-science-techno_138676-9648.jpg'),
 ('tom.schricke@gmail.com', '1234', 'Toto', FALSE, 'https://store.playstation.com/store/api/chihiro/00_09_000/container/US/en/19/UP2136-CUSA02727_00-AV00000000000061/image?w=320&h=320&bg_color=000000&opacity=100&_version=00_09_000');
-
-INSERT INTO playlist (name, id_user) VALUES
-('Action', 1),
-('Aventure', 1),
-('RPG', 1),
-('FPS', 1),
-('Stratégie', 1),
-('Simulation', 1),
-('Course', 1),
-('Puzzle', 1),
-('Horreur', 1),
-('Multijoueur en ligne', 1),
-('Action', 2),
-('Aventure', 2),
-('RPG', 2),
-('FPS', 2);
-
-
-insert into video_playlist(id_video, id_playlist) values
-(2, 3),
-(1, 2),
-(2, 2),
-(1, 3),
-(3, 3);

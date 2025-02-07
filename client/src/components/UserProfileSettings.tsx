@@ -28,7 +28,7 @@ export default function UserProfileSettings() {
     : {
         email: "",
         pseudo: "",
-        avatar_url: imgProfile,
+        avatar_url: "",
       };
 
   const [user, setUser] = useState<User>({
