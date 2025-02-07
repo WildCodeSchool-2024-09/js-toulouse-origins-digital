@@ -40,22 +40,13 @@ const GamePlaylists = () => {
   const [playlistName, setPlaylistName] = useState("");
   const { auth } = useOutletContext() as { auth: Auth | null };
 
-  const userId =
-    auth?.user.id ||
-    (() => {
-      const userData = localStorage.getItem("user");
-      if (userData) {
-        const user = JSON.parse(userData);
-        return user.id;
-      }
-      return 0;
-    })();
+  const userId = auth?.user.id ?? 0;
 
   useEffect(() => {
     const loadPlaylists = async () => {
       setIsLoading(true);
       try {
-        const data = await fetchPlaylists(userId);
+        const data = await fetchPlaylists(userId || 0);
         setPlaylists(data);
       } catch {
         setError("Failed to load playlists");
@@ -72,7 +63,7 @@ const GamePlaylists = () => {
       const newPlaylist: Playlist = {
         id: 0,
         name: playlistName,
-        id_user: userId,
+        id_user: userId || 0,
       };
       await addPlaylist(userId, newPlaylist);
       const updatedPlaylists = await fetchPlaylists(userId);

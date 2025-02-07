@@ -5,6 +5,7 @@ export const uploadFile = async (file: File) => {
   try {
     const response = await fetch(`${import.meta.env.VITE_API_URL}/api/upload`, {
       method: "POST",
+      credentials: "include",
       body: formData,
     });
 

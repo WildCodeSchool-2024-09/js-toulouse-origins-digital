@@ -16,59 +16,53 @@ type Auth = {
 };
 
 function App() {
-  const [auth, setAuth] = useState<Auth | null>(() => {
-    const savedAuth = localStorage.getItem("auth");
-    return savedAuth ? JSON.parse(savedAuth) : null;
-  });
-
-  useEffect(() => {
-    const expiry = localStorage.getItem("expiry");
-
-    if (expiry && Date.now() > Number.parseInt(expiry)) {
-      localStorage.clear();
-    } else {
-      localStorage.setItem("expiry", (Date.now() + 60 * 60 * 1000).toString());
-    }
-  }, []);
+  const [auth, setAuth] = useState<Auth | null>(null);
 
   const { isOpenLogin, setIsOpenLogin } = useNav();
 
   useEffect(() => {
-    if (auth) {
-      localStorage.setItem(
-        "user",
-        JSON.stringify({
-          id: auth?.user.id,
-          pseudo: auth?.user.pseudo,
-          email: auth?.user.email,
-        }),
-      );
-    } else {
-      localStorage.removeItem("auth");
-    }
-  }, [auth]);
+    const checkAuth = async () => {
+      try {
+        const response = await fetch(
+          `${import.meta.env.VITE_API_URL}/api/verify-auth`,
+          {
+            credentials: "include",
+          },
+        );
+
+        if (response.ok) {
+          const userData = await response.json();
+          setAuth({
+            user: userData,
+            token:
+              document.cookie
+                .split("; ")
+                .find((row) => row.startsWith("auth_token="))
+                ?.split("=")[1] || "",
+          });
+        } else {
+          setAuth(null);
+          localStorage.removeItem("user");
+        }
+      } catch (error) {
+        console.error("Auth check failed:", error);
+        setAuth(null);
+        localStorage.removeItem("user");
+      }
+    };
+
+    checkAuth();
+    const interval = setInterval(checkAuth, 1000 * 60);
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
-    const getCookie = (name: string) => {
-      const cookieArr = document.cookie.split("; ");
-      for (let i = 0; i < cookieArr.length; i++) {
-        const cookie = cookieArr[i].split("=");
-        if (cookie[0] === name) {
-          return cookie[1];
-        }
-      }
-      return null;
-    };
-    const token = getCookie("auth_token");
-    const savedUser = localStorage.getItem("user");
-
-    if (token && savedUser) {
-      const user = JSON.parse(savedUser);
-      setAuth({ user, token });
+    if (auth?.user) {
+      localStorage.setItem("user", JSON.stringify(auth.user));
     } else {
-      setAuth(null);
+      localStorage.removeItem("user");
     }
-  }, []);
+  }, [auth]);
 
   return (
     <FavoritesProvider>
