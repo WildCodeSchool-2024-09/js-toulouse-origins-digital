@@ -108,4 +108,34 @@ const hashPassword: RequestHandler = async (req, res, next) => {
   }
 };
 
-export default { login, hashPassword, verifyToken, logout };
+const verifyAuth: RequestHandler = async (req, res) => {
+  try {
+    const token = req.cookies.auth_token;
+    if (!token) {
+      res.status(401).json({ message: "Non authentifié" });
+      return;
+    }
+
+    const decoded = jwt.verify(
+      token,
+      process.env.APP_SECRET as string,
+    ) as MyPayload;
+    const user = await userRepository.read(Number(decoded.sub));
+
+    if (!user) {
+      res.status(401).json({ message: "Utilisateur non trouvé" });
+      return;
+    }
+
+    res.json({
+      id: user.id,
+      pseudo: user.pseudo,
+      email: user.email,
+      avatar_url: user.avatar_url,
+    });
+  } catch (err) {
+    res.status(401).json({ message: "Token invalide" });
+  }
+};
+
+export default { login, hashPassword, verifyToken, logout, verifyAuth };

@@ -1,8 +1,8 @@
 import { useState } from "react";
-import imgProfile from "/src/assets/images/user-solid.svg";
 import "../styles/UserModal.css";
 import { useOutletContext } from "react-router-dom";
 import { useSpreadProfileImage } from "../contexts/ProfileImageProvider";
+import { uploadFile } from "../services/uploadService";
 
 type User = {
   id: number;
@@ -21,25 +21,10 @@ export default function UserProfileSettings() {
     setAuth: React.Dispatch<React.SetStateAction<Auth | null>>;
   };
 
-  const { spreadProfileImage, setSpreadProfileImage } = useSpreadProfileImage();
-  const localUser = localStorage.getItem("user");
-  const parsedUser: User = localUser
-    ? JSON.parse(localUser)
-    : {
-        email: "",
-        pseudo: "",
-        avatar_url: imgProfile,
-      };
-
-  const [user, setUser] = useState<User>({
-    id: parsedUser.id,
-    email: parsedUser.email,
-    pseudo: parsedUser.pseudo,
-    avatar_url: parsedUser.avatar_url,
-  });
-
-  const [__, setSelectedImage] = useState<string | null>(spreadProfileImage);
-
+  const { setSpreadProfileImage } = useSpreadProfileImage();
+  const { auth } = useOutletContext() as { auth: Auth };
+  const authentifiedUser = auth?.user;
+  const [user, setUser] = useState<User>(authentifiedUser);
   const [imageError, setImageError] = useState<string | null>(null);
   const [imageSuccess, setImageSuccess] = useState<string | null>(null);
 
@@ -49,49 +34,43 @@ export default function UserProfileSettings() {
     event.preventDefault();
     const file = event.target.files?.[0];
 
-    if (!file) {
-      setImageError("Aucun fichier sélectionné");
-      return;
-    }
-    const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
+    if (!file) return;
+
+    const allowedTypes = ["image/jpg", "image/jpeg", "image/png", "image/gif"];
     if (!allowedTypes.includes(file.type)) {
-      setImageError("Seuls les fichiers JPEG, PNG ou GIF sont autorisés");
+      setImageError("Seuls les fichiers JPG, JPEG, PNG ou GIF sont autorisés");
       return;
     }
-
-    const formData = new FormData();
-    formData.append("avatar_url", file);
-
     try {
+      const avatar_url = await uploadFile(file);
+
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/upload`,
+        `${import.meta.env.VITE_API_URL}/api/users/${authentifiedUser.id}`,
         {
-          method: "POST",
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
           credentials: "include",
-          body: formData,
+          body: JSON.stringify({
+            ...user,
+            avatar_url,
+          }),
         },
       );
-      if (!response.ok) {
-        const errorText = await response.text();
-        setImageError(`Erreur lors de la mise à jour de l'image: ${errorText}`);
-        console.error("Erreur réponse:", errorText);
-        return;
-      }
-      const data = await response.json();
+
+      if (!response.ok) throw new Error("Erreur lors de la mise à jour");
 
       setImageSuccess("Image mise à jour avec succès !");
       setImageError(null);
-
-      setUser((prev) => ({ ...prev, avatar_url: data.avatar_url }));
-      setSpreadProfileImage(data.avatar_url);
-      setUser((prev) => ({ ...prev, avatar_url: data.avatar_url }));
-      setSelectedImage(data.avatar_url);
-
-      const updatedUser = { ...parsedUser, avatar_url: data.avatar_url };
+      const updatedUser = { ...user, avatar_url };
+      setUser(updatedUser);
+      setSpreadProfileImage(avatar_url);
+      setAuth((prevAuth) =>
+        prevAuth ? { ...prevAuth, user: updatedUser } : null,
+      );
       localStorage.setItem("user", JSON.stringify(updatedUser));
     } catch (error) {
-      console.error("Erreur de mise à jour d'image :", error);
-      setImageError("Erreur lors de l'envoi de l'image.");
+      console.error("Erreur:", error);
+      setImageError("Erreur lors de la mise à jour de l'image");
     }
   };
 
@@ -100,7 +79,7 @@ export default function UserProfileSettings() {
   const handlePseudoChange = async () => {
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/users/${parsedUser.id}`,
+        `${import.meta.env.VITE_API_URL}/api/users/${authentifiedUser.id}`,
         {
           method: "PUT",
           headers: {
@@ -110,7 +89,7 @@ export default function UserProfileSettings() {
           body: JSON.stringify({
             email: user.email,
             pseudo: user.pseudo,
-            avatar_url: imgProfile,
+            avatar_url: user.avatar_url,
           }),
         },
       );
@@ -121,7 +100,7 @@ export default function UserProfileSettings() {
           setPseudoSuccess("Votre pseudo a été mis à jour avec succès !");
           setPseudoError(null);
 
-          const updatedUser = { ...parsedUser, pseudo: user.pseudo };
+          const updatedUser = { ...authentifiedUser, pseudo: user.pseudo };
 
           setAuth((prevAuth) => {
             if (!prevAuth) return null;
@@ -161,7 +140,7 @@ export default function UserProfileSettings() {
 
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/users/${parsedUser.id}`,
+        `${import.meta.env.VITE_API_URL}/api/users/${authentifiedUser.id}`,
         {
           method: "PUT",
           headers: {
@@ -214,11 +193,11 @@ export default function UserProfileSettings() {
           id="upload-image"
           className="imageSetting"
           type="file"
-          accept="image/*"
+          accept="image/jpeg,image/png,image/gif"
           onChange={handleImageChange}
           style={{ display: "none" }}
         />
-        <img src={imgProfile} alt="Profile" className="profile-picture" />
+        <img src={user.avatar_url} alt="Profile" className="profile-picture" />
       </div>
       {imageError && <p className="error">{imageError}</p>}
       {imageSuccess && <p className="success">{imageSuccess}</p>}
