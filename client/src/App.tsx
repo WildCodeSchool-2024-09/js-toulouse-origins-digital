@@ -8,6 +8,7 @@ type User = {
   id: number;
   pseudo: string;
   email: string;
+  is_admin: boolean;
 };
 
 type Auth = {
