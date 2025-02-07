@@ -5,13 +5,13 @@ import searchIcon from "../assets/images/search.png";
 import imgProfile from "../assets/images/user-solid.svg";
 import { useNav } from "../contexts/NavProvider";
 import "../styles/NavBar.css";
-import { useEffect, useState } from "react";
 import { Link, useOutletContext } from "react-router-dom";
 import UserLogin from "./UserLogin";
 import UserLogout from "./UserModal";
 
 type User = {
   id: number;
+  avatar_url: string;
 };
 
 type Auth = {
@@ -32,21 +32,12 @@ export default function NavBar() {
       userId = user.id;
     }
   }
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
-  useEffect(() => {
-    if (auth) {
-      setIsLoggedIn(true);
-    } else {
-      setIsLoggedIn(false);
-    }
-  }, [auth]);
-
-  const navbarClass = !isLoggedIn ? "reduced-navbar-size" : "nav-bar";
+  const navbarClass = !auth ? "reduced-navbar-size" : "nav-bar";
 
   return (
     <>
-      {isOpenLogin ? !isLoggedIn ? <UserLogin /> : <UserLogout /> : null}
+      {isOpenLogin ? !auth ? <UserLogin /> : <UserLogout /> : null}
       <div className="nav-bar-container">
         <nav className={navbarClass}>
           <Link to="/home">
@@ -55,7 +46,7 @@ export default function NavBar() {
           <Link to="/search">
             <img src={searchIcon} alt="Search" className="nav-icon" />
           </Link>
-          {isLoggedIn && (
+          {auth && (
             <>
               <Link to="/favorite">
                 <img src={bookmarkIcon} alt="Bookmark" className="nav-icon" />
@@ -68,7 +59,7 @@ export default function NavBar() {
           <img
             onClick={() => setIsOpenLogin(true)}
             onKeyDown={() => setIsOpenLogin(true)}
-            src={imgProfile}
+            src={!auth ? imgProfile : auth?.user.avatar_url}
             alt="Profile"
             className="nav-icon nav-icon-profile-style"
           />

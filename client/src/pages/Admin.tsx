@@ -16,11 +16,13 @@ import useModal from "../services/useModal";
 import AccessDenied from "./AccessDenied";
 
 const truncateText = (text: string, maxLength = 80) => {
+  if (!text) return "";
   if (text.length <= maxLength) return text;
   return `${text.slice(0, maxLength).trim()}...`;
 };
 
-const formatDate = (dateString: string) => {
+const formatDate = (dateString: string | undefined) => {
+  if (!dateString) return new Date().toLocaleDateString("fr-FR");
   try {
     const date = new Date(dateString);
     if (Number.isNaN(date.getTime()))
@@ -31,7 +33,12 @@ const formatDate = (dateString: string) => {
   }
 };
 
-const formatTime = (dateString: string) => {
+const formatTime = (dateString: string | undefined) => {
+  if (!dateString)
+    return new Date().toLocaleTimeString("fr-FR", {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
   try {
     const date = new Date(dateString);
     if (Number.isNaN(date.getTime()))
@@ -138,9 +145,7 @@ export default function Admin() {
         const videosWithCategories = await Promise.all(
           videos.map(async (video: Video) => {
             const categoriesResponse = await fetch(
-              `${import.meta.env.VITE_API_URL}/api/videocategory/categories/${
-                video.id
-              }`,
+              `${import.meta.env.VITE_API_URL}/api/videocategory/categories/${video.id}`,
             );
             const videoCategories = await categoriesResponse.json();
             return {
@@ -168,44 +173,6 @@ export default function Admin() {
     <>
       {auth ? (
         <>
-          <ModalCategoryManager
-            isShowing={isShowingCategory}
-            hide={() => toggleCategory()}
-            category={editingCategory}
-            onSubmit={async (categoryData) => {
-              if (!editingCategory?.id) return;
-
-              try {
-                const response = await fetch(
-                  `${import.meta.env.VITE_API_URL}/api/categories/${
-                    editingCategory.id
-                  }`,
-                  {
-                    method: "PUT",
-                    headers: {
-                      "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(categoryData),
-                  },
-                );
-
-                if (response.ok) {
-                  setCategory((prevCategories) =>
-                    prevCategories.map((c) =>
-                      c.id === editingCategory.id
-                        ? { ...c, ...categoryData }
-                        : c,
-                    ),
-                  );
-                  toggleCategory();
-                } else {
-                  console.error("Erreur lors de la mise à jour");
-                }
-              } catch (error) {
-                console.error("Erreur:", error);
-              }
-            }}
-          />
           <ModalUserManager
             isShowing={isShowingUser}
             hide={() => toggleUser()}
@@ -213,25 +180,19 @@ export default function Admin() {
             onSubmit={async (userData) => {
               try {
                 const response = await fetch(
-                  `${import.meta.env.VITE_API_URL}/api/users/${
-                    editingUser?.id
-                  }`,
+                  `${import.meta.env.VITE_API_URL}/api/users/${editingUser?.id}`,
                   {
                     method: "PUT",
                     headers: {
                       "Content-Type": "application/json",
                     },
-                    body: JSON.stringify({
-                      email: userData.email,
-                      pseudo: userData.pseudo,
-                      is_admin: userData.is_admin,
-                      avatar_url: userData.avatar_url,
-                    }),
+                    body: JSON.stringify(userData),
                   },
                 );
+
                 if (response.ok) {
-                  setUser((users) =>
-                    users.map((u) =>
+                  setUser((prevUsers) =>
+                    prevUsers.map((u) =>
                       u.id === editingUser?.id ? { ...u, ...userData } : u,
                     ),
                   );
@@ -251,14 +212,13 @@ export default function Admin() {
             isEdit={!!editingCategory}
             onSubmit={async (categoryData) => {
               try {
-                const url = editingCategory?.id
-                  ? `${import.meta.env.VITE_API_URL}/api/categories/${
-                      editingCategory.id
-                    }`
+                const isEditing = !!editingCategory?.id;
+                const url = isEditing
+                  ? `${import.meta.env.VITE_API_URL}/api/categories/${editingCategory.id}`
                   : `${import.meta.env.VITE_API_URL}/api/categories`;
 
                 const response = await fetch(url, {
-                  method: editingCategory?.id ? "PUT" : "POST",
+                  method: isEditing ? "PUT" : "POST",
                   headers: {
                     "Content-Type": "application/json",
                   },
@@ -266,23 +226,25 @@ export default function Admin() {
                 });
 
                 if (response.ok) {
-                  const result = await response.json();
-                  const categoryResponse = await fetch(
-                    `${import.meta.env.VITE_API_URL}/api/categories/${
-                      result.insertId
-                    }`,
-                  );
-                  const newCategory = await categoryResponse.json();
-
-                  setCategory((prevCategories) =>
-                    editingCategory?.id
-                      ? prevCategories.map((c) =>
-                          c.id === editingCategory.id
-                            ? { ...c, ...categoryData }
-                            : c,
-                        )
-                      : [...prevCategories, newCategory],
-                  );
+                  if (isEditing) {
+                    setCategory((prevCategories) =>
+                      prevCategories.map((c) =>
+                        c.id === editingCategory.id
+                          ? { ...c, ...categoryData }
+                          : c,
+                      ),
+                    );
+                  } else {
+                    const result = await response.json();
+                    const categoryResponse = await fetch(
+                      `${import.meta.env.VITE_API_URL}/api/categories/${result.insertId}`,
+                    );
+                    const newCategory = await categoryResponse.json();
+                    setCategory((prevCategories) => [
+                      ...prevCategories,
+                      newCategory,
+                    ]);
+                  }
                   toggleCategory();
                 }
               } catch (error) {
@@ -294,22 +256,43 @@ export default function Admin() {
             isShowing={isShowingVideo}
             hide={() => toggleVideo()}
             video={editingVideo}
+            isEdit={!!editingVideo}
             onSubmit={async (videoData) => {
               try {
-                const videoResponse = await fetch(
-                  `${import.meta.env.VITE_API_URL}/api/videos/${
-                    editingVideo?.id
-                  }`,
-                  {
-                    method: "PUT",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(videoData),
+                const isEditing = !!editingVideo?.id;
+                const url = isEditing
+                  ? `${import.meta.env.VITE_API_URL}/api/videos/${editingVideo.id}`
+                  : `${import.meta.env.VITE_API_URL}/api/videos`;
+
+                const response = await fetch(url, {
+                  method: isEditing ? "PUT" : "POST",
+                  headers: {
+                    "Content-Type": "application/json",
                   },
-                );
+                  body: JSON.stringify(videoData),
+                });
+                if (!response.ok) {
+                  throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                let videoId = isEditing ? editingVideo.id : 0;
+                let updatedVideoData = { ...videoData };
+
+                if (!isEditing && response.status !== 204) {
+                  const result = await response.json();
+                  videoId = result.insertId;
+                  const videoResponse = await fetch(
+                    `${import.meta.env.VITE_API_URL}/api/videos/${videoId}`,
+                  );
+                  const newVideoData = await videoResponse.json();
+                  updatedVideoData = {
+                    ...newVideoData,
+                    categories: videoData.categories,
+                  };
+                }
+
                 const categoriesResponse = await fetch(
-                  `${import.meta.env.VITE_API_URL}/api/videocategory/${
-                    editingVideo?.id
-                  }`,
+                  `${import.meta.env.VITE_API_URL}/api/videocategory/${videoId}`,
                   {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },
@@ -317,21 +300,23 @@ export default function Admin() {
                   },
                 );
 
-                if (videoResponse.ok && categoriesResponse.ok) {
-                  setVideo((videos) =>
-                    videos.map((vid) => {
-                      if (vid.id === editingVideo?.id) {
-                        return {
-                          ...vid,
-                          ...videoData,
-                          categories: videoData.categories, // Inclure les catégories mises à jour
-                        };
-                      }
-                      return vid;
-                    }),
-                  );
-                  toggleVideo();
+                if (!categoriesResponse.ok) {
+                  console.error("Erreur lors de la mise à jour des catégories");
+                  return;
                 }
+
+                const updatedVideo: Video = {
+                  ...updatedVideoData,
+                  id: videoId as number,
+                };
+                setVideo((prevVideos) =>
+                  isEditing
+                    ? prevVideos.map((vid) =>
+                        vid.id === videoId ? updatedVideo : vid,
+                      )
+                    : [...prevVideos, updatedVideo],
+                );
+                toggleVideo();
               } catch (error) {
                 console.error("Erreur:", error);
               }
@@ -341,9 +326,7 @@ export default function Admin() {
           <div className="admin-page">
             <nav className="nav-admin">
               <button
-                className={`button-nav-admin ${
-                  adminSection === "users" ? "button-nav-admin-active" : ""
-                }`}
+                className={`button-nav-admin ${adminSection === "users" ? "button-nav-admin-active" : ""}`}
                 type="button"
                 onClick={() => setAdminSection("users")}
               >
@@ -351,9 +334,7 @@ export default function Admin() {
                 <p>Users</p>
               </button>
               <button
-                className={`button-nav-admin ${
-                  adminSection === "categories" ? "button-nav-admin-active" : ""
-                }`}
+                className={`button-nav-admin ${adminSection === "categories" ? "button-nav-admin-active" : ""}`}
                 type="button"
                 onClick={() => setAdminSection("categories")}
               >
@@ -361,9 +342,7 @@ export default function Admin() {
                 <p>Categories</p>
               </button>
               <button
-                className={`button-nav-admin ${
-                  adminSection === "videos" ? "button-nav-admin-active" : ""
-                }`}
+                className={`button-nav-admin ${adminSection === "videos" ? "button-nav-admin-active" : ""}`}
                 type="button"
                 onClick={() => setAdminSection("videos")}
               >
@@ -412,21 +391,25 @@ export default function Admin() {
                     />
                   ))}
                 {adminSection === "videos" &&
-                  video.map((vid) => (
-                    <CardVideoManager
-                      id={vid.id}
-                      key={vid.id}
-                      title={vid.title}
-                      description={truncateText(vid.description)}
-                      duration={formatTime(vid.date.toString())}
-                      video_url={vid.video_url}
-                      date={formatDate(vid.date.toString())}
-                      views={vid.views}
-                      categories={vid.categories}
-                      onEdit={() => toggleVideo(vid.id)}
-                      onDelete={handleVideoDelete}
-                    />
-                  ))}
+                  video.map((vid) => {
+                    if (!vid || !vid.date) return null; // Skip invalid videos
+
+                    return (
+                      <CardVideoManager
+                        id={vid.id}
+                        key={vid.id}
+                        title={vid.title}
+                        description={truncateText(vid.description)}
+                        duration={formatTime(vid.date?.toString())}
+                        video_url={vid.video_url}
+                        date={formatDate(vid.date?.toString())}
+                        views={vid.views || 0}
+                        categories={vid.categories || []}
+                        onEdit={() => toggleVideo(vid.id)}
+                        onDelete={handleVideoDelete}
+                      />
+                    );
+                  })}
                 {adminSection === "users" &&
                   user.map((user) => (
                     <CardUserManager

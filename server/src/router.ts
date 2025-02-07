@@ -16,7 +16,8 @@ import userActions from "./modules/user/userActions";
 import videoActions from "./modules/video/videoActions";
 import videoAndPlaylistActions from "./modules/videoPlaylist/videoAndPlaylistActions";
 import videoCategoryActions from "./modules/videocategory/videoCategoryActions";
-import videoCategoryRepository from "./modules/videocategory/videoCategoryRepository";
+
+router.post("/api/upload", uploadActions.uploadFile);
 
 router.get("/api/items", itemActions.browse);
 router.get("/api/items/:id", itemActions.read);
@@ -57,6 +58,12 @@ router.delete("/api/videos/:id", videoActions.destroy);
 router.get("/api/videos/search/:term", videoActions.search);
 router.delete("/api/users/:id", userActions.destroy);
 router.put("/api/users/:id", userActions.edit);
+router.get("/api/verify-auth", authActions.verifyAuth);
+router.post(
+  "/api/videoplaylist/:playlistId/:videoId",
+  videoAndPlaylistActions.add,
+);
+router.delete("/api/videoplaylist/:id", videoAndPlaylistActions.remove);
 
 router.use(authActions.verifyToken);
 
@@ -73,11 +80,6 @@ router.post("/api/favorites/:userId", favoriteActions.add);
 router.delete("/api/favorites/:userId", favoriteActions.remove);
 
 router.get("/api/videoplaylist/:playlistId", videoAndPlaylistActions.read);
-router.post(
-  "/api/videoplaylist/:playlistId/:videoId",
-  videoAndPlaylistActions.add,
-);
-router.delete("/api/videoplaylist/:id", videoAndPlaylistActions.remove);
 
 router.get("/api/playlists/:userId", playlistsActions.read);
 router.post("/api/playlists/:userId", playlistsActions.add);

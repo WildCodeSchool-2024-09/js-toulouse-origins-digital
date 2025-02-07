@@ -17,56 +17,53 @@ type Auth = {
 };
 
 function App() {
-  const [auth, setAuth] = useState(null as Auth | null);
+  const [auth, setAuth] = useState<Auth | null>(null);
+
   const { isOpenLogin, setIsOpenLogin } = useNav();
 
   useEffect(() => {
-    const expiry = localStorage.getItem("expiry");
-
-    if (expiry && Date.now() > Number.parseInt(expiry)) {
-      localStorage.clear();
-    } else {
-      localStorage.setItem("expiry", (Date.now() + 60 * 60 * 1000).toString());
-    }
-  }, []);
-
-  useEffect(() => {
-    if (auth) {
-      localStorage.setItem(
-        "user",
-        JSON.stringify({
-          id: auth?.user.id,
-          pseudo: auth?.user.pseudo,
-          email: auth?.user.email,
-        }),
-      );
-    } else {
-      localStorage.removeItem("auth");
-    }
-  }, [auth]);
-
-  useEffect(() => {
-    const fetchUser = async () => {
+    const checkAuth = async () => {
       try {
         const response = await fetch(
-          `${import.meta.env.VITE_API_URL}/api/users/me`,
-          { credentials: "include" },
+          `${import.meta.env.VITE_API_URL}/api/verify-auth`,
+          {
+            credentials: "include",
+          },
         );
 
         if (response.ok) {
-          const user = await response.json();
-          setAuth({ user, token: "auth_token" });
+          const userData = await response.json();
+          setAuth({
+            user: userData,
+            token:
+              document.cookie
+                .split("; ")
+                .find((row) => row.startsWith("auth_token="))
+                ?.split("=")[1] || "",
+          });
         } else {
           setAuth(null);
+          localStorage.removeItem("user");
         }
       } catch (error) {
-        console.error("Erreur de récupération de l'utilisateur :", error);
+        console.error("Auth check failed:", error);
         setAuth(null);
+        localStorage.removeItem("user");
       }
     };
 
-    fetchUser();
+    checkAuth();
+    const interval = setInterval(checkAuth, 1000 * 60);
+    return () => clearInterval(interval);
   }, []);
+
+  useEffect(() => {
+    if (auth?.user) {
+      localStorage.setItem("user", JSON.stringify(auth.user));
+    } else {
+      localStorage.removeItem("user");
+    }
+  }, [auth]);
 
   return (
     <FavoritesProvider>
