@@ -1,25 +1,10 @@
 import "../styles/Favorite.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import CarouselFavoriteVideo from "../components/CarousselFavoriteVideo";
 import Header from "../components/Header";
 import NavBar from "../components/NavBar";
 import AccessDenied from "./AccessDenied";
-
-const gameCategories = [
-  { id: 1, name: "RPG" },
-  { id: 2, name: "MMORPG" },
-  { id: 3, name: "FPS" },
-  { id: 4, name: "Battle Royal" },
-  { id: 5, name: "Sport" },
-  { id: 6, name: "Stratégie" },
-  { id: 7, name: "Sandbox" },
-  { id: 8, name: "Aventure" },
-  { id: 9, name: "Combat" },
-  { id: 10, name: "Indie" },
-  { id: 11, name: "Moba" },
-  { id: 12, name: "Simulation" },
-];
 
 const sortOptions = [
   { id: "recent", name: "Plus récent" },
@@ -42,7 +27,17 @@ type Auth = {
 };
 
 export default function Favorite() {
+  const [categories, setCategories] = useState<{ id: number; name: string }[]>(
+    [],
+  );
   const { auth } = useOutletContext() as { auth: Auth | null };
+
+  useEffect(() => {
+    fetch(`${import.meta.env.VITE_API_URL}/api/categories`)
+      .then((response) => response.json())
+      .then((data) => setCategories(data))
+      .catch((error) => console.error("Error", error));
+  }, []);
 
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isSortOpen, setIsSortOpen] = useState(false);
@@ -115,18 +110,24 @@ export default function Favorite() {
                   {isFilterOpen && (
                     <div className="filter-dropdown">
                       <div className="categories-list">
-                        {gameCategories.map((category) => (
-                          <label key={category.id} className="category-item">
-                            <input
-                              type="checkbox"
-                              checked={selectedCategories.includes(category.id)}
-                              onChange={() => handleCategoryToggle(category.id)}
-                            />
-                            <span className="category-name">
-                              {category.name}
-                            </span>
-                          </label>
-                        ))}
+                        {categories?.map(
+                          (category: { id: number; name: string }) => (
+                            <label key={category.id} className="category-item">
+                              <input
+                                type="checkbox"
+                                checked={selectedCategories.includes(
+                                  category.id,
+                                )}
+                                onChange={() =>
+                                  handleCategoryToggle(category.id)
+                                }
+                              />
+                              <span className="category-name">
+                                {category.name}
+                              </span>
+                            </label>
+                          ),
+                        )}
                       </div>
                     </div>
                   )}

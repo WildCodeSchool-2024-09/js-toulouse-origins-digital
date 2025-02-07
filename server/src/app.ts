@@ -22,14 +22,12 @@ app.use("/uploads", express.static(path.join(__dirname, "../../uploads")));
 
 import cors from "cors";
 
-if (process.env.CLIENT_URL != null) {
-  app.use(
-    cors({
-      origin: [process.env.CLIENT_URL],
-      credentials: true,
-    }),
-  );
-}
+app.use(
+  cors({
+    origin: [process.env.CLIENT_URL || "http://localhost:3000"],
+    credentials: true,
+  }),
+);
 
 // If you need to allow extra origins, you can add something like this:
 

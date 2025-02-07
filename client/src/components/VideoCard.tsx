@@ -125,7 +125,9 @@ export default function VideoCard({ video, onClose }: VideoPlayerProps) {
     if (isFavorite(video.id)) {
       removeFromFavorites(video.id);
     } else {
-      fetch(`http://localhost:3310/api/videocategory/categories/${video.id}`)
+      fetch(
+        `${import.meta.env.API_VITE_URL}/api/videocategory/categories/${video.id}`,
+      )
         .then((response) => response.json())
         .then((categories) => {
           addToFavorites({
