@@ -61,6 +61,10 @@ router.post(
 );
 router.delete("/api/videoplaylist/:id", videoAndPlaylistActions.remove);
 
+router.get("/api/favorites/:userId", favoriteActions.read);
+router.post("/api/favorites/:userId/:itemId", favoriteActions.add);
+router.delete("/api/favorites/:userId/:itemId", favoriteActions.remove);
+
 router.use(authActions.verifyToken);
 
 router.post(
@@ -70,10 +74,6 @@ router.post(
 );
 
 router.post("/api/users/logout", authActions.logout, userActions.edit);
-
-router.get("/api/favorites/:userId", favoriteActions.read);
-router.post("/api/favorites/:userId", favoriteActions.add);
-router.delete("/api/favorites/:userId", favoriteActions.remove);
 
 router.get("/api/videoplaylist/:playlistId", videoAndPlaylistActions.read);
 
