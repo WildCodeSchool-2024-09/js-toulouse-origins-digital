@@ -3,13 +3,13 @@ import { createContext, useContext, useState } from "react";
 
 type NavContextProps = {
   isOpenLogin: boolean;
-  setIsOpenLogin: (value: boolean) => void;
+  setIsOpenLogin: React.Dispatch<React.SetStateAction<boolean>>; // ✅ Correction ici
 };
 
 const NavContext = createContext<NavContextProps | null>(null);
 
 export function NavProvider({ children }: { children: React.ReactNode }) {
-  const [isOpenLogin, setIsOpenLogin] = useState(false);
+  const [isOpenLogin, setIsOpenLogin] = useState<boolean>(false);
   return (
     <NavContext.Provider value={{ isOpenLogin, setIsOpenLogin }}>
       {children}
