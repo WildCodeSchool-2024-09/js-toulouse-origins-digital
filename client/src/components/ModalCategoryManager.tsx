@@ -3,6 +3,8 @@ import "../styles/ModalManager.css";
 import { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import { uploadFile } from "../services/uploadService";
+import useModal from "../services/useModal";
+import AlertModal from "./AlertModal";
 
 type CategoryData = {
   id: number;
@@ -29,6 +31,13 @@ export default function ModalCategoryManager({
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
 
+  const {
+    isShowing: isShowingAlert,
+    alertInfo,
+    toggle: toggleAlert,
+    showAlert,
+  } = useModal();
+
   useEffect(() => {
     if (isShowing) {
       document.body.classList.add("modal-open");
@@ -54,15 +63,15 @@ export default function ModalCategoryManager({
     try {
       const formData = new FormData(event.currentTarget);
       if (!formData.get("name")?.toString().trim()) {
-        alert("Le nom de la catégorie est requis");
+        showAlert("Erreur", "Le nom de la catégorie est requis", "error");
         return;
       }
       if (!formData.get("description")?.toString().trim()) {
-        alert("La description est requise");
+        showAlert("Erreur", "La description est requise", "error");
         return;
       }
       if (!previewUrl && !category?.url_image) {
-        alert("Une image est requise");
+        showAlert("Erreur", "Une image est requise", "error");
         return;
       }
       const imageFile = (
@@ -93,91 +102,106 @@ export default function ModalCategoryManager({
     }
   };
 
-  return isShowing
-    ? ReactDOM.createPortal(
-        <div className="modal-overlay">
-          <div className="modify-category-wrapper">
-            <div className="category-form">
-              <header className="modal-header">
-                <h2 className="title-admin-modal">
-                  {isEdit ? "Modifier" : "Ajouter"} une catégorie
-                </h2>
-                <button
-                  type="button"
-                  className="modal-close-button"
-                  onClick={hide}
-                >
-                  <span>&times;</span>
-                </button>
-              </header>
-              <form onSubmit={handleSubmit}>
-                <div className="form-group">
-                  <label htmlFor="category-name">Nom de la catégorie</label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    className="form-input"
-                    defaultValue={category?.name}
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="category-description">Description</label>
-                  <textarea
-                    id="description"
-                    name="description"
-                    className="form-textarea"
-                    defaultValue={category?.description}
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="image-upload">Image</label>
-                  <div className="image-upload-container">
-                    {(previewUrl || category?.url_image) && (
-                      <div className="current-image">
-                        <img
-                          src={previewUrl || category?.url_image}
-                          alt="Preview"
-                          style={{ maxWidth: "200px", marginBottom: "10px" }}
+  return (
+    <>
+      <AlertModal
+        isShowing={isShowingAlert}
+        onClose={toggleAlert}
+        alertInfo={alertInfo}
+      />
+      {isShowing
+        ? ReactDOM.createPortal(
+            <div className="modal-overlay">
+              <div className="modify-category-wrapper">
+                <div className="category-form">
+                  <header className="modal-header">
+                    <h2 className="title-admin-modal">
+                      {isEdit ? "Modifier" : "Ajouter"} une catégorie
+                    </h2>
+                    <button
+                      type="button"
+                      className="modal-close-button"
+                      onClick={hide}
+                    >
+                      <span>&times;</span>
+                    </button>
+                  </header>
+                  <form onSubmit={handleSubmit}>
+                    <div className="form-group">
+                      <label htmlFor="category-name">Nom de la catégorie</label>
+                      <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        className="form-input"
+                        defaultValue={category?.name}
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="category-description">Description</label>
+                      <textarea
+                        id="description"
+                        name="description"
+                        className="form-textarea"
+                        defaultValue={category?.description}
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="image-upload">Image</label>
+                      <div className="image-upload-container">
+                        {(previewUrl || category?.url_image) && (
+                          <div className="current-image">
+                            <img
+                              src={previewUrl || category?.url_image}
+                              alt="Preview"
+                              style={{
+                                maxWidth: "200px",
+                                marginBottom: "10px",
+                              }}
+                            />
+                          </div>
+                        )}
+                        <input
+                          type="file"
+                          accept=".png,.jpg,.jpeg"
+                          className="hidden"
+                          id="url_image"
+                          name="url_image"
+                          onChange={handleFileChange}
                         />
+                        <label htmlFor="url_image" className="upload-label">
+                          <Upload className="image-upload-icon" />
+                          <p className="upload-text">
+                            {isUploading
+                              ? "Téléchargement..."
+                              : "Uploader une image"}
+                          </p>
+                          <p className="upload-subtext">
+                            PNG, JPG jusqu'à 10MB
+                          </p>
+                        </label>
                       </div>
-                    )}
-                    <input
-                      type="file"
-                      accept=".png,.jpg,.jpeg"
-                      className="hidden"
-                      id="url_image"
-                      name="url_image"
-                      onChange={handleFileChange}
-                    />
-                    <label htmlFor="url_image" className="upload-label">
-                      <Upload className="image-upload-icon" />
-                      <p className="upload-text">
-                        {isUploading
-                          ? "Téléchargement..."
-                          : "Uploader une image"}
-                      </p>
-                      <p className="upload-subtext">PNG, JPG jusqu'à 10MB</p>
-                    </label>
-                  </div>
+                    </div>
+                    <div className="form-buttons">
+                      <button
+                        className="btn btn-cancel"
+                        type="button"
+                        onClick={hide}
+                      >
+                        Annuler
+                      </button>
+                      <button className="btn btn-submit" type="submit">
+                        {isEdit ? "Enregistrer" : "Ajouter"}
+                      </button>
+                    </div>
+                  </form>
                 </div>
-                <div className="form-buttons">
-                  <button
-                    className="btn btn-cancel"
-                    type="button"
-                    onClick={hide}
-                  >
-                    Annuler
-                  </button>
-                  <button className="btn btn-submit" type="submit">
-                    {isEdit ? "Enregistrer" : "Ajouter"}
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>,
-        document.body,
-      )
-    : null;
+              </div>
+            </div>,
+            document.body,
+          )
+        : null}
+      ;
+    </>
+  );
 }

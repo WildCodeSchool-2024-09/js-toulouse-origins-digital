@@ -3,6 +3,8 @@ import "../styles/ModalManager.css";
 import { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import { uploadFile } from "../services/uploadService";
+import useModal from "../services/useModal";
+import AlertModal from "./AlertModal";
 
 type UserData = {
   id: number;
@@ -27,6 +29,13 @@ export default function ModalUserManager({
 }: ModalUserManagerProps) {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
+
+  const {
+    isShowing: isShowingAlert,
+    alertInfo,
+    toggle: toggleAlert,
+    showAlert,
+  } = useModal();
 
   useEffect(() => {
     if (isShowing) {
@@ -53,17 +62,17 @@ export default function ModalUserManager({
     try {
       const formData = new FormData(event.currentTarget);
       if (!formData.get("pseudo")?.toString().trim()) {
-        alert("Le pseudo est requis");
+        showAlert("Erreur", "Le pseudo est requis", "error");
         return;
       }
       if (!formData.get("email")?.toString().trim()) {
-        alert("L'email est requis");
+        showAlert("Erreur", "L'email est requis", "error");
         return;
       }
 
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(formData.get("email")?.toString() || "")) {
-        alert("Veuillez entrer un email valide");
+        showAlert("Erreur", "Veuillez entrer un email valide", "error");
         return;
       }
 
@@ -95,105 +104,122 @@ export default function ModalUserManager({
     }
   };
 
-  return isShowing
-    ? ReactDOM.createPortal(
-        <div className="modal-overlay">
-          <div className="modify-category-wrapper">
-            <div className="category-form">
-              <header className="modal-header">
-                <h2 className="title-admin-modal">Modifier un utilisateur</h2>
-                <button
-                  type="button"
-                  className="modal-close-button"
-                  onClick={hide}
-                >
-                  <span>&times;</span>
-                </button>
-              </header>
-              <form onSubmit={handleSubmit}>
-                <div className="form-group">
-                  <label htmlFor="user-pseudo">Pseudo</label>
-                  <input
-                    type="text"
-                    id="pseudo"
-                    name="pseudo"
-                    className="form-input"
-                    defaultValue={user?.pseudo}
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="user-email">E-mail</label>
-                  <input
-                    type="text"
-                    id="email"
-                    name="email"
-                    className="form-input"
-                    defaultValue={user?.email}
-                  />
-                </div>
-                <div className="toggle-switch-container">
-                  <label className="toggle-switch">
-                    <input
-                      id="is_admin"
-                      name="is_admin"
-                      type="checkbox"
-                      defaultChecked={user?.is_admin}
-                    />
-                    <span
-                      className="slider"
-                      aria-label="toggle switch indicator"
-                    />
-                  </label>
-                  <span className="toggle-label">Administrateur</span>
-                </div>
-                <div className="form-group">
-                  <label htmlFor="image-upload">Image</label>
-                  <div className="image-upload-container">
-                    {(previewUrl || user?.avatar_url) && (
-                      <div className="current-image">
-                        <img
-                          src={previewUrl || user?.avatar_url}
-                          alt="Preview"
-                          style={{ maxWidth: "200px", marginBottom: "10px" }}
+  return (
+    <>
+      <AlertModal
+        isShowing={isShowingAlert}
+        onClose={toggleAlert}
+        alertInfo={alertInfo}
+      />
+      {isShowing
+        ? ReactDOM.createPortal(
+            <div className="modal-overlay">
+              <div className="modify-category-wrapper">
+                <div className="category-form">
+                  <header className="modal-header">
+                    <h2 className="title-admin-modal">
+                      Modifier un utilisateur
+                    </h2>
+                    <button
+                      type="button"
+                      className="modal-close-button"
+                      onClick={hide}
+                    >
+                      <span>&times;</span>
+                    </button>
+                  </header>
+                  <form onSubmit={handleSubmit}>
+                    <div className="form-group">
+                      <label htmlFor="user-pseudo">Pseudo</label>
+                      <input
+                        type="text"
+                        id="pseudo"
+                        name="pseudo"
+                        className="form-input"
+                        defaultValue={user?.pseudo}
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="user-email">E-mail</label>
+                      <input
+                        type="text"
+                        id="email"
+                        name="email"
+                        className="form-input"
+                        defaultValue={user?.email}
+                      />
+                    </div>
+                    <div className="toggle-switch-container">
+                      <label className="toggle-switch">
+                        <input
+                          id="is_admin"
+                          name="is_admin"
+                          type="checkbox"
+                          defaultChecked={user?.is_admin}
                         />
+                        <span
+                          className="slider"
+                          aria-label="toggle switch indicator"
+                        />
+                      </label>
+                      <span className="toggle-label">Administrateur</span>
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="image-upload">Image</label>
+                      <div className="image-upload-container">
+                        {(previewUrl || user?.avatar_url) && (
+                          <div className="current-image">
+                            <img
+                              src={previewUrl || user?.avatar_url}
+                              alt="Preview"
+                              style={{
+                                maxWidth: "200px",
+                                marginBottom: "10px",
+                              }}
+                            />
+                          </div>
+                        )}
+                        <input
+                          type="file"
+                          accept=".png,.jpg,.jpeg"
+                          className="hidden"
+                          id="avatar_url"
+                          name="avatar_url"
+                          onChange={handleFileChange}
+                        />
+                        <label htmlFor="avatar_url" className="upload-label">
+                          <Upload className="image-upload-icon" />
+                          <p className="upload-text">
+                            {isUploading
+                              ? "Téléchargement..."
+                              : "Uploader une image"}
+                          </p>
+                          <p className="upload-subtext">
+                            PNG, JPG jusqu'à 10MB
+                          </p>
+                        </label>
                       </div>
-                    )}
-                    <input
-                      type="file"
-                      accept=".png,.jpg,.jpeg"
-                      className="hidden"
-                      id="avatar_url"
-                      name="avatar_url"
-                      onChange={handleFileChange}
-                    />
-                    <label htmlFor="avatar_url" className="upload-label">
-                      <Upload className="image-upload-icon" />
-                      <p className="upload-text">
-                        {isUploading
-                          ? "Téléchargement..."
-                          : "Uploader une image"}
-                      </p>
-                      <p className="upload-subtext">PNG, JPG jusqu'à 10MB</p>
-                    </label>
-                  </div>
+                    </div>
+                    <div className="form-buttons">
+                      <button
+                        className="btn btn-cancel"
+                        type="button"
+                        onClick={hide}
+                      >
+                        Annuler
+                      </button>
+                      <button className="btn btn-submit" type="submit">
+                        Enregistrer
+                      </button>
+                    </div>
+                  </form>
                 </div>
-                <div className="form-buttons">
-                  <button
-                    className="btn btn-cancel"
-                    type="button"
-                    onClick={hide}
-                  >
-                    Annuler
-                  </button>
-                  <button className="btn btn-submit" type="submit">
-                    Enregistrer
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>,
-        document.body,
-      )
-    : null;
+              </div>
+            </div>,
+            document.body,
+          )
+        : null}
+      ;
+    </>
+  );
 }
