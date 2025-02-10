@@ -121,29 +121,29 @@ export default function VideoCard({ video, onClose }: VideoPlayerProps) {
     }
   };
 
-  const handleFavoriteClick = () => {
+  const handleFavoriteClick = async () => {
     if (!video) return;
 
-    if (isFavorite(video.id)) {
-      removeFromFavorites(video.id);
-    } else {
-      fetch(
-        `${import.meta.env.VITE_API_URL}/api/videocategory/categories/${
-          video.id
-        }`,
-      )
-        .then((response) => response.json())
-        .then((categories) => {
-          addToFavorites({
-            id: video.id,
-            title: video.title,
-            description: video.description,
-            video_url: video.video_url,
-            date: new Date(),
-            views: video.views,
-            categories: categories.map((cat: { id: number }) => cat.id),
-          });
-        });
+    try {
+      if (isFavorite(video.id)) {
+        await fetch(
+          `${import.meta.env.VITE_API_URL}/api/favorites/${userId}/${video.id}`,
+          {
+            method: "DELETE",
+          },
+        );
+        removeFromFavorites(video.id);
+      } else {
+        await fetch(
+          `${import.meta.env.VITE_API_URL}/api/favorites/${userId}/${video.id}`,
+          {
+            method: "POST",
+          },
+        );
+        addToFavorites({ ...video, date: new Date() });
+      }
+    } catch (error) {
+      console.error("Error managing favorite:", error);
     }
   };
 
