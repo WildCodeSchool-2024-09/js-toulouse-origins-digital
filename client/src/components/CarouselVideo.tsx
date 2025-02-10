@@ -181,7 +181,14 @@ export default function CarouselVideo({ categoryId }: CarouselVideoProps) {
           </button>
         </div>
       </div>
-      <VideoCard video={selectedVideo ?? null} onClose={handleCloseVideo} />
+      <VideoCard
+        video={
+          selectedVideo
+            ? { ...selectedVideo, date: selectedVideo.date.toString() }
+            : null
+        }
+        onClose={handleCloseVideo}
+      />
     </>
   );
 }
