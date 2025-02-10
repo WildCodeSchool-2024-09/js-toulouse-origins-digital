@@ -8,5 +8,3 @@ export const fetchFavorites = async (userId: number) => {
   const data = await response.json();
   return data.favorites || [];
 };
-
-// export const addFavorites = async (userId: number) =>
