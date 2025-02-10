@@ -14,6 +14,15 @@ interface Video {
   categories?: number[];
 }
 
+type Favorite = {
+  id: number;
+  title: string;
+  description: string;
+  video_url: string;
+  date: string;
+  views: number;
+};
+
 function getVideasVideoId(url: string): string | null {
   const regExp =
     /^.*\/([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}).*$/;
@@ -29,6 +38,7 @@ function getVideasThumbnail(url: string): string {
 interface SettingFavoriteVideoProps {
   selectedCategories: number[];
   sortBy: string;
+  favorites: Favorite[];
 }
 
 export default function SettingFavoriteVideo({

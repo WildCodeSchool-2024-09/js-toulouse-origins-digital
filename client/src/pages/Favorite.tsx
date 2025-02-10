@@ -4,6 +4,7 @@ import { useOutletContext } from "react-router-dom";
 import Header from "../components/Header";
 import NavBar from "../components/NavBar";
 import SettingFavoriteVideo from "../components/SettingFavoriteVideo";
+import { fetchFavorites } from "../services/favoriteService";
 import AccessDenied from "./AccessDenied";
 
 const sortOptions = [
@@ -26,10 +27,20 @@ type Auth = {
   token: string;
 };
 
+type Favorite = {
+  id: number;
+  title: string;
+  description: string;
+  video_url: string;
+  date: string;
+  views: number;
+};
+
 export default function Favorite() {
   const [categories, setCategories] = useState<{ id: number; name: string }[]>(
     [],
   );
+
   const { auth } = useOutletContext() as { auth: Auth | null };
 
   useEffect(() => {
@@ -39,6 +50,17 @@ export default function Favorite() {
       .catch((error) => console.error("Error", error));
   }, []);
 
+  const userId = auth?.user.id;
+
+  useEffect(() => {
+    if (userId) {
+      fetchFavorites(userId)
+        .then((favorites) => setFavorites(favorites))
+        .catch((error) => console.error("Error fetching favorites:", error));
+    }
+  }, [userId]);
+
+  const [favorites, setFavorites] = useState<Favorite[]>([]);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isSortOpen, setIsSortOpen] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
@@ -165,6 +187,7 @@ export default function Favorite() {
               <SettingFavoriteVideo
                 selectedCategories={selectedCategories}
                 sortBy={sortBy}
+                favorites={favorites}
               />
             </div>
             <NavBar />
