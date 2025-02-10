@@ -7,7 +7,7 @@ import { useNav } from "../contexts/NavProvider";
 import "../styles/NavBar.css";
 import { Link, useOutletContext } from "react-router-dom";
 import UserLogin from "./UserLogin";
-import UserLogout from "./UserModal";
+import UserModal from "./UserModal";
 
 type User = {
   id: number;
@@ -37,7 +37,16 @@ export default function NavBar() {
 
   return (
     <>
-      {isOpenLogin ? !auth ? <UserLogin /> : <UserLogout /> : null}
+      {isOpenLogin ? (
+        !auth ? (
+          <UserLogin />
+        ) : (
+          <UserModal
+            isOpenLogin={isOpenLogin}
+            setIsOpenLogin={setIsOpenLogin}
+          />
+        )
+      ) : null}
       <div className="nav-bar-container">
         <nav className={navbarClass}>
           <Link to="/home">
@@ -57,8 +66,8 @@ export default function NavBar() {
             </>
           )}
           <img
-            onClick={() => setIsOpenLogin(true)}
-            onKeyDown={() => setIsOpenLogin(true)}
+            onClick={() => setIsOpenLogin((prev) => !prev)}
+            onKeyDown={() => setIsOpenLogin((prev) => !prev)}
             src={!auth ? imgProfile : auth?.user.avatar_url}
             alt="Profile"
             className="nav-icon nav-icon-profile-style"

@@ -128,7 +128,15 @@ export default function SettingFavoriteVideo({
           </div>
         </div>
       ))}
-      <VideoCard video={selectedVideo ?? null} onClose={handleCloseVideo} />
+      {selectedVideo && (
+        <VideoCard
+          video={{
+            ...selectedVideo,
+            date: selectedVideo?.date ? selectedVideo.date.toISOString() : "",
+          }}
+          onClose={handleCloseVideo}
+        />
+      )}
     </div>
   );
 }
