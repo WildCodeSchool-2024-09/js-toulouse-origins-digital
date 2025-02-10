@@ -1,4 +1,4 @@
-import "../styles/CarousselFavoriteVideo.css";
+import "../styles/SettingFavoriteVideo.css";
 import { useEffect, useState } from "react";
 import deleteIcon from "../assets/images/supprimer.png";
 import { useFavorites } from "../contexts/FavoritesContext";
@@ -26,15 +26,15 @@ function getVideasThumbnail(url: string): string {
   return videoId ? `https://app.videas.fr/media/${videoId}/thumbnail.jpg` : "";
 }
 
-interface CarouselFavoriteVideoProps {
+interface SettingFavoriteVideoProps {
   selectedCategories: number[];
   sortBy: string;
 }
 
-export default function CarouselFavoriteVideo({
+export default function SettingFavoriteVideo({
   selectedCategories,
   sortBy,
-}: CarouselFavoriteVideoProps) {
+}: SettingFavoriteVideoProps) {
   const handleCloseVideo = () => setSelectedVideo(null);
   const { favorites, removeFromFavorites } = useFavorites();
   const [selectedVideo, setSelectedVideo] = useState<Video | null>(null);
@@ -98,7 +98,7 @@ export default function CarouselFavoriteVideo({
   }
 
   return (
-    <div className="carousel-favorite-video">
+    <div className="setting-favorite-video">
       {sortedFavorites.map((video) => (
         <div key={video.id} className="favorite-video-container">
           <div
