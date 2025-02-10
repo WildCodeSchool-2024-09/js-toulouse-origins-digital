@@ -1,9 +1,9 @@
 import "../styles/Favorite.css";
 import { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
-import CarouselFavoriteVideo from "../components/CarousselFavoriteVideo";
 import Header from "../components/Header";
 import NavBar from "../components/NavBar";
+import SettingFavoriteVideo from "../components/SettingFavoriteVideo";
 import AccessDenied from "./AccessDenied";
 
 const sortOptions = [
@@ -86,7 +86,7 @@ export default function Favorite() {
             }}
           >
             <div className="favorite-section">
-              <h2 className="title-fovarite-page">Favoris &#x27E9;</h2>
+              <h2 className="title-favorite-page">Favoris &#x27E9;</h2>
               <div className="filter-sort-out">
                 <div className="filter-container">
                   <button
@@ -148,7 +148,9 @@ export default function Favorite() {
                           <button
                             key={option.id}
                             type="button"
-                            className={`sort-item ${sortBy === option.id ? "active" : ""}`}
+                            className={`sort-item ${
+                              sortBy === option.id ? "active" : ""
+                            }`}
                             onClick={() => handleSortClick(option.id)}
                           >
                             {option.name}
@@ -162,7 +164,7 @@ export default function Favorite() {
             </div>
             <hr className="line" />
             <div className="favorite-video">
-              <CarouselFavoriteVideo
+              <SettingFavoriteVideo
                 selectedCategories={selectedCategories}
                 sortBy={sortBy}
               />

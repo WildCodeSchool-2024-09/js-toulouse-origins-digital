@@ -31,7 +31,7 @@ interface CarouselFavoriteVideoProps {
   sortBy: string;
 }
 
-export default function CarouselFavoriteVideo({
+export default function SettingFavoriteVideo({
   selectedCategories,
   sortBy,
 }: CarouselFavoriteVideoProps) {
@@ -44,19 +44,33 @@ export default function CarouselFavoriteVideo({
 
   useEffect(() => {
     const fetchCategories = async () => {
-      for (const video of favorites) {
-        const response = await fetch(
-          `${import.meta.env.VITE_API_URL}/api/videocategory/categories/${video.id}`,
+      try {
+        const responses = await Promise.all(
+          favorites.map((video) =>
+            fetch(
+              `${import.meta.env.VITE_API_URL}/api/videocategory/categories/${
+                video.id
+              }`,
+              { credentials: "include" },
+            ),
+          ),
         );
-        const data = await response.json();
-        setVideoCategories((prev) => ({
-          ...prev,
-          [video.id]: data.map((cat: { id: number }) => cat.id),
-        }));
+
+        const data = await Promise.all(responses.map((res) => res.json()));
+
+        const newCategories: Record<number, number[]> = {};
+        favorites.forEach((video, index) => {
+          newCategories[video.id] = data[index].map(
+            (cat: { id: number }) => cat.id,
+          );
+        });
+
+        setVideoCategories(newCategories);
+      } catch (error) {
+        console.error("Erreur lors de la récupération des catégories", error);
       }
     };
-
-    fetchCategories();
+    if (favorites.length > 0) fetchCategories(); // N'appeler que si des favoris existent.
   }, [favorites]);
 
   const filteredFavorites =
