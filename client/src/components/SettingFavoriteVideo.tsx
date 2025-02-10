@@ -1,4 +1,4 @@
-import "../styles/CarousselFavoriteVideo.css";
+import "../styles/SettingFavoriteVideo.css";
 import { useEffect, useState } from "react";
 import deleteIcon from "../assets/images/supprimer.png";
 import { useFavorites } from "../contexts/FavoritesContext";

@@ -170,24 +170,28 @@ export default function VideoCard({ video, onClose }: VideoPlayerProps) {
                   title={video?.title}
                   allowFullScreen
                 />
-                <p className="text-view">Vues: {video?.views}</p>
-
-                <p className="card-text">{video?.description}</p>
                 {isUserLoggedIn && (
-                  <div className="video-header">
-                    <button
-                      type="button"
-                      onClick={handleFavoriteClick}
-                      className="bookmark-button"
-                    >
-                      <img
-                        src={bookMarkIcon}
-                        alt="bookmark"
-                        className={`bookmark-icon ${
-                          video && isFavorite(video.id) ? "active" : ""
-                        }`}
-                      />
-                    </button>
+                  <>
+                    <div className="video-header">
+                      <h2 className="title-video-card">{video?.title}</h2>
+                      <button
+                        type="button"
+                        onClick={handleFavoriteClick}
+                        className="bookmark-button"
+                      >
+                        <img
+                          src={bookMarkIcon}
+                          alt="bookmark"
+                          className={`bookmark-icon ${
+                            video && isFavorite(video.id) ? "active" : ""
+                          }`}
+                        />
+                      </button>
+                    </div>
+                    <p className="text-view">Vues: {video?.views}</p>
+
+                    <p className="card-text">{video?.description}</p>
+
                     <button
                       className="button-playlist"
                       type="button"
@@ -196,7 +200,7 @@ export default function VideoCard({ video, onClose }: VideoPlayerProps) {
                     >
                       ajouter à une playlist{" "}
                     </button>
-                  </div>
+                  </>
                 )}
                 {successMessage && (
                   <div className="success-message">{successMessage}</div>
