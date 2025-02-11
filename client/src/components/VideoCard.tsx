@@ -204,6 +204,16 @@ export default function VideoCard({ video, onClose }: VideoPlayerProps) {
     <>
       {isOpenCardVideo && (
         <div className="card-video-card">
+          <button
+            type="button"
+            className="close close-video-card"
+            onClick={() => {
+              setIsOpenCardVideo(false);
+              onClose();
+            }}
+          >
+            <span>×</span>
+          </button>
           <div className="card-content-video-card">
             {!isOldVideo && !isUserLoggedIn ? (
               <div className="restricted-video">
@@ -255,7 +265,7 @@ export default function VideoCard({ video, onClose }: VideoPlayerProps) {
                       onClick={() => setIsOpenPlaylists(!isOpenPlaylists)}
                       onKeyDown={() => setIsOpenPlaylists(!isOpenPlaylists)}
                     >
-                      ajouter à une playlist{" "}
+                      Ajouter à une playlist{" "}
                     </button>
                   </>
                 )}
@@ -331,16 +341,6 @@ export default function VideoCard({ video, onClose }: VideoPlayerProps) {
               </>
             )}
           </div>
-          <button
-            onClick={() => {
-              setIsOpenCardVideo(false);
-              onClose();
-            }}
-            type="button"
-            className="button-close-video-card"
-          >
-            fermer
-          </button>
         </div>
       )}
     </>
