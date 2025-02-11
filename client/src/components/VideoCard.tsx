@@ -47,15 +47,6 @@ export default function VideoCard({ video, onClose }: VideoPlayerProps) {
     : false;
 
   useEffect(() => {
-    if (isOpenCardVideo) {
-      document.body.style.overflow = "hidden";
-    }
-    return () => {
-      document.body.style.overflow = "auto";
-    };
-  }, [isOpenCardVideo]);
-
-  useEffect(() => {
     const checkFavorite = async () => {
       if (video && auth?.user?.id) {
         try {
