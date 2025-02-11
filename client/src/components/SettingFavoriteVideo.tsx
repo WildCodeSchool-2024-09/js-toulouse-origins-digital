@@ -1,7 +1,7 @@
 import "../styles/SettingFavoriteVideo.css";
 import { useEffect, useState } from "react";
+import { useOutletContext } from "react-router-dom";
 import deleteIcon from "../assets/images/supprimer.png";
-import { useFavorites } from "../contexts/FavoritesContext";
 import VideoCard from "./VideoCard";
 
 interface Video {
@@ -13,6 +13,26 @@ interface Video {
   views: number;
   categories?: number[];
 }
+
+type Favorite = {
+  id: number;
+  title: string;
+  description: string;
+  video_url: string;
+  date: string;
+  views: number;
+};
+
+type User = {
+  id: number;
+  email: string;
+  is_admin: boolean;
+};
+
+type Auth = {
+  user: User;
+  token: string;
+};
 
 function getVideasVideoId(url: string): string | null {
   const regExp =
@@ -29,35 +49,68 @@ function getVideasThumbnail(url: string): string {
 interface SettingFavoriteVideoProps {
   selectedCategories: number[];
   sortBy: string;
+  favorites: Favorite[];
 }
 
 export default function SettingFavoriteVideo({
   selectedCategories,
   sortBy,
 }: SettingFavoriteVideoProps) {
+  const { auth } = useOutletContext() as { auth: Auth | null };
+  const userId = auth?.user.id;
   const handleCloseVideo = () => setSelectedVideo(null);
-  const { favorites, removeFromFavorites } = useFavorites();
+  const [favorites, setFavorites] = useState<Favorite[]>([]);
   const [selectedVideo, setSelectedVideo] = useState<Video | null>(null);
   const [videoCategories, setVideoCategories] = useState<
     Record<number, number[]>
   >({});
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchCategories = async () => {
-      for (const video of favorites) {
-        const response = await fetch(
-          `${import.meta.env.VITE_API_URL}/api/videocategory/categories/${video.id}`,
-        );
-        const data = await response.json();
-        setVideoCategories((prev) => ({
-          ...prev,
-          [video.id]: data.map((cat: { id: number }) => cat.id),
-        }));
-      }
+      if (userId)
+        for (const video of favorites) {
+          const response = await fetch(
+            `${import.meta.env.VITE_API_URL}/api/videocategory/categories/${video.id}`,
+          );
+          const data = await response.json();
+          setVideoCategories((prev) => ({
+            ...prev,
+            [video.id]: data.map((cat: { id: number }) => cat.id),
+          }));
+        }
     };
 
     fetchCategories();
-  }, [favorites]);
+  }, [favorites, userId]);
+
+  useEffect(() => {
+    const fetchFavorites = async () => {
+      if (userId) {
+        try {
+          setIsLoading(true);
+          const response = await fetch(
+            `${import.meta.env.VITE_API_URL}/api/favorites/${userId}`,
+            { credentials: "include" },
+          );
+          if (!response.ok) throw new Error("Failed to fetch favorites");
+          const data = await response.json();
+          setFavorites(data.favorites || []);
+        } catch (error) {
+          console.error("Error fetching favorites:", error);
+          setError("Failed to load favorites");
+          setFavorites([]);
+        } finally {
+          setIsLoading(false);
+        }
+      }
+    };
+    fetchFavorites();
+  }, [userId]);
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>{error}</div>;
 
   const filteredFavorites =
     selectedCategories.length > 0
@@ -67,6 +120,21 @@ export default function SettingFavoriteVideo({
           ),
         )
       : favorites;
+
+  const removeFromFavorites = async (videoId: number) => {
+    try {
+      await fetch(
+        `${import.meta.env.VITE_API_URL}/api/favorites/${auth?.user?.id}/${videoId}`,
+        {
+          method: "DELETE",
+          credentials: "include",
+        },
+      );
+      setFavorites((prev) => prev.filter((fav) => fav.id !== videoId));
+    } catch (error) {
+      console.error("Error removing favorite:", error);
+    }
+  };
 
   const sortedFavorites = [...filteredFavorites].sort((a, b) => {
     switch (sortBy) {
@@ -104,8 +172,12 @@ export default function SettingFavoriteVideo({
           <div
             key={video.id}
             className="video-card"
-            onClick={() => setSelectedVideo(video)}
-            onKeyDown={() => setSelectedVideo(video)}
+            onClick={() =>
+              setSelectedVideo({ ...video, date: new Date(video.date) })
+            }
+            onKeyDown={() =>
+              setSelectedVideo({ ...video, date: new Date(video.date) })
+            }
           >
             <img
               className="favorite-video-frame"
