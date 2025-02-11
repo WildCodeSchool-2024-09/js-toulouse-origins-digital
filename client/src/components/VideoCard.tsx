@@ -119,29 +119,29 @@ export default function VideoCard({ video, onClose }: VideoPlayerProps) {
     }
   };
 
-  const handleFavoriteClick = () => {
+  const handleFavoriteClick = async () => {
     if (!video) return;
 
-    if (isFavorite(video.id)) {
-      removeFromFavorites(video.id);
-    } else {
-      fetch(
-        `${import.meta.env.VITE_API_URL}/api/videocategory/categories/${
-          video.id
-        }`,
-      )
-        .then((response) => response.json())
-        .then((categories) => {
-          addToFavorites({
-            id: video.id,
-            title: video.title,
-            description: video.description,
-            video_url: video.video_url,
-            date: new Date(),
-            views: video.views,
-            categories: categories.map((cat: { id: number }) => cat.id),
-          });
-        });
+    try {
+      if (isFavorite(video.id)) {
+        await fetch(
+          `${import.meta.env.VITE_API_URL}/api/favorites/${auth?.user.id}/${video.id}`,
+          {
+            method: "DELETE",
+          },
+        );
+        removeFromFavorites(video.id);
+      } else {
+        await fetch(
+          `${import.meta.env.VITE_API_URL}/api/favorites/${auth?.user.id}/${video.id}`,
+          {
+            method: "POST",
+          },
+        );
+        addToFavorites({ ...video, date: new Date() });
+      }
+    } catch (error) {
+      console.error("Error managing favorite:", error);
     }
   };
 
@@ -162,32 +162,38 @@ export default function VideoCard({ video, onClose }: VideoPlayerProps) {
               </div>
             ) : (
               <>
-                <iframe
-                  className={`frame-video ${
-                    !isUserLoggedIn ? "grayed-out" : ""
-                  }`}
-                  src={video?.video_url}
-                  title={video?.title}
-                  allowFullScreen
-                />
-                <p className="text-view">Vues: {video?.views}</p>
+                <div>
+                  <iframe
+                    className={`frame-video ${
+                      !isUserLoggedIn ? "grayed-out" : ""
+                    }`}
+                    src={video?.video_url}
+                    title={video?.title}
+                    allowFullScreen
+                  />
+                </div>
 
-                <p className="card-text">{video?.description}</p>
                 {isUserLoggedIn && (
-                  <div className="video-header">
-                    <button
-                      type="button"
-                      onClick={handleFavoriteClick}
-                      className="bookmark-button"
-                    >
-                      <img
-                        src={bookMarkIcon}
-                        alt="bookmark"
-                        className={`bookmark-icon ${
-                          video && isFavorite(video.id) ? "active" : ""
-                        }`}
-                      />
-                    </button>
+                  <>
+                    <div className="video-header">
+                      <h2 className="title-video-card">{video?.title}</h2>
+                      <button
+                        type="button"
+                        onClick={handleFavoriteClick}
+                        className="bookmark-button"
+                      >
+                        <img
+                          src={bookMarkIcon}
+                          alt="bookmark"
+                          className={`bookmark-icon ${
+                            video && isFavorite(video.id) ? "active" : ""
+                          }`}
+                        />
+                      </button>
+                    </div>
+                    <p className="text-view">Vues: {video?.views}</p>
+
+                    <p className="card-text">{video?.description}</p>
                     <button
                       className="button-playlist"
                       type="button"
@@ -196,7 +202,7 @@ export default function VideoCard({ video, onClose }: VideoPlayerProps) {
                     >
                       ajouter à une playlist{" "}
                     </button>
-                  </div>
+                  </>
                 )}
                 {successMessage && (
                   <div className="success-message">{successMessage}</div>

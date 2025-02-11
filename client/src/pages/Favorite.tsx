@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import Header from "../components/Header";
 import NavBar from "../components/NavBar";
-import CarouselFavoriteVideo from "../components/SettingFavoriteVideo";
+import SettingFavoriteVideo from "../components/SettingFavoriteVideo";
 import AccessDenied from "./AccessDenied";
 
 const sortOptions = [
@@ -162,7 +162,7 @@ export default function Favorite() {
             </div>
             <hr className="line" />
             <div className="favorite-video">
-              <CarouselFavoriteVideo
+              <SettingFavoriteVideo
                 selectedCategories={selectedCategories}
                 sortBy={sortBy}
               />

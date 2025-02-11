@@ -20,38 +20,33 @@ const read: RequestHandler = async (req, res, next) => {
 const add: RequestHandler = async (req, res, next) => {
   try {
     const userId = Number.parseInt(req.params.userId, 10);
-    if (Number.isNaN(userId)) {
-      res.status(400).json("Invalid user ID");
-    }
-    const itemId = Number.parseInt(req.params.itemId, 10);
-    if (Number.isNaN(itemId)) {
-      res.status(400).json("Invalid item ID");
+    const videoId = Number.parseInt(req.params.itemId, 10);
+    if (Number.isNaN(userId) || Number.isNaN(videoId)) {
+      res.status(400).json("Invalid ID");
+      return;
     }
     await FavoriteRepository.createFavorite({
       id: 0,
       id_user: userId,
-      id_video: itemId,
+      id_video: videoId,
     });
     res.status(201).json("Favorite added");
   } catch (err) {
-    console.error(err);
     res.status(500).json("Internal server error");
   }
 };
 const remove: RequestHandler = async (req, res, next) => {
   try {
     const userId = Number.parseInt(req.params.userId, 10);
-    if (Number.isNaN(userId)) {
-      res.status(400).json("Invalid user ID");
-    }
-    const itemId = Number.parseInt(req.params.itemId, 10);
-    if (Number.isNaN(itemId)) {
-      res.status(400).json("Invalid item ID");
+    const videoId = Number.parseInt(req.params.itemId, 10);
+    if (Number.isNaN(userId) || Number.isNaN(videoId)) {
+      res.status(400).json("Invalid ID");
+      return;
     }
     await FavoriteRepository.deleteFavorite({
       id: 0,
       id_user: userId,
-      id_video: itemId,
+      id_video: videoId,
     });
     res.status(200).json("Favorite removed");
   } catch (err) {

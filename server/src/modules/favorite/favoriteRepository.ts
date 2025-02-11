@@ -27,7 +27,7 @@ class FavoriteRepository {
 
   async findFavoritesByUserId(id_user: number): Promise<Rows> {
     const [rows] = await databaseClient.query<Rows>(
-      "SELECT * FROM favorite WHERE id_user = ?",
+      "SELECT v.* FROM video v JOIN favorite f ON v.id = f.id_video WHERE f.id_user = ?",
       [id_user],
     );
     return rows;
