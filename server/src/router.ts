@@ -61,11 +61,11 @@ router.post(
 );
 router.delete("/api/videoplaylist/:id", videoAndPlaylistActions.remove);
 
+router.use(authActions.verifyToken);
+
 router.get("/api/favorites/:userId", favoriteActions.read);
 router.post("/api/favorites/:userId/:itemId", favoriteActions.add);
 router.delete("/api/favorites/:userId/:itemId", favoriteActions.remove);
-
-router.use(authActions.verifyToken);
 
 router.post(
   "/api/users/:id/upload-avatar",

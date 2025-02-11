@@ -52,6 +52,7 @@ export default function VideoCard({ video, onClose }: VideoPlayerProps) {
         try {
           const response = await fetch(
             `${import.meta.env.VITE_API_URL}/api/favorites/${auth.user.id}`,
+            { credentials: "include" },
           );
           const data = await response.json();
           setIsFavorite(
@@ -115,6 +116,7 @@ export default function VideoCard({ video, onClose }: VideoPlayerProps) {
           import.meta.env.VITE_API_URL
         }/api/videoplaylist/${playlistId}/${videoId}`,
         {
+          credentials: "include",
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -170,6 +172,7 @@ export default function VideoCard({ video, onClose }: VideoPlayerProps) {
           `${import.meta.env.VITE_API_URL}/api/favorites/${auth?.user.id}/${video.id}`,
           {
             method: "DELETE",
+            credentials: "include",
           },
         );
         setIsFavorite(false);
@@ -178,6 +181,7 @@ export default function VideoCard({ video, onClose }: VideoPlayerProps) {
           `${import.meta.env.VITE_API_URL}/api/favorites/${auth?.user.id}/${video.id}`,
           {
             method: "POST",
+            credentials: "include",
           },
         );
         setIsFavorite(true);

@@ -49,7 +49,9 @@ export default function Favorite() {
   const [sortBy, setSortBy] = useState<string>("recent");
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/api/categories`)
+    fetch(`${import.meta.env.VITE_API_URL}/api/categories`, {
+      credentials: "include",
+    })
       .then((response) => response.json())
       .then((data) => setCategories(data))
       .catch((error) => console.error("Error", error));

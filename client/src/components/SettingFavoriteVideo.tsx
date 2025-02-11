@@ -92,6 +92,7 @@ export default function SettingFavoriteVideo({
           setIsLoading(true);
           const response = await fetch(
             `${import.meta.env.VITE_API_URL}/api/favorites/${userId}`,
+            { credentials: "include" },
           );
           if (!response.ok) throw new Error("Failed to fetch favorites");
           const data = await response.json();
@@ -126,6 +127,7 @@ export default function SettingFavoriteVideo({
         `${import.meta.env.VITE_API_URL}/api/favorites/${auth?.user?.id}/${videoId}`,
         {
           method: "DELETE",
+          credentials: "include",
         },
       );
       setFavorites((prev) => prev.filter((fav) => fav.id !== videoId));
