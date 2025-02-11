@@ -1,8 +1,6 @@
-html,
-body {
-  margin: 0;
-  padding: 0;
-  overflow-x: hidden;
+.user-login-out {
+  max-height: 90vh;
+  overflow-y: auto;
 }
 
 .user-login-out {
@@ -17,14 +15,14 @@ body {
   width: 100%;
   max-width: 400px;
   margin: auto;
-  top: 10%;
+  top: 50%;
   left: 50%;
   text-align: center;
-  transform: translate(-50%);
+  transform: translate(-50%, -50%);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
   z-index: 1000;
-  animation: scaleIn 0.4s ease-out;
-  position: absolute;
+  animation: fadeInOut 0.4s ease-out;
+  position: fixed;
   gap: 10px;
   padding: 20px;
 }
@@ -115,9 +113,9 @@ body {
     opacity: 0;
   }
   25% {
-    opacity: 1;
+    opacity: 0.5;
   }
   100% {
-    opacity: 0;
+    opacity: 1;
   }
 }
