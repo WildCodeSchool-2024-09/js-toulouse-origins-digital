@@ -104,9 +104,10 @@ const GamePlaylists = () => {
         <>
           <Header />
           <main className="playlists-container">
-            <h1 className="page-title">
-              {selectedPlaylist ? selectedPlaylist.name : "Mes Playlists"}
-            </h1>
+            <div className="playlists-section">
+              <h2 className="title-playlists-page">Mes Playlists &#x27E9;</h2>
+            </div>
+            <hr className="line" />
             {error && <div className="error-message">{error}</div>}
             {isLoading && <div className="loading">Loading...</div>}
             {!selectedPlaylist ? (

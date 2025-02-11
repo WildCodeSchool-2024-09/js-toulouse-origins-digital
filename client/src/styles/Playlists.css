@@ -2,12 +2,7 @@
   margin-top: 10px;
   background-color: rgba(172, 252, 255, 0.245);
 }
-.page-title {
-  font-family: var(--font-title);
-  color: var(--primary-text-color);
-  font-size: 36px;
-  margin-left: 10px;
-}
+
 .button-add-playlist {
   background-color: var(--button-color);
   color: var(--secondary-text-color);
@@ -119,4 +114,28 @@
   margin-top: 10px;
   margin-bottom: 20px;
   cursor: pointer;
+}
+.playlists-container {
+  position: relative;
+  font-family: "Exo", sans-serif;
+  font-weight: 100;
+  padding: 20px;
+  height: 100vh;
+  overflow-x: hidden;
+}
+.playlists-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.title-playlists-page {
+  font-size: 24px;
+  font-weight: 200;
+  font-family: "Exo", sans-serif;
+}
+.line {
+  border: 1px solid white;
+  opacity: 1;
+  margin: 10px 0;
 }

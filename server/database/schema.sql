@@ -30,7 +30,6 @@ CREATE TABLE favorite (
   FOREIGN KEY (id_video) REFERENCES video(id)
   ON DELETE CASCADE,
   FOREIGN KEY (id_user) REFERENCES user(id)
-  ON DELETE CASCADE
 );
 
 CREATE TABLE video_category (

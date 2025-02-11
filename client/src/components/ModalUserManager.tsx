@@ -39,11 +39,10 @@ export default function ModalUserManager({
 
   useEffect(() => {
     if (isShowing) {
-      document.body.classList.add("modal-open");
+      document.body.style.overflow = "hidden";
     }
-
     return () => {
-      document.body.classList.remove("modal-open");
+      document.body.style.overflow = "auto";
     };
   }, [isShowing]);
 
