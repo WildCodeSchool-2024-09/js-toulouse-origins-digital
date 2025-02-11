@@ -3,6 +3,7 @@ import editPicto from "../assets/images/pencil-management.png";
 import deletePicto from "../assets/images/trash-management.png";
 import useDeleteVideo from "../services/deleteVideo";
 import "../styles/CardVideoManager.css";
+import ConfirmModal from "./ConfirmModal";
 
 interface Category {
   id: number;
@@ -47,7 +48,11 @@ export default function CardVideoManager({
   onDelete,
 }: CardVideoManagerProps) {
   const [categoryNames, setCategoryNames] = useState<Category[]>([]);
+  const [isShowingConfirm, setIsShowingConfirm] = useState(false);
+  const [confirmInfo, setConfirmInfo] = useState({ title: "", message: "" });
   const deleteVideo = useDeleteVideo();
+
+  const toggleConfirm = () => setIsShowingConfirm(!isShowingConfirm);
 
   useEffect(() => {
     const fetchCategoryNames = async () => {
@@ -70,58 +75,78 @@ export default function CardVideoManager({
     }
   }, [categories]);
 
-  const handleDelete = async () => {
-    if (
-      window.confirm(`Êtes-vous sûr de vouloir supprimer la vidéo "${title}" ?`)
-    ) {
-      const success = await deleteVideo(id);
-      if (success) {
-        onDelete(id);
-      }
+  const showConfirm = (title: string, message: string) => {
+    setConfirmInfo({ title, message });
+    setIsShowingConfirm(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    try {
+      await deleteVideo(id);
+      onDelete(id);
+      toggleConfirm();
+    } catch (error) {
+      console.error("Erreur lors de la suppression:", error);
     }
   };
+
+  const handleDelete = () => {
+    showConfirm(
+      "Confirmation de suppression",
+      `Êtes-vous sûr de vouloir supprimer la vidéo "${title}" ?`,
+    );
+  };
+
   const thumbnailUrl = getVideasThumbnail(video_url);
   return (
-    <div className="video-component-admin">
-      <div className="video-card-admin">
-        <img className="miniature-pic-admin" src={thumbnailUrl} alt="" />
-        <div className="video-card-box">
-          <div className="video-card-content">
-            <h2 className="video-card-title">{title}</h2>
-            <p className="video-card-description">{description}</p>
-            <div className="video-card-categories-containter">
-              {categoryNames.map((category) => (
-                <p key={category.id} className="category-video-admin">
-                  {category.name}
-                </p>
-              ))}
+    <>
+      <ConfirmModal
+        isShowing={isShowingConfirm}
+        onClose={toggleConfirm}
+        onConfirm={handleConfirmDelete}
+        confirmInfo={confirmInfo}
+      />
+      <div className="video-component-admin">
+        <div className="video-card-admin">
+          <img className="miniature-pic-admin" src={thumbnailUrl} alt="" />
+          <div className="video-card-box">
+            <div className="video-card-content">
+              <h2 className="video-card-title">{title}</h2>
+              <p className="video-card-description">{description}</p>
+              <div className="video-card-categories-containter">
+                {categoryNames.map((category) => (
+                  <p key={category.id} className="category-video-admin">
+                    {category.name}
+                  </p>
+                ))}
+              </div>
+              <ul className="video-details">
+                <li>{date}</li>
+                <li>{duration}</li>
+                <li>{`${views} views`}</li>
+              </ul>
             </div>
-            <ul className="video-details">
-              <li>{date}</li>
-              <li>{duration}</li>
-              <li>{`${views} views`}</li>
-            </ul>
-          </div>
-          <div className="video-actions">
-            <img
-              width={30}
-              className="edit"
-              src={editPicto}
-              alt="Modifier"
-              onClick={onEdit}
-              onKeyDown={onEdit}
-            />
-            <img
-              width={30}
-              className="delete"
-              src={deletePicto}
-              alt="Supprimer"
-              onClick={handleDelete}
-              onKeyDown={handleDelete}
-            />
+            <div className="video-actions">
+              <img
+                width={30}
+                className="edit"
+                src={editPicto}
+                alt="Modifier"
+                onClick={onEdit}
+                onKeyDown={onEdit}
+              />
+              <img
+                width={30}
+                className="delete"
+                src={deletePicto}
+                alt="Supprimer"
+                onClick={handleDelete}
+                onKeyDown={handleDelete}
+              />
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

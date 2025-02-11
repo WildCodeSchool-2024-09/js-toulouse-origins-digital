@@ -6,6 +6,11 @@ interface AlertInfo {
   type: "success" | "error" | "warning";
 }
 
+interface ConfirmInfo {
+  title: string;
+  message: string;
+}
+
 const useModal = () => {
   const [isShowing, setIsShowing] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
@@ -13,6 +18,10 @@ const useModal = () => {
     title: "",
     message: "",
     type: "error",
+  });
+  const [confirmInfo, setConfirmInfo] = useState<ConfirmInfo>({
+    title: "",
+    message: "",
   });
 
   function toggle(id?: number | null) {
@@ -33,12 +42,19 @@ const useModal = () => {
     setIsShowing(!isShowing);
   }
 
+  function showConfirm(title: string, message: string) {
+    setConfirmInfo({ title, message });
+    setIsShowing(!isShowing);
+  }
+
   return {
     isShowing,
     editingId,
     alertInfo,
+    confirmInfo,
     toggle,
     showAlert,
+    showConfirm,
   };
 };
 

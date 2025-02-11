@@ -48,8 +48,15 @@ export default function ModalVideoManager({
 
   useEffect(() => {
     if (isShowing) {
-      document.body.classList.add("modal-open");
+      document.body.style.overflow = "hidden";
+    }
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [isShowing]);
 
+  useEffect(() => {
+    if (isShowing) {
       fetch("http://localhost:3310/api/categories")
         .then((response) => response.json())
         .then((data) => setCategories(data));
