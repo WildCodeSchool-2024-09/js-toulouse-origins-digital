@@ -41,10 +41,6 @@ router.post("/api/videocategory/:categoryId", videoCategoryActions.add);
 router.delete("/api/videocategory/:categoryId", videoCategoryActions.remove);
 router.put("/api/videocategory/:id", videoCategoryActions.update);
 
-router.get("/api/favorites/:userId", favoriteActions.read);
-router.post("/api/favorites/:userId", favoriteActions.add);
-router.delete("/api/favorites/:userId", favoriteActions.remove);
-
 router.get("/api/users", userActions.browse);
 router.get("/api/users/:id", userActions.read);
 router.post("/api/users/", authActions.hashPassword, userActions.add);
@@ -67,6 +63,10 @@ router.delete("/api/videoplaylist/:id", videoAndPlaylistActions.remove);
 
 router.use(authActions.verifyToken);
 
+router.get("/api/favorites/:userId", favoriteActions.read);
+router.post("/api/favorites/:userId/:itemId", favoriteActions.add);
+router.delete("/api/favorites/:userId/:itemId", favoriteActions.remove);
+
 router.post(
   "/api/users/:id/upload-avatar",
   userActions.upload.single("avatar_url"),
@@ -74,10 +74,6 @@ router.post(
 );
 
 router.post("/api/users/logout", authActions.logout, userActions.edit);
-
-router.get("/api/favorites/:userId", favoriteActions.read);
-router.post("/api/favorites/:userId", favoriteActions.add);
-router.delete("/api/favorites/:userId", favoriteActions.remove);
 
 router.get("/api/videoplaylist/:playlistId", videoAndPlaylistActions.read);
 

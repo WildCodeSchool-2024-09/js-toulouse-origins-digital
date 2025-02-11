@@ -1,7 +1,6 @@
 import "./App.css";
 import { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
-import { FavoritesProvider } from "./contexts/FavoritesContext";
 import { useNav } from "./contexts/NavProvider";
 
 type User = {
@@ -66,14 +65,12 @@ function App() {
   }, [auth]);
 
   return (
-    <FavoritesProvider>
-      <main
-        onClick={isOpenLogin ? () => setIsOpenLogin(false) : undefined}
-        onKeyDown={isOpenLogin ? () => setIsOpenLogin(false) : undefined}
-      >
-        <Outlet context={{ auth, setAuth }} />
-      </main>
-    </FavoritesProvider>
+    <main
+      onClick={isOpenLogin ? () => setIsOpenLogin(false) : undefined}
+      onKeyDown={isOpenLogin ? () => setIsOpenLogin(false) : undefined}
+    >
+      <Outlet context={{ auth, setAuth }} />
+    </main>
   );
 }
 

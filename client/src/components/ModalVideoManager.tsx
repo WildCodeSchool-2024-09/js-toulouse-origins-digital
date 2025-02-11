@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import "../styles/ModalManager.css";
 import ReactDOM from "react-dom";
+import useModal from "../services/useModal";
+import AlertModal from "./AlertModal";
 
 type VideoData = {
   id: number;
@@ -37,11 +39,24 @@ export default function ModalVideoManager({
   const [selectedCategories, setSelectedCategories] = useState<number[]>(
     video?.categories || [],
   );
+  const {
+    isShowing: isShowingAlert,
+    alertInfo,
+    toggle: toggleAlert,
+    showAlert,
+  } = useModal();
 
   useEffect(() => {
     if (isShowing) {
-      document.body.classList.add("modal-open");
+      document.body.style.overflow = "hidden";
+    }
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [isShowing]);
 
+  useEffect(() => {
+    if (isShowing) {
       fetch("http://localhost:3310/api/categories")
         .then((response) => response.json())
         .then((data) => setCategories(data));
@@ -69,19 +84,17 @@ export default function ModalVideoManager({
     const formData = new FormData(event.currentTarget);
 
     if (!formData.get("title")?.toString().trim()) {
-      alert("Le titre est requis");
+      showAlert("Erreur", "Le titre est requis", "error");
       return;
     }
+
     if (!formData.get("description")?.toString().trim()) {
-      alert("La description est requise");
+      showAlert("Erreur", "La description est requise", "error");
       return;
     }
+
     if (!formData.get("video_url")?.toString().trim() && !isEdit) {
-      alert("L'URL de la vidéo est requise");
-      return;
-    }
-    if (selectedCategories.length === 0) {
-      alert("Veuillez sélectionner au moins une catégorie");
+      showAlert("Erreur", "L'URL de la vidéo est requis", "error");
       return;
     }
 
@@ -90,8 +103,19 @@ export default function ModalVideoManager({
     const videaUrlRegex =
       /^https:\/\/app\.videas\.fr\/embed\/media\/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}\/$/;
     if (!isEdit && !videaUrlRegex.test(videoUrl)) {
-      alert(
-        "L'URL doit être au format : https://app.videas.fr/embed/media/XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX/",
+      showAlert(
+        "Erreur",
+        `L'URL doit être un lien videas : https://app.videas.fr/embed/media/XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX/`,
+        "error",
+      );
+      return;
+    }
+
+    if (selectedCategories.length === 0) {
+      showAlert(
+        "Erreur",
+        "Veuillez sélectionner au moins 1 catégorie",
+        "error",
       );
       return;
     }
@@ -112,88 +136,100 @@ export default function ModalVideoManager({
     setSelectedCategories([]);
   };
 
-  return isShowing
-    ? ReactDOM.createPortal(
-        <div className="modal-overlay">
-          <div className="modify-category-wrapper">
-            <div className="category-form">
-              <header className="modal-header">
-                <h2 className="title-admin-modal">
-                  {isEdit ? "Modifier" : "Ajouter"} une vidéo
-                </h2>
-                <button
-                  type="button"
-                  className="modal-close-button"
-                  onClick={hide}
-                >
-                  <span>&times;</span>
-                </button>
-              </header>
-              <form onSubmit={handleSubmit}>
-                <div className="form-group">
-                  <label htmlFor="video-title">Titre</label>
-                  <input
-                    type="text"
-                    id="title"
-                    name="title"
-                    className="form-input"
-                    defaultValue={video?.title}
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="video-description">Description</label>
-                  <textarea
-                    id="description"
-                    name="description"
-                    className="form-textarea"
-                    defaultValue={video?.description}
-                  />
-                </div>
-                {!isEdit && (
-                  <div className="form-group">
-                    <label htmlFor="video-video_url">Video</label>
-                    <input
-                      id="video_url"
-                      name="video_url"
-                      className="form-input"
-                      defaultValue={video?.video_url}
-                    />
-                  </div>
-                )}
-
-                <div className="form-group">
-                  <label htmlFor="video-description">Catégories</label>
-                  <div>
-                    {categories.map((category) => (
-                      <label key={category.id} className="category-checkbox">
+  return (
+    <>
+      <AlertModal
+        isShowing={isShowingAlert}
+        onClose={toggleAlert}
+        alertInfo={alertInfo}
+      />
+      {isShowing
+        ? ReactDOM.createPortal(
+            <div className="modal-overlay">
+              <div className="modify-category-wrapper">
+                <div className="category-form">
+                  <header className="modal-header">
+                    <h2 className="title-admin-modal">
+                      {isEdit ? "Modifier" : "Ajouter"} une vidéo
+                    </h2>
+                    <button
+                      type="button"
+                      className="modal-close-button"
+                      onClick={hide}
+                    >
+                      <span>&times;</span>
+                    </button>
+                  </header>
+                  <form onSubmit={handleSubmit}>
+                    <div className="form-group">
+                      <label htmlFor="video-title">Titre</label>
+                      <input
+                        type="text"
+                        id="title"
+                        name="title"
+                        className="form-input"
+                        defaultValue={video?.title}
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="video-description">Description</label>
+                      <textarea
+                        id="description"
+                        name="description"
+                        className="form-textarea"
+                        defaultValue={video?.description}
+                      />
+                    </div>
+                    {!isEdit && (
+                      <div className="form-group">
+                        <label htmlFor="video-video_url">Video</label>
                         <input
-                          type="checkbox"
-                          checked={selectedCategories.includes(category.id)}
-                          onChange={() => handleCategoryChange(category.id)}
-                        />{" "}
-                        {category.name}
-                      </label>
-                    ))}
-                  </div>
-                </div>
+                          id="video_url"
+                          name="video_url"
+                          className="form-input"
+                          defaultValue={video?.video_url}
+                        />
+                      </div>
+                    )}
 
-                <div className="form-buttons">
-                  <button
-                    className="btn btn-cancel"
-                    type="button"
-                    onClick={hide}
-                  >
-                    Annuler
-                  </button>
-                  <button className="btn btn-submit" type="submit">
-                    {isEdit ? "Enregistrer" : "Ajouter"}
-                  </button>
+                    <div className="form-group">
+                      <label htmlFor="video-description">Catégories</label>
+                      <div>
+                        {categories.map((category) => (
+                          <label
+                            key={category.id}
+                            className="category-checkbox"
+                          >
+                            <input
+                              type="checkbox"
+                              checked={selectedCategories.includes(category.id)}
+                              onChange={() => handleCategoryChange(category.id)}
+                            />{" "}
+                            {category.name}
+                          </label>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="form-buttons">
+                      <button
+                        className="btn btn-cancel"
+                        type="button"
+                        onClick={hide}
+                      >
+                        Annuler
+                      </button>
+                      <button className="btn btn-submit" type="submit">
+                        {isEdit ? "Enregistrer" : "Ajouter"}
+                      </button>
+                    </div>
+                  </form>
                 </div>
-              </form>
-            </div>
-          </div>
-        </div>,
-        document.body,
-      )
-    : null;
+              </div>
+            </div>,
+            document.body,
+          )
+        : null}
+    </>
+  );
 }

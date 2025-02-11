@@ -2,9 +2,8 @@ import "../styles/VideoCard.css";
 import { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import bookMarkIcon from "../assets/images/bookmark.png";
-import { useFavorites } from "../contexts/FavoritesContext";
 import { useNav } from "../contexts/NavProvider";
-import { fetchPlaylists } from "../services/playlistService";
+import { addPlaylist, fetchPlaylists } from "../services/playlistService";
 import type { Playlist } from "../types/types";
 
 interface VideoPlayerProps {
@@ -39,16 +38,46 @@ export default function VideoCard({ video, onClose }: VideoPlayerProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const { auth } = useOutletContext() as { auth: Auth | null };
-  const { isFavorite, addToFavorites, removeFromFavorites } = useFavorites();
-
+  const [isFavorite, setIsFavorite] = useState(false);
+  const isUserLoggedIn = auth?.user?.id;
+  const { setIsOpenLogin } = useNav();
   const isOldVideo = video
     ? new Date(video.date) <=
       new Date(new Date().setMonth(new Date().getMonth() - 2))
     : false;
-  const isUserLoggedIn = auth?.user?.id;
-  const { setIsOpenLogin } = useNav();
+
+  useEffect(() => {
+    if (isOpenCardVideo) {
+      document.body.style.overflow = "hidden";
+    }
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [isOpenCardVideo]);
+
+  useEffect(() => {
+    const checkFavorite = async () => {
+      if (video && auth?.user?.id) {
+        try {
+          const response = await fetch(
+            `${import.meta.env.VITE_API_URL}/api/favorites/${auth.user.id}`,
+            { credentials: "include" },
+          );
+          const data = await response.json();
+          setIsFavorite(
+            data.favorites.some((fav: { id: number }) => fav.id === video.id),
+          );
+        } catch (error) {
+          console.error("Error checking favorite:", error);
+        }
+      }
+    };
+    checkFavorite();
+  }, [video, auth?.user?.id]);
+
   useEffect(() => {
     const loadPlaylists = async () => {
+      if (!auth?.user?.id) return;
       setIsLoading(true);
       try {
         const data = await fetchPlaylists(auth?.user.id || 0);
@@ -61,6 +90,7 @@ export default function VideoCard({ video, onClose }: VideoPlayerProps) {
     };
     loadPlaylists();
   }, [auth?.user.id]);
+
   useEffect(() => {
     if (video && video.id > 0) {
       setIsOpenCardVideo(true);
@@ -95,6 +125,7 @@ export default function VideoCard({ video, onClose }: VideoPlayerProps) {
           import.meta.env.VITE_API_URL
         }/api/videoplaylist/${playlistId}/${videoId}`,
         {
+          credentials: "include",
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -119,29 +150,53 @@ export default function VideoCard({ video, onClose }: VideoPlayerProps) {
     }
   };
 
-  const handleFavoriteClick = () => {
-    if (!video) return;
+  const [isAddingPlaylist, setIsAddingPlaylist] = useState(false);
+  const [newPlaylistName, setNewPlaylistName] = useState("");
 
-    if (isFavorite(video.id)) {
-      removeFromFavorites(video.id);
-    } else {
-      fetch(
-        `${import.meta.env.VITE_API_URL}/api/videocategory/categories/${
-          video.id
-        }`,
-      )
-        .then((response) => response.json())
-        .then((categories) => {
-          addToFavorites({
-            id: video.id,
-            title: video.title,
-            description: video.description,
-            video_url: video.video_url,
-            date: new Date(),
-            views: video.views,
-            categories: categories.map((cat: { id: number }) => cat.id),
-          });
-        });
+  const createPlaylist = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      if (auth) {
+        const newPlaylist: Playlist = {
+          id: 0,
+          name: newPlaylistName,
+          id_user: auth?.user?.id || 0,
+        };
+
+        await addPlaylist(auth.user.id, newPlaylist);
+        const updatedPlaylists = await fetchPlaylists(auth.user.id);
+        setPlaylists(updatedPlaylists);
+      }
+    } catch {
+      setError("Failed to add playlist");
+    }
+  };
+
+  const handleFavoriteClick = async () => {
+    if (!video || !auth?.user?.id) return;
+
+    try {
+      if (isFavorite) {
+        await fetch(
+          `${import.meta.env.VITE_API_URL}/api/favorites/${auth?.user.id}/${video.id}`,
+          {
+            method: "DELETE",
+            credentials: "include",
+          },
+        );
+        setIsFavorite(false);
+      } else {
+        await fetch(
+          `${import.meta.env.VITE_API_URL}/api/favorites/${auth?.user.id}/${video.id}`,
+          {
+            method: "POST",
+            credentials: "include",
+          },
+        );
+        setIsFavorite(true);
+      }
+    } catch (error) {
+      console.error("Error managing favorite:", error);
     }
   };
 
@@ -162,14 +217,17 @@ export default function VideoCard({ video, onClose }: VideoPlayerProps) {
               </div>
             ) : (
               <>
-                <iframe
-                  className={`frame-video ${
-                    !isUserLoggedIn ? "grayed-out" : ""
-                  }`}
-                  src={video?.video_url}
-                  title={video?.title}
-                  allowFullScreen
-                />
+                <div>
+                  <iframe
+                    className={`frame-video ${
+                      !isUserLoggedIn ? "grayed-out" : ""
+                    }`}
+                    src={video?.video_url}
+                    title={video?.title}
+                    allowFullScreen
+                  />
+                </div>
+
                 {isUserLoggedIn && (
                   <>
                     <div className="video-header">
@@ -183,7 +241,7 @@ export default function VideoCard({ video, onClose }: VideoPlayerProps) {
                           src={bookMarkIcon}
                           alt="bookmark"
                           className={`bookmark-icon ${
-                            video && isFavorite(video.id) ? "active" : ""
+                            video && isFavorite ? "active" : ""
                           }`}
                         />
                       </button>
@@ -191,7 +249,6 @@ export default function VideoCard({ video, onClose }: VideoPlayerProps) {
                     <p className="text-view">Vues: {video?.views}</p>
 
                     <p className="card-text">{video?.description}</p>
-
                     <button
                       className="button-playlist"
                       type="button"
@@ -207,29 +264,69 @@ export default function VideoCard({ video, onClose }: VideoPlayerProps) {
                 )}
 
                 {isOpenPlaylists ? (
-                  <ul className="playlist-list">
-                    {isLoading ? (
-                      <li>Chargement...</li>
-                    ) : error ? (
-                      <li>{error}</li>
-                    ) : playlists.length > 0 ? (
-                      playlists.map((playlist) => (
-                        <li
-                          key={playlist.id}
-                          onClick={() =>
-                            video && addVideoToPlaylist(playlist.id, video.id)
-                          }
-                          onKeyDown={() =>
-                            video && addVideoToPlaylist(playlist.id, video.id)
-                          }
+                  <div className="playlist-container">
+                    <div className="playlist-header">
+                      {!isAddingPlaylist ? (
+                        <button
+                          type="button"
+                          className="add-playlist-button"
+                          onClick={() => setIsAddingPlaylist(true)}
                         >
-                          {playlist.name}
-                        </li>
-                      ))
-                    ) : (
-                      <li>Aucune playlist disponible</li>
-                    )}
-                  </ul>
+                          + Nouvelle playlist
+                        </button>
+                      ) : (
+                        <div className="new-playlist-form">
+                          <input
+                            type="text"
+                            value={newPlaylistName}
+                            onChange={(e) => setNewPlaylistName(e.target.value)}
+                            placeholder="Nom de la playlist"
+                            className="playlist-input"
+                          />
+                          <button
+                            type="button"
+                            onClick={createPlaylist}
+                            className="create-playlist-button"
+                          >
+                            Créer
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setIsAddingPlaylist(false);
+                              setNewPlaylistName("");
+                            }}
+                            className="cancel-button"
+                          >
+                            Annuler
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                    <ul className="playlist-list">
+                      {isLoading ? (
+                        <li>Chargement...</li>
+                      ) : error ? (
+                        <li>{error}</li>
+                      ) : playlists.length > 0 ? (
+                        playlists.map((playlist) => (
+                          <li
+                            key={playlist.id}
+                            onClick={() =>
+                              video && addVideoToPlaylist(playlist.id, video.id)
+                            }
+                            onKeyDown={() =>
+                              video && addVideoToPlaylist(playlist.id, video.id)
+                            }
+                          >
+                            {playlist.name}
+                          </li>
+                        ))
+                      ) : (
+                        <li>Aucune playlist disponible</li>
+                      )}
+                    </ul>
+                  </div>
                 ) : null}
               </>
             )}
