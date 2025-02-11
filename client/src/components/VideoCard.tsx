@@ -2,9 +2,8 @@ import "../styles/VideoCard.css";
 import { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import bookMarkIcon from "../assets/images/bookmark.png";
-import { useFavorites } from "../contexts/FavoritesContext";
 import { useNav } from "../contexts/NavProvider";
-import { fetchPlaylists } from "../services/playlistService";
+import { addPlaylist, fetchPlaylists } from "../services/playlistService";
 import type { Playlist } from "../types/types";
 
 interface VideoPlayerProps {
@@ -39,16 +38,36 @@ export default function VideoCard({ video, onClose }: VideoPlayerProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const { auth } = useOutletContext() as { auth: Auth | null };
-  const { isFavorite, addToFavorites, removeFromFavorites } = useFavorites();
-
+  const [isFavorite, setIsFavorite] = useState(false);
+  const isUserLoggedIn = auth?.user?.id;
+  const { setIsOpenLogin } = useNav();
   const isOldVideo = video
     ? new Date(video.date) <=
       new Date(new Date().setMonth(new Date().getMonth() - 2))
     : false;
-  const isUserLoggedIn = auth?.user?.id;
-  const { setIsOpenLogin } = useNav();
+
+  useEffect(() => {
+    const checkFavorite = async () => {
+      if (video && auth?.user?.id) {
+        try {
+          const response = await fetch(
+            `${import.meta.env.VITE_API_URL}/api/favorites/${auth.user.id}`,
+          );
+          const data = await response.json();
+          setIsFavorite(
+            data.favorites.some((fav: { id: number }) => fav.id === video.id),
+          );
+        } catch (error) {
+          console.error("Error checking favorite:", error);
+        }
+      }
+    };
+    checkFavorite();
+  }, [video, auth?.user?.id]);
+
   useEffect(() => {
     const loadPlaylists = async () => {
+      if (!auth?.user?.id) return;
       setIsLoading(true);
       try {
         const data = await fetchPlaylists(auth?.user.id || 0);
@@ -61,6 +80,7 @@ export default function VideoCard({ video, onClose }: VideoPlayerProps) {
     };
     loadPlaylists();
   }, [auth?.user.id]);
+
   useEffect(() => {
     if (video && video.id > 0) {
       setIsOpenCardVideo(true);
@@ -119,18 +139,40 @@ export default function VideoCard({ video, onClose }: VideoPlayerProps) {
     }
   };
 
+  const [isAddingPlaylist, setIsAddingPlaylist] = useState(false);
+  const [newPlaylistName, setNewPlaylistName] = useState("");
+
+  const createPlaylist = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      if (auth) {
+        const newPlaylist: Playlist = {
+          id: 0,
+          name: newPlaylistName,
+          id_user: auth?.user?.id || 0,
+        };
+
+        await addPlaylist(auth.user.id, newPlaylist);
+        const updatedPlaylists = await fetchPlaylists(auth.user.id);
+        setPlaylists(updatedPlaylists);
+      }
+    } catch {
+      setError("Failed to add playlist");
+    }
+  };
+
   const handleFavoriteClick = async () => {
-    if (!video) return;
+    if (!video || !auth?.user?.id) return;
 
     try {
-      if (isFavorite(video.id)) {
+      if (isFavorite) {
         await fetch(
           `${import.meta.env.VITE_API_URL}/api/favorites/${auth?.user.id}/${video.id}`,
           {
             method: "DELETE",
           },
         );
-        removeFromFavorites(video.id);
+        setIsFavorite(false);
       } else {
         await fetch(
           `${import.meta.env.VITE_API_URL}/api/favorites/${auth?.user.id}/${video.id}`,
@@ -138,7 +180,7 @@ export default function VideoCard({ video, onClose }: VideoPlayerProps) {
             method: "POST",
           },
         );
-        addToFavorites({ ...video, date: new Date() });
+        setIsFavorite(true);
       }
     } catch (error) {
       console.error("Error managing favorite:", error);
@@ -186,7 +228,7 @@ export default function VideoCard({ video, onClose }: VideoPlayerProps) {
                           src={bookMarkIcon}
                           alt="bookmark"
                           className={`bookmark-icon ${
-                            video && isFavorite(video.id) ? "active" : ""
+                            video && isFavorite ? "active" : ""
                           }`}
                         />
                       </button>
@@ -209,29 +251,69 @@ export default function VideoCard({ video, onClose }: VideoPlayerProps) {
                 )}
 
                 {isOpenPlaylists ? (
-                  <ul className="playlist-list">
-                    {isLoading ? (
-                      <li>Chargement...</li>
-                    ) : error ? (
-                      <li>{error}</li>
-                    ) : playlists.length > 0 ? (
-                      playlists.map((playlist) => (
-                        <li
-                          key={playlist.id}
-                          onClick={() =>
-                            video && addVideoToPlaylist(playlist.id, video.id)
-                          }
-                          onKeyDown={() =>
-                            video && addVideoToPlaylist(playlist.id, video.id)
-                          }
+                  <div className="playlist-container">
+                    <div className="playlist-header">
+                      {!isAddingPlaylist ? (
+                        <button
+                          type="button"
+                          className="add-playlist-button"
+                          onClick={() => setIsAddingPlaylist(true)}
                         >
-                          {playlist.name}
-                        </li>
-                      ))
-                    ) : (
-                      <li>Aucune playlist disponible</li>
-                    )}
-                  </ul>
+                          + Nouvelle playlist
+                        </button>
+                      ) : (
+                        <div className="new-playlist-form">
+                          <input
+                            type="text"
+                            value={newPlaylistName}
+                            onChange={(e) => setNewPlaylistName(e.target.value)}
+                            placeholder="Nom de la playlist"
+                            className="playlist-input"
+                          />
+                          <button
+                            type="button"
+                            onClick={createPlaylist}
+                            className="create-playlist-button"
+                          >
+                            Créer
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setIsAddingPlaylist(false);
+                              setNewPlaylistName("");
+                            }}
+                            className="cancel-button"
+                          >
+                            Annuler
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                    <ul className="playlist-list">
+                      {isLoading ? (
+                        <li>Chargement...</li>
+                      ) : error ? (
+                        <li>{error}</li>
+                      ) : playlists.length > 0 ? (
+                        playlists.map((playlist) => (
+                          <li
+                            key={playlist.id}
+                            onClick={() =>
+                              video && addVideoToPlaylist(playlist.id, video.id)
+                            }
+                            onKeyDown={() =>
+                              video && addVideoToPlaylist(playlist.id, video.id)
+                            }
+                          >
+                            {playlist.name}
+                          </li>
+                        ))
+                      ) : (
+                        <li>Aucune playlist disponible</li>
+                      )}
+                    </ul>
+                  </div>
                 ) : null}
               </>
             )}

@@ -40,8 +40,13 @@ export default function Favorite() {
   const [categories, setCategories] = useState<{ id: number; name: string }[]>(
     [],
   );
-
   const { auth } = useOutletContext() as { auth: Auth | null };
+  const userId = auth?.user.id;
+  const [favorites, setFavorites] = useState<Favorite[]>([]);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [isSortOpen, setIsSortOpen] = useState(false);
+  const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
+  const [sortBy, setSortBy] = useState<string>("recent");
 
   useEffect(() => {
     fetch(`${import.meta.env.VITE_API_URL}/api/categories`)
@@ -50,8 +55,6 @@ export default function Favorite() {
       .catch((error) => console.error("Error", error));
   }, []);
 
-  const userId = auth?.user.id;
-
   useEffect(() => {
     if (userId) {
       fetchFavorites(userId)
@@ -59,12 +62,6 @@ export default function Favorite() {
         .catch((error) => console.error("Error fetching favorites:", error));
     }
   }, [userId]);
-
-  const [favorites, setFavorites] = useState<Favorite[]>([]);
-  const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const [isSortOpen, setIsSortOpen] = useState(false);
-  const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
-  const [sortBy, setSortBy] = useState<string>("recent");
 
   const handleCategoryToggle = (categoryId: number) => {
     setSelectedCategories((prev) => {

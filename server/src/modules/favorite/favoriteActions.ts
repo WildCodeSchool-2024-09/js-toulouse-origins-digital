@@ -6,12 +6,15 @@ const read: RequestHandler = async (req, res, next) => {
     const userId = Number.parseInt(req.params.userId, 10);
     if (Number.isNaN(userId)) {
       res.status(400).json("Invalid user ID");
+      return;
     }
     const favorites = await FavoriteRepository.findFavoritesByUserId(userId);
     if (favorites.length === 0) {
-      res.status(404).json("No favorites found");
+      res.status(200).json({ favorites: [] });
+      return;
     }
     res.status(200).json({ favorites });
+    return;
   } catch (err) {
     console.error(err);
     res.status(500).json("Internal server error");
