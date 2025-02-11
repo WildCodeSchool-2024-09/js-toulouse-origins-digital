@@ -47,6 +47,15 @@ export default function VideoCard({ video, onClose }: VideoPlayerProps) {
     : false;
 
   useEffect(() => {
+    if (isOpenCardVideo) {
+      document.body.style.overflow = "hidden";
+    }
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [isOpenCardVideo]);
+
+  useEffect(() => {
     const checkFavorite = async () => {
       if (video && auth?.user?.id) {
         try {
@@ -169,7 +178,9 @@ export default function VideoCard({ video, onClose }: VideoPlayerProps) {
     try {
       if (isFavorite) {
         await fetch(
-          `${import.meta.env.VITE_API_URL}/api/favorites/${auth?.user.id}/${video.id}`,
+          `${import.meta.env.VITE_API_URL}/api/favorites/${auth?.user.id}/${
+            video.id
+          }`,
           {
             method: "DELETE",
             credentials: "include",
@@ -178,7 +189,9 @@ export default function VideoCard({ video, onClose }: VideoPlayerProps) {
         setIsFavorite(false);
       } else {
         await fetch(
-          `${import.meta.env.VITE_API_URL}/api/favorites/${auth?.user.id}/${video.id}`,
+          `${import.meta.env.VITE_API_URL}/api/favorites/${auth?.user.id}/${
+            video.id
+          }`,
           {
             method: "POST",
             credentials: "include",
