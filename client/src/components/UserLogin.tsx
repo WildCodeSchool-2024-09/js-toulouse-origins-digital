@@ -144,130 +144,132 @@ export default function UserLogin() {
   };
 
   return (
-    <div
-      className="modal-container"
-      onClick={(e) => e.stopPropagation()}
-      onKeyDown={(e) => e.stopPropagation()}
-    >
+    <div className="modal-container">
       {currentView === "login" && (
-        <div className="modal-user-login-signup">
-          {isLogin ? (
-            <form className="user-login" onSubmit={handleConnexionSubmit}>
-              <h1 className="login-signup-title">Je me connecte</h1>
-              <input
-                type="text"
-                name="email"
-                placeholder="Email"
-                className="input-field"
-                value={user.email}
-                onChange={handleChange}
-              />
-              <input
-                type="password"
-                name="password"
-                placeholder="Mot de passe"
-                className="input-field"
-                value={user.password}
-                onChange={handleChange}
-              />
-              <button
-                type="button"
-                className="forgot-password-link"
-                onClick={() => setCurrentView("forgotPassword")}
-              >
-                Mot de passe oublié ?
-              </button>
-              {responseMessage && (
-                <div
-                  className={`modal-message ${
-                    responseMessage.includes("erreur") ? "error" : "success"
-                  }`}
-                >
-                  {responseMessage}
-                </div>
-              )}
-              <button type="submit" className="primary-button">
-                Se connecter
-              </button>
-              <p className="switch-link">
-                Pas encore de compte ?
+        <div className="modal-overlay">
+          <div
+            className="modal-user-login-signup"
+            onClick={(e) => e.stopPropagation()}
+            onKeyDown={(e) => e.stopPropagation()}
+          >
+            {isLogin ? (
+              <form className="user-login" onSubmit={handleConnexionSubmit}>
+                <h1 className="login-signup-title">Je me connecte</h1>
+                <input
+                  type="text"
+                  name="email"
+                  placeholder="Email"
+                  className="input-field"
+                  value={user.email}
+                  onChange={handleChange}
+                />
+                <input
+                  type="password"
+                  name="password"
+                  placeholder="Mot de passe"
+                  className="input-field"
+                  value={user.password}
+                  onChange={handleChange}
+                />
                 <button
                   type="button"
-                  className="switch-button"
-                  onClick={() => setIsLogin(false)}
+                  className="forgot-password-link"
+                  onClick={() => setCurrentView("forgotPassword")}
+                >
+                  Mot de passe oublié ?
+                </button>
+                {responseMessage && (
+                  <div
+                    className={`modal-message ${
+                      responseMessage.includes("erreur") ? "error" : "success"
+                    }`}
+                  >
+                    {responseMessage}
+                  </div>
+                )}
+                <button type="submit" className="primary-button">
+                  Se connecter
+                </button>
+                <p className="switch-link">
+                  Pas encore de compte ?
+                  <button
+                    type="button"
+                    className="switch-button"
+                    onClick={() => setIsLogin(false)}
+                  >
+                    S'inscrire
+                  </button>
+                </p>
+              </form>
+            ) : (
+              <form className="user-signup" onSubmit={handleSubscriptionSubmit}>
+                <h1 className="login-signup-title">Je crée un compte</h1>
+                <input
+                  type="text"
+                  name="pseudo"
+                  placeholder="Pseudo*"
+                  className="input-field"
+                  value={user.pseudo}
+                  onChange={handleChange}
+                  required
+                />
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Email*"
+                  className="input-field"
+                  value={user.email}
+                  onChange={handleChange}
+                  required
+                />
+                <input
+                  type="password"
+                  name="password"
+                  placeholder="Mot de passe*"
+                  className="input-field"
+                  value={user.password}
+                  onChange={handleChange}
+                  required
+                />
+                <input
+                  type="password"
+                  name="confirmPassword"
+                  placeholder="Confirmer le mot de passe*"
+                  className="input-field"
+                  value={user.confirmPassword || ""}
+                  onChange={handleChange}
+                  required
+                />
+                {error && <div className="modal-message error">{error}</div>}
+                {responseMessage && (
+                  <div
+                    className={`modal-message ${
+                      responseMessage.includes("erreur") ? "error" : "success"
+                    }`}
+                  >
+                    {responseMessage}
+                  </div>
+                )}
+                <button
+                  type="submit"
+                  className="primary-button"
+                  disabled={user.password !== user.confirmPassword}
                 >
                   S'inscrire
                 </button>
-              </p>
-            </form>
-          ) : (
-            <form className="user-signup" onSubmit={handleSubscriptionSubmit}>
-              <h1 className="login-signup-title">Je crée un compte</h1>
-              <input
-                type="text"
-                name="pseudo"
-                placeholder="Pseudo*"
-                className="input-field"
-                value={user.pseudo}
-                onChange={handleChange}
-                required
-              />
-              <input
-                type="email"
-                name="email"
-                placeholder="Email*"
-                className="input-field"
-                value={user.email}
-                onChange={handleChange}
-                required
-              />
-              <input
-                type="password"
-                name="password"
-                placeholder="Mot de passe*"
-                className="input-field"
-                value={user.password}
-                onChange={handleChange}
-                required
-              />
-              <input
-                type="password"
-                name="confirmPassword"
-                placeholder="Confirmer le mot de passe*"
-                className="input-field"
-                value={user.confirmPassword || ""}
-                onChange={handleChange}
-                required
-              />
-              {error && <div className="modal-message error">{error}</div>}
-              {responseMessage && (
-                <div
-                  className={`modal-message ${
-                    responseMessage.includes("erreur") ? "error" : "success"
-                  }`}
-                >
-                  {responseMessage}
-                </div>
-              )}
-              <button
-                type="submit"
-                className="primary-button"
-                disabled={user.password !== user.confirmPassword}
-              >
-                S'inscrire
-              </button>
-              <p className="switch-link">
-                Déjà un compte ?
-                <button
-                  type="button"
-                  className="switch-button"
-                  onClick={() => setIsLogin(true)}
-                >
-                  Se connecter
-                </button>
-              </p>
-            </form>
-          )}
+                <p className="switch-link">
+                  Déjà un compte ?
+                  <button
+                    type="button"
+                    className="switch-button"
+                    onClick={() => setIsLogin(true)}
+                  >
+                    Se connecter
+                  </button>
+                </p>
+              </form>
+            )}
+          </div>
         </div>
       )}
       {(currentView === "forgotPassword" ||
