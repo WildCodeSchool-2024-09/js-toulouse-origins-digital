@@ -169,7 +169,9 @@ export default function Favorite() {
                           <button
                             key={option.id}
                             type="button"
-                            className={`sort-item ${sortBy === option.id ? "active" : ""}`}
+                            className={`sort-item ${
+                              sortBy === option.id ? "active" : ""
+                            }`}
                             onClick={() => handleSortClick(option.id)}
                           >
                             {option.name}

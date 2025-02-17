@@ -42,7 +42,7 @@ const PlaylistList: React.FC<Props> = ({
         type="text"
         value={playlistName}
         onChange={(e) => setPlaylistName(e.target.value)}
-        placeholder="Add new playlist"
+        placeholder="Ajouter une playlist"
         className="input-add-playlist"
       />
       <button type="submit" className="button-add-playlist">

@@ -1,8 +1,9 @@
 .categories-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+  gap: 20px;
   padding: 20px;
+  direction: rtl;
 }
 
 .category {
@@ -38,7 +39,9 @@
   border: none;
   padding: 10px 20px;
   border-radius: 10px;
-  margin-top: 10px;
+  height: 45px;
+  display: flex;
+  align-items: center;
 }
 .input-add-playlist {
   background-color: var(--transparence-color);
@@ -48,7 +51,7 @@
   border: none;
   padding: 10px 20px;
   border-radius: 10px;
-  margin-top: 10px;
+  height: 45px;
 }
 .playlist-card {
   display: flex;
@@ -83,10 +86,13 @@
 .form-add-playlist {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
-  gap: 5px;
-  margin-left: 10px;
-  margin-right: 10px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin: 20px auto;
+  padding-top: 15px;
+  width: 80%;
+  max-width: 600px;
 }
 
 .video-title-playlist {
@@ -103,6 +109,7 @@
   order: 2;
 }
 .video-card-playlist {
+  direction: ltr;
   position: relative;
   display: flex;
   flex-direction: column;

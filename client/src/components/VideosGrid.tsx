@@ -19,6 +19,8 @@ const VideosGrid: React.FC<Props> = ({
   const [selectedVideo, setSelectedVideo] = useState<Video | null>(null);
   const handleCloseVideo = () => setSelectedVideo(null);
 
+  const sortedVideos = [...videos].reverse();
+
   return (
     <>
       <VideoCard video={selectedVideo ?? null} onClose={handleCloseVideo} />
@@ -26,36 +28,38 @@ const VideosGrid: React.FC<Props> = ({
         <button className="back-playlist-button" type="button" onClick={onBack}>
           Retour aux playlists
         </button>
-        {videos.map((video) => (
-          <div key={video.id} className="video-card-playlist">
-            <h3 className="video-title-playlist">{video.title}</h3>
-            <button
-              style={{ all: "unset" }}
-              onClick={() => setSelectedVideo(video)}
-              type="button"
-            >
-              <img
-                src={`${video.video_url}thumbnail.jpg`}
-                alt={video.title}
-                className="picture-video-playlist"
-              />
-            </button>
-            <button
-              className="button-delete-video-playlist"
-              type="button"
-              onClick={() => {
-                const playlist = videoPlaylists.find(
-                  (vp) => vp.id_video === video.id,
-                );
-                if (playlist) {
-                  onDeleteVideo(playlist.id);
-                }
-              }}
-            >
-              <img src={deleteIcon} alt="" className="delete-icon" />
-            </button>
-          </div>
-        ))}
+        <div className="categories-container">
+          {sortedVideos.map((video) => (
+            <div key={video.id} className="video-card-playlist">
+              <h3 className="video-title-playlist">{video.title}</h3>
+              <button
+                style={{ all: "unset" }}
+                onClick={() => setSelectedVideo(video)}
+                type="button"
+              >
+                <img
+                  src={`${video.video_url}thumbnail.jpg`}
+                  alt={video.title}
+                  className="picture-video-playlist"
+                />
+              </button>
+              <button
+                className="button-delete-video-playlist"
+                type="button"
+                onClick={() => {
+                  const playlist = videoPlaylists.find(
+                    (vp) => vp.id_video === video.id,
+                  );
+                  if (playlist) {
+                    onDeleteVideo(playlist.id);
+                  }
+                }}
+              >
+                <img src={deleteIcon} alt="" className="delete-icon" />
+              </button>
+            </div>
+          ))}
+        </div>
       </div>
     </>
   );
