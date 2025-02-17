@@ -1,13 +1,13 @@
 .setting-favorite-video {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 40px;
   padding: 20px;
   width: 100%;
 }
 
 .favorite-video-container {
+  position: relative;
   width: 100%;
   max-width: 1400px;
 }
@@ -24,6 +24,11 @@
   font-family: var(--primary-font);
   font-size: 18px;
   margin: 10px 0;
+  text-align: left;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .no-favorites-message {
@@ -51,10 +56,10 @@
 .delete-button {
   background: none;
   border: none;
-  cursor: pointer;
   padding: 5px;
   display: flex;
   align-items: center;
+  margin-left: 10px;
 }
 
 .delete-icon {

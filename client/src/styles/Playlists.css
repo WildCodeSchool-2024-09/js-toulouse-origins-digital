@@ -1,13 +1,36 @@
+.categories-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+  gap: 20px;
+  padding: 20px;
+  direction: rtl;
+}
+
 .category {
-  margin-top: 10px;
-  background-color: rgba(172, 252, 255, 0.245);
+  display: inline-block;
+  padding: 8px 16px;
+  background-color: rgba(47, 57, 65, 0.5);
+  border-radius: 25px;
+  font-family: var(--primary-font);
+  font-size: 12px;
+  font-weight: 500;
+  color: white;
+  transition: all 0.3s ease;
+  text-align: center;
+  min-width: 120px;
+  margin: 5px;
 }
-.page-title {
-  font-family: var(--font-title);
-  color: var(--primary-text-color);
-  font-size: 36px;
-  margin-left: 10px;
+
+.category:hover {
+  background-color: var(--button-color);
+  transform: translateY(-2px);
 }
+
+.category.active {
+  background-color: var(--button-color);
+  color: var(--secondary-text-color);
+}
+
 .button-add-playlist {
   background-color: var(--button-color);
   color: var(--secondary-text-color);
@@ -16,8 +39,9 @@
   border: none;
   padding: 10px 20px;
   border-radius: 10px;
-  cursor: pointer;
-  margin-top: 10px;
+  height: 45px;
+  display: flex;
+  align-items: center;
 }
 .input-add-playlist {
   background-color: var(--transparence-color);
@@ -27,7 +51,7 @@
   border: none;
   padding: 10px 20px;
   border-radius: 10px;
-  margin-top: 10px;
+  height: 45px;
 }
 .playlist-card {
   display: flex;
@@ -43,9 +67,8 @@
 .playlist-name {
   font-family: var(--primary-font);
   color: var(--primary-text-color);
-  font-size: 24px;
+  font-size: 16px;
   margin-top: 10px;
-  cursor: pointer;
   background-color: var(--transparence-color);
   border-radius: 10px;
   padding-left: 10px;
@@ -63,50 +86,72 @@
 .form-add-playlist {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
-  gap: 5px;
-  margin-left: 10px;
-  margin-right: 10px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin: 20px auto;
+  padding-top: 15px;
+  width: 80%;
+  max-width: 600px;
 }
-.delete-playlist {
-  cursor: pointer;
-}
+
 .video-title-playlist {
   font-family: var(--primary-font);
   color: var(--primary-text-color);
-  font-size: 24px;
-  margin-top: 10px;
-  cursor: pointer;
-  background-color: var(--transparence-color);
-  border-radius: 10px;
-  padding-left: 10px;
-  padding-right: 10px;
+  font-size: 18px;
+  font-weight: 600;
+  margin: 10px 0;
+  text-align: left;
+  width: calc(100% - 50px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  order: 2;
 }
 .video-card-playlist {
+  direction: ltr;
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 10px;
   justify-content: space-between;
-  margin-left: 10px;
-  margin-right: 10px;
+  margin: 40px 10px;
   text-align: center;
+  padding: 15px;
+  border-radius: 15px;
+  width: 330px;
 }
 .picture-video-playlist {
-  width: 80%;
-  height: 150px;
+  width: 100%;
+  aspect-ratio: 16 / 9;
   object-fit: cover;
   border-radius: 20px;
+  margin: 0;
+  order: 1;
 }
 .button-delete-video-playlist {
-  width: 60%;
-  cursor: pointer;
-  background-color: rgb(255, 255, 255);
-  backdrop-filter: blur(10px);
-  border-radius: 12px;
+  position: absolute;
+  bottom: 25px;
+  right: 25px;
+  width: 35px;
+  height: 35px;
+  background: none;
+  border: none;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .delete-icon {
+  width: 25px;
   height: 25px;
+  filter: invert(79%) sepia(53%) saturate(845%) hue-rotate(328deg)
+    brightness(101%) contrast(97%);
+  transition: transform 0.2s ease;
+}
+.delete-icon:hover {
+  transform: scale(1.1);
 }
 .back-playlist-button {
   background-color: var(--button-color);
@@ -119,4 +164,28 @@
   margin-top: 10px;
   margin-bottom: 20px;
   cursor: pointer;
+}
+.playlists-container {
+  position: relative;
+  font-family: "Exo", sans-serif;
+  font-weight: 100;
+  padding: 20px;
+  height: 100vh;
+  overflow-x: hidden;
+}
+.playlists-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.title-playlists-page {
+  font-size: 24px;
+  font-weight: 200;
+  font-family: "Exo", sans-serif;
+}
+.line {
+  border: 1px solid white;
+  opacity: 1;
+  margin: 10px 0;
 }
