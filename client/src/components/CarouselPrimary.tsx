@@ -76,7 +76,7 @@ const CarouselPrimary = ({ onCategorySelect }: CarouselPrimaryProps) => {
               <h2 className="title-item">{category.name}</h2>
               <p className="legend-item">{category.description}</p>
               {!isTabletOrMobile && (
-                <a href="#title-home-page">
+                <a href="#category-videos">
                   <button
                     type="button"
                     className="explore-button"

@@ -121,6 +121,30 @@ export default function SettingFavoriteVideo({
         )
       : favorites;
 
+  const sortedFavorites = [...filteredFavorites];
+
+  switch (sortBy) {
+    case "oldest":
+      sortedFavorites.sort(
+        (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
+      );
+      break;
+    case "views":
+      sortedFavorites.sort((a, b) => b.views - a.views);
+      break;
+    case "less-views":
+      sortedFavorites.sort((a, b) => a.views - b.views);
+      break;
+    case "az":
+      sortedFavorites.sort((a, b) => a.title.localeCompare(b.title));
+      break;
+    case "za":
+      sortedFavorites.sort((a, b) => b.title.localeCompare(a.title));
+      break;
+    default: // "recent"
+      sortedFavorites.reverse();
+  }
+
   const removeFromFavorites = async (videoId: number) => {
     try {
       await fetch(
@@ -135,25 +159,6 @@ export default function SettingFavoriteVideo({
       console.error("Error removing favorite:", error);
     }
   };
-
-  const sortedFavorites = [...filteredFavorites].sort((a, b) => {
-    switch (sortBy) {
-      case "recent":
-        return new Date(b.date).getTime() - new Date(a.date).getTime();
-      case "oldest":
-        return new Date(a.date).getTime() - new Date(b.date).getTime();
-      case "az":
-        return a.title.localeCompare(b.title);
-      case "za":
-        return b.title.localeCompare(a.title);
-      case "views":
-        return b.views - a.views;
-      case "less-views":
-        return a.views - b.views;
-      default:
-        return 0;
-    }
-  });
 
   if (filteredFavorites.length === 0) {
     return (

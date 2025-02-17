@@ -44,7 +44,7 @@ router.put("/api/videocategory/:id", videoCategoryActions.update);
 router.get("/api/users", userActions.browse);
 router.get("/api/users/:id", userActions.read);
 router.post("/api/users/", authActions.hashPassword, userActions.add);
-router.post("/api/users/login", authActions.login, userActions.edit);
+router.post("/api/users/login", authActions.login);
 router.get("/api/videos", videoActions.browse);
 router.get("/api/videos/:id", videoActions.read);
 router.post("/api/videos", videoActions.add);

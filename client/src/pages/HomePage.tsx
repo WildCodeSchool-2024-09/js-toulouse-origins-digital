@@ -23,7 +23,7 @@ export default function HomePage() {
         <CarouselPrimary onCategorySelect={handleCategorySelect} />
         {selectedCategory && (
           <>
-            <h2 id="title-home-page" className="title-home-page">
+            <h2 id="category-videos" className="title-home-page">
               {selectedCategory} &#x27E9;
             </h2>
             <hr className="line" />

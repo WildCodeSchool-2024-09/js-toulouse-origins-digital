@@ -40,7 +40,7 @@ export default function VideoCard({ video, onClose }: VideoPlayerProps) {
   const { auth } = useOutletContext() as { auth: Auth | null };
   const [isFavorite, setIsFavorite] = useState(false);
   const isUserLoggedIn = auth?.user?.id;
-  const { setIsOpenLogin } = useNav();
+  const { isOpenLogin, setIsOpenLogin } = useNav();
   const isOldVideo = video
     ? new Date(video.date) <=
       new Date(new Date().setMonth(new Date().getMonth() - 2))
@@ -54,6 +54,15 @@ export default function VideoCard({ video, onClose }: VideoPlayerProps) {
       document.body.style.overflow = "auto";
     };
   }, [isOpenCardVideo]);
+
+  useEffect(() => {
+    if (isOpenLogin) {
+      document.body.style.overflow = "hidden";
+    }
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [isOpenLogin]);
 
   useEffect(() => {
     const checkFavorite = async () => {
@@ -178,7 +187,9 @@ export default function VideoCard({ video, onClose }: VideoPlayerProps) {
     try {
       if (isFavorite) {
         await fetch(
-          `${import.meta.env.VITE_API_URL}/api/favorites/${auth?.user.id}/${video.id}`,
+          `${import.meta.env.VITE_API_URL}/api/favorites/${auth?.user.id}/${
+            video.id
+          }`,
           {
             method: "DELETE",
             credentials: "include",
@@ -187,7 +198,9 @@ export default function VideoCard({ video, onClose }: VideoPlayerProps) {
         setIsFavorite(false);
       } else {
         await fetch(
-          `${import.meta.env.VITE_API_URL}/api/favorites/${auth?.user.id}/${video.id}`,
+          `${import.meta.env.VITE_API_URL}/api/favorites/${auth?.user.id}/${
+            video.id
+          }`,
           {
             method: "POST",
             credentials: "include",
