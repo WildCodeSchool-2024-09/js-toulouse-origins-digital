@@ -1,3 +1,4 @@
+/* Styles mobiles d'origine */
 .title-item {
   font-family: var(--font-title);
   font-weight: 500;
@@ -8,10 +9,6 @@
   font-family: var(--primary-font);
   text-align: left;
   margin-top: 10px;
-}
-
-.thumbs-wrapper {
-  display: none;
 }
 
 .carousel-status {
@@ -28,7 +25,6 @@
 .picture-border {
   border-radius: 45px;
   border: 5px white solid;
-  margin-top: auto;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -70,4 +66,158 @@
   -webkit-user-select: none;
   -ms-user-select: none;
   user-select: none;
+}
+
+.thumbs-wrapper {
+  display: none;
+}
+
+/* Desktop styles - tous les nouveaux styles */
+@media screen and (min-width: 1024px) {
+  .slide .carousel-primary-items {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    height: 100%;
+  }
+
+  .carousel-primary-items {
+    display: flex;
+    align-items: center;
+    padding: 40px;
+    gap: 40px;
+    position: relative;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .description-item {
+    display: flex;
+    flex-direction: column;
+    min-width: 300px;
+    max-width: 400px;
+    text-align: left;
+    z-index: 2;
+    order: -1;
+  }
+
+  .title-item {
+    font-weight: 700;
+    font-size: 42px;
+    text-transform: uppercase;
+  }
+
+  .legend-item {
+    font-size: 18px;
+    max-width: 400px;
+  }
+
+  .explore-button {
+    background: transparent;
+    border: 2px solid white;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 25px;
+    font-family: var(--primary-font);
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 20px;
+  }
+
+  .explore-button:hover {
+    background: white;
+    color: black;
+  }
+
+  .carousel-primary-items .image-items {
+    height: 400px;
+    width: 400px !important;
+    min-width: 400px;
+    border-radius: 20px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+  }
+
+  .carousel-primary-items .picture-border {
+    margin: 0;
+    border: none;
+    position: relative;
+    z-index: 1;
+    border-radius: 25px;
+    border: 5px white solid;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: auto;
+    margin-right: auto;
+    height: 410px;
+  }
+
+  /* Thumbs styles desktop */
+  .thumbs-wrapper {
+    display: block !important;
+    left: calc(400px + 380px) !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    margin: 0 !important;
+    width: auto !important;
+    z-index: 3;
+  }
+
+  .thumbs {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: center !important;
+    gap: 15px !important;
+    padding: 0 !important;
+  }
+
+  .thumb {
+    border: none !important;
+    border-radius: 20px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    transition: all 0.3s ease;
+    height: 100px;
+    opacity: 0.4;
+    position: relative !important;
+    cursor: pointer;
+  }
+
+  .thumb.selected {
+    opacity: 1;
+  }
+
+  .thumb-title {
+    position: absolute !important;
+    inset: 0 !important;
+    background: rgba(0, 0, 0, 0.7) !important;
+    color: white !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    opacity: 0;
+    transition: opacity 0.3s ease !important;
+    border-radius: 12px !important;
+    font-size: 14px !important;
+    text-align: center !important;
+    padding: 5px !important;
+    font-family: var(--primary-font) !important;
+  }
+
+  .thumb:hover .thumb-title {
+    opacity: 1;
+  }
+
+  .thumb img {
+    border-radius: 12px !important;
+    height: 100px !important;
+    width: 140px !important;
+    object-fit: cover;
+  }
+  .carousel .thumb {
+    width: fit-content !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
 }

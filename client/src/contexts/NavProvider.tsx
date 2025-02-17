@@ -3,7 +3,7 @@ import { createContext, useContext, useState } from "react";
 
 type NavContextProps = {
   isOpenLogin: boolean;
-  setIsOpenLogin: React.Dispatch<React.SetStateAction<boolean>>; // ✅ Correction ici
+  setIsOpenLogin: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const NavContext = createContext<NavContextProps | null>(null);

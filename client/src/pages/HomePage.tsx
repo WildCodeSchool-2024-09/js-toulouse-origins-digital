@@ -23,7 +23,9 @@ export default function HomePage() {
         <CarouselPrimary onCategorySelect={handleCategorySelect} />
         {selectedCategory && (
           <>
-            <h2 className="title-home-page">{selectedCategory} &#x27E9;</h2>
+            <h2 id="title-home-page" className="title-home-page">
+              {selectedCategory} &#x27E9;
+            </h2>
             <hr className="line" />
             <CarouselVideo categoryId={selectedCategoryId} />
           </>

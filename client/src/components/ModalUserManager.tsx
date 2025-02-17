@@ -218,7 +218,6 @@ export default function ModalUserManager({
             document.body,
           )
         : null}
-      ;
     </>
   );
 }
