@@ -200,7 +200,6 @@ export default function ModalCategoryManager({
             document.body,
           )
         : null}
-      ;
     </>
   );
 }

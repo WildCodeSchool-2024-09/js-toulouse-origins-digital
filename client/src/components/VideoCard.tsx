@@ -40,7 +40,7 @@ export default function VideoCard({ video, onClose }: VideoPlayerProps) {
   const { auth } = useOutletContext() as { auth: Auth | null };
   const [isFavorite, setIsFavorite] = useState(false);
   const isUserLoggedIn = auth?.user?.id;
-  const { setIsOpenLogin } = useNav();
+  const { isOpenLogin, setIsOpenLogin } = useNav();
   const isOldVideo = video
     ? new Date(video.date) <=
       new Date(new Date().setMonth(new Date().getMonth() - 2))
@@ -54,6 +54,15 @@ export default function VideoCard({ video, onClose }: VideoPlayerProps) {
       document.body.style.overflow = "auto";
     };
   }, [isOpenCardVideo]);
+
+  useEffect(() => {
+    if (isOpenLogin) {
+      document.body.style.overflow = "hidden";
+    }
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [isOpenLogin]);
 
   useEffect(() => {
     const checkFavorite = async () => {

@@ -33,14 +33,18 @@ const CarouselPrimary = ({ onCategorySelect }: CarouselPrimaryProps) => {
     }
   };
 
+  const handleExplore = (category: Category) => {
+    onCategorySelect(category.name, category.id);
+  };
+
   if (categories.length === 0) {
     return null;
   }
 
   return (
-    <>
+    <div>
       <Carousel
-        showThumbs={false}
+        showThumbs={true}
         transitionTime={500}
         infiniteLoop={true}
         className="category-carousel"
@@ -49,12 +53,39 @@ const CarouselPrimary = ({ onCategorySelect }: CarouselPrimaryProps) => {
         selectedItem={0}
         emulateTouch={true}
         swipeable={true}
+        showStatus={false}
+        showIndicators={isTabletOrMobile}
+        renderThumbs={() =>
+          categories.map((category) => (
+            <div key={category.id} className="thumb-container">
+              <img
+                key={category.id}
+                src={category.url_image}
+                alt={category.name}
+                className="thumb-image"
+                data-title={category.name}
+              />
+              <p className="thumb-title">{category.name}</p>
+            </div>
+          ))
+        }
       >
         {categories.map((category) => (
-          <div key={category.id}>
+          <div key={category.id} className="carousel-primary-items">
             <div className="description-item">
-              <h2 className="title-item">{category.name.toUpperCase()}</h2>
+              <h2 className="title-item">{category.name}</h2>
               <p className="legend-item">{category.description}</p>
+              {!isTabletOrMobile && (
+                <a href="#category-videos">
+                  <button
+                    type="button"
+                    className="explore-button"
+                    onClick={() => handleExplore(category)}
+                  >
+                    Explorer les vidéos
+                  </button>
+                </a>
+              )}
             </div>
             <div className="picture-border">
               <img
@@ -66,7 +97,7 @@ const CarouselPrimary = ({ onCategorySelect }: CarouselPrimaryProps) => {
           </div>
         ))}
       </Carousel>
-    </>
+    </div>
   );
 };
 
