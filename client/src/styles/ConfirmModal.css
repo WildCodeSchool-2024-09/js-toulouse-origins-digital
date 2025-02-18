@@ -25,3 +25,17 @@
   font-size: 1rem;
   transition: opacity 0.3s ease;
 }
+
+.title-confirm-modal {
+  font-family: var(--font-title);
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.confirm-message {
+  color: var(--primary-text-color);
+  font-family: var(--primary-font);
+  margin: 0 0 20px 0;
+  font-size: 1rem;
+  line-height: 1.5;
+}
