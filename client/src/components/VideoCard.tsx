@@ -108,6 +108,8 @@ export default function VideoCard({ video, onClose }: VideoPlayerProps) {
         } catch (error) {
           console.error("Error checking favorite:", error);
         }
+      } else {
+        setIsFavorite(false);
       }
     };
     checkFavorite();
