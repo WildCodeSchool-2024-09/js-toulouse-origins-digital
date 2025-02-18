@@ -5,7 +5,8 @@ import searchIcon from "../assets/images/search.png";
 import imgProfile from "../assets/images/user-solid.svg";
 import { useNav } from "../contexts/NavProvider";
 import "../styles/NavBar.css";
-import { Link, useOutletContext } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useLocation, useOutletContext } from "react-router-dom";
 import UserLogin from "./UserLogin";
 import UserModal from "./UserModal";
 
@@ -22,6 +23,12 @@ type Auth = {
 export default function NavBar() {
   const { isOpenLogin, setIsOpenLogin } = useNav();
   const { auth } = useOutletContext() as { auth: Auth | null };
+  const location = useLocation();
+  const [currentPath, setCurrentPath] = useState(location.pathname);
+
+  useEffect(() => {
+    setCurrentPath(location.pathname);
+  }, [location]);
 
   let userId = auth?.user.id;
 
@@ -34,6 +41,17 @@ export default function NavBar() {
   }
 
   const navbarClass = !auth ? "reduced-navbar-size" : "nav-bar";
+
+  const getIconClass = (path: string) => {
+    if (path === "/home") {
+      return `nav-icon ${currentPath === "/home" ? "active" : ""}`;
+    }
+    return `nav-icon ${currentPath === path ? "active" : ""}`;
+  };
+
+  const getProfileClass = () => {
+    return `nav-icon-profile-style ${currentPath === "/profile" ? "active" : ""}`;
+  };
 
   return (
     <>
@@ -50,18 +68,30 @@ export default function NavBar() {
       <div className="nav-bar-container">
         <nav className={navbarClass}>
           <Link to="/home">
-            <img src={homeIcon} alt="Home" className="nav-icon" />
+            <img src={homeIcon} alt="Home" className={getIconClass("/home")} />
           </Link>
           <Link to="/search">
-            <img src={searchIcon} alt="Search" className="nav-icon" />
+            <img
+              src={searchIcon}
+              alt="Search"
+              className={getIconClass("/search")}
+            />
           </Link>
           {auth && (
             <>
               <Link to="/favorite">
-                <img src={bookmarkIcon} alt="Bookmark" className="nav-icon" />
+                <img
+                  src={bookmarkIcon}
+                  alt="Bookmark"
+                  className={getIconClass("/favorite")}
+                />
               </Link>
               <Link to="/playlists">
-                <img src={addIcon} alt="Add" className="nav-icon" />
+                <img
+                  src={addIcon}
+                  alt="Add"
+                  className={getIconClass("/playlists")}
+                />
               </Link>
             </>
           )}
@@ -70,7 +100,7 @@ export default function NavBar() {
             onKeyDown={() => setIsOpenLogin((prev) => !prev)}
             src={!auth ? imgProfile : auth?.user.avatar_url}
             alt="Profile"
-            className="nav-icon nav-icon-profile-style"
+            className={getProfileClass()}
           />
         </nav>
       </div>
