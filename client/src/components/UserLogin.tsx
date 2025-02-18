@@ -190,16 +190,18 @@ export default function UserLogin() {
                 <button type="submit" className="primary-button">
                   Se connecter
                 </button>
-                <p className="switch-link">
-                  Pas encore de compte ?
+                <div className="switch-link">
+                  <span>
+                    {isLogin ? "Pas encore de compte ?" : "Déjà un compte ?"}
+                  </span>
                   <button
                     type="button"
                     className="switch-button"
-                    onClick={() => setIsLogin(false)}
+                    onClick={() => setIsLogin(!isLogin)}
                   >
-                    S'inscrire
+                    {isLogin ? "S'inscrire" : "Se connecter"}
                   </button>
-                </p>
+                </div>
               </form>
             ) : (
               <form className="user-signup" onSubmit={handleSubscriptionSubmit}>
@@ -259,16 +261,18 @@ export default function UserLogin() {
                 >
                   S'inscrire
                 </button>
-                <p className="switch-link">
-                  Déjà un compte ?
+                <div className="switch-link">
+                  <span>
+                    {isLogin ? "Pas encore de compte ?" : "Déjà un compte ?"}
+                  </span>
                   <button
                     type="button"
                     className="switch-button"
-                    onClick={() => setIsLogin(true)}
+                    onClick={() => setIsLogin(!isLogin)}
                   >
-                    Se connecter
+                    {isLogin ? "S'inscrire" : "Se connecter"}
                   </button>
-                </p>
+                </div>
               </form>
             )}
           </div>

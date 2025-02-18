@@ -5,6 +5,8 @@ import bookMarkIcon from "../assets/images/bookmark.png";
 import { useNav } from "../contexts/NavProvider";
 import { addPlaylist, fetchPlaylists } from "../services/playlistService";
 import type { Playlist } from "../types/types";
+import AlertModal from "./AlertModal";
+import ConfirmModal from "./ConfirmModal";
 
 interface VideoPlayerProps {
   video: {
@@ -41,10 +43,37 @@ export default function VideoCard({ video, onClose }: VideoPlayerProps) {
   const [isFavorite, setIsFavorite] = useState(false);
   const isUserLoggedIn = auth?.user?.id;
   const { isOpenLogin, setIsOpenLogin } = useNav();
-  const isOldVideo = video
-    ? new Date(video.date) <=
-      new Date(new Date().setMonth(new Date().getMonth() - 2))
-    : false;
+  const limitTime = new Date();
+  limitTime.setMonth(limitTime.getMonth() - 1);
+
+  const isOldVideo = video ? new Date(video.date) <= limitTime : false;
+
+  const [isShowingAlert, setIsShowingAlert] = useState(false);
+  const [alertInfo, setAlertInfo] = useState({
+    title: "",
+    message: "",
+    type: "",
+  });
+
+  const [isShowingConfirm, setIsShowingConfirm] = useState(false);
+  const confirmInfo = {
+    title: "Connexion requise",
+    message:
+      "Vous devez être connecté pour voir les vidéos récentes. Voulez-vous vous connecter maintenant ?",
+  };
+
+  const toggleAlert = () => {
+    setIsShowingAlert(!isShowingAlert);
+  };
+
+  const toggleConfirm = () => {
+    setIsShowingConfirm(!isShowingConfirm);
+  };
+
+  const handleConfirmLogin = () => {
+    setIsShowingConfirm(false);
+    setIsOpenLogin(true);
+  };
 
   useEffect(() => {
     if (isOpenCardVideo) {
@@ -182,7 +211,17 @@ export default function VideoCard({ video, onClose }: VideoPlayerProps) {
   };
 
   const handleFavoriteClick = async () => {
-    if (!video || !auth?.user?.id) return;
+    if (!video) return;
+
+    if (!auth?.user?.id) {
+      setAlertInfo({
+        title: "Non connecté",
+        message: "Vous devez être connecté pour ajouter aux favoris.",
+        type: "error",
+      });
+      setIsShowingAlert(true);
+      return;
+    }
 
     try {
       if (isFavorite) {
@@ -213,8 +252,38 @@ export default function VideoCard({ video, onClose }: VideoPlayerProps) {
     }
   };
 
+  const handleAddToPlaylistClick = () => {
+    if (!auth?.user?.id) {
+      setAlertInfo({
+        title: "Non connecté",
+        message: "Vous devez être connecté pour ajouter à une playlist.",
+        type: "error",
+      });
+      setIsShowingAlert(true);
+      return;
+    }
+    setIsOpenPlaylists(!isOpenPlaylists);
+  };
+
+  const handleVideoClick = () => {
+    if (!isUserLoggedIn && !isOldVideo) {
+      setIsShowingConfirm(true);
+    }
+  };
+
   return (
     <>
+      <AlertModal
+        isShowing={isShowingAlert}
+        onClose={toggleAlert}
+        alertInfo={alertInfo}
+      />
+      <ConfirmModal
+        isShowing={isShowingConfirm}
+        onClose={toggleConfirm}
+        onConfirm={handleConfirmLogin}
+        confirmInfo={confirmInfo}
+      />
       {isOpenCardVideo && (
         <div className="card-video-card">
           <button
@@ -228,131 +297,118 @@ export default function VideoCard({ video, onClose }: VideoPlayerProps) {
             <span>×</span>
           </button>
           <div className="card-content-video-card">
-            {!isOldVideo && !isUserLoggedIn ? (
-              <div className="restricted-video">
-                <p>Connectez-vous pour voir cette vidéo</p>
+            <>
+              <div onClick={handleVideoClick} onKeyDown={handleVideoClick}>
+                <iframe
+                  className={`frame-video ${!isOldVideo && !isUserLoggedIn ? "grayed-out" : ""}`}
+                  src={video?.video_url}
+                  title={video?.title}
+                  allowFullScreen
+                />
+              </div>
+
+              <div className="video-header">
+                <h2 className="title-video-card">{video?.title}</h2>
                 <button
                   type="button"
-                  onClick={() => setIsOpenLogin((prev) => !prev)}
+                  onClick={handleFavoriteClick}
+                  className="bookmark-button"
                 >
-                  Se connecter
+                  <img
+                    src={bookMarkIcon}
+                    alt="bookmark"
+                    className={`bookmark-icon ${
+                      video && isFavorite ? "active" : ""
+                    }`}
+                  />
                 </button>
               </div>
-            ) : (
-              <>
-                <div>
-                  <iframe
-                    className={`frame-video ${
-                      !isUserLoggedIn ? "grayed-out" : ""
-                    }`}
-                    src={video?.video_url}
-                    title={video?.title}
-                    allowFullScreen
-                  />
-                </div>
+              <p className="text-view">Vues: {video?.views}</p>
+              <p className="text-date">
+                Publié le{" "}
+                {video?.date ? new Date(video.date).toLocaleDateString() : ""}
+              </p>
 
-                {isUserLoggedIn && (
-                  <>
-                    <div className="video-header">
-                      <h2 className="title-video-card">{video?.title}</h2>
+              <p className="card-text">{video?.description}</p>
+              <button
+                className="button-playlist"
+                type="button"
+                onClick={handleAddToPlaylistClick}
+                onKeyDown={handleAddToPlaylistClick}
+              >
+                Ajouter à une playlist
+              </button>
+
+              {successMessage && (
+                <div className="success-message">{successMessage}</div>
+              )}
+
+              {isOpenPlaylists && isUserLoggedIn ? (
+                <div className="playlist-container">
+                  <div className="playlist-header">
+                    {!isAddingPlaylist ? (
                       <button
                         type="button"
-                        onClick={handleFavoriteClick}
-                        className="bookmark-button"
+                        className="add-playlist-button"
+                        onClick={() => setIsAddingPlaylist(true)}
                       >
-                        <img
-                          src={bookMarkIcon}
-                          alt="bookmark"
-                          className={`bookmark-icon ${
-                            video && isFavorite ? "active" : ""
-                          }`}
-                        />
+                        + Nouvelle playlist
                       </button>
-                    </div>
-                    <p className="text-view">Vues: {video?.views}</p>
-
-                    <p className="card-text">{video?.description}</p>
-                    <button
-                      className="button-playlist"
-                      type="button"
-                      onClick={() => setIsOpenPlaylists(!isOpenPlaylists)}
-                      onKeyDown={() => setIsOpenPlaylists(!isOpenPlaylists)}
-                    >
-                      Ajouter à une playlist{" "}
-                    </button>
-                  </>
-                )}
-                {successMessage && (
-                  <div className="success-message">{successMessage}</div>
-                )}
-
-                {isOpenPlaylists ? (
-                  <div className="playlist-container">
-                    <div className="playlist-header">
-                      {!isAddingPlaylist ? (
+                    ) : (
+                      <div className="new-playlist-form">
+                        <input
+                          type="text"
+                          value={newPlaylistName}
+                          onChange={(e) => setNewPlaylistName(e.target.value)}
+                          placeholder="Nom de la playlist"
+                          className="playlist-input"
+                        />
                         <button
                           type="button"
-                          className="add-playlist-button"
-                          onClick={() => setIsAddingPlaylist(true)}
+                          onClick={createPlaylist}
+                          className="create-playlist-button"
                         >
-                          + Nouvelle playlist
+                          Créer
                         </button>
-                      ) : (
-                        <div className="new-playlist-form">
-                          <input
-                            type="text"
-                            value={newPlaylistName}
-                            onChange={(e) => setNewPlaylistName(e.target.value)}
-                            placeholder="Nom de la playlist"
-                            className="playlist-input"
-                          />
-                          <button
-                            type="button"
-                            onClick={createPlaylist}
-                            className="create-playlist-button"
-                          >
-                            Créer
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setIsAddingPlaylist(false);
-                              setNewPlaylistName("");
-                            }}
-                            className="cancel-button"
-                          >
-                            Annuler
-                          </button>
-                        </div>
-                      )}
-                    </div>
-                    <ul className="playlist-list">
-                      {isLoading ? (
-                        <li>Chargement...</li>
-                      ) : error ? (
-                        <li>{error}</li>
-                      ) : playlists.length > 0 ? (
-                        playlists.map((playlist) => (
-                          <li
-                            key={playlist.id}
-                            onClick={() =>
-                              video && addVideoToPlaylist(playlist.id, video.id)
-                            }
-                            onKeyDown={() =>
-                              video && addVideoToPlaylist(playlist.id, video.id)
-                            }
-                          >
-                            {playlist.name}
-                          </li>
-                        ))
-                      ) : (
-                        <li>Aucune playlist disponible</li>
-                      )}
-                    </ul>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setIsAddingPlaylist(false);
+                            setNewPlaylistName("");
+                          }}
+                          className="cancel-button"
+                        >
+                          Annuler
+                        </button>
+                      </div>
+                    )}
                   </div>
-                ) : null}
-              </>
-            )}
+                  <ul className="playlist-list">
+                    {isLoading ? (
+                      <li>Chargement...</li>
+                    ) : error ? (
+                      <li>{error}</li>
+                    ) : playlists.length > 0 ? (
+                      playlists.map((playlist) => (
+                        <li
+                          key={playlist.id}
+                          onClick={() =>
+                            video && addVideoToPlaylist(playlist.id, video.id)
+                          }
+                          onKeyDown={() =>
+                            video && addVideoToPlaylist(playlist.id, video.id)
+                          }
+                        >
+                          {playlist.name}
+                        </li>
+                      ))
+                    ) : (
+                      <li>Aucune playlist disponible</li>
+                    )}
+                  </ul>
+                </div>
+              ) : null}
+            </>
           </div>
         </div>
       )}
