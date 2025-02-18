@@ -40,6 +40,7 @@ export default function UserLogout() {
       setIsOpenLogin(false);
       setAuth(null);
       navigate("/home");
+      window.location.reload();
     } catch (error) {
       console.error("Erreur lors de la déconnexion :", error);
     }
