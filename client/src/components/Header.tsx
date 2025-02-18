@@ -51,18 +51,20 @@ export default function Header() {
   return (
     <div className="header-container">
       <div className="logo-header">
-        <img src={controller} alt="Controller" className="logo-icon" />
-        <h1>JESTONE</h1>
+        <Link to="/home" className="logo-header">
+          <img src={controller} alt="Controller" className="logo-icon" />
+          <h1>JESTONE</h1>
+        </Link>
       </div>
       {admin ? (
         <div className="swipe-view">
           {!isAdminRoute ? (
-            <Link to={"/admin"}>
-              <p className="view-text">Vue admin</p>
+            <Link to="/admin" className="view-text">
+              Vue admin
             </Link>
           ) : (
-            <Link to={"/home"}>
-              <p className="view-text">Vue utilisateur</p>
+            <Link to="/home" className="view-text">
+              Vue utilisateur
             </Link>
           )}
         </div>

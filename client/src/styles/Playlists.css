@@ -103,8 +103,8 @@
   flex: 1;
 }
 .playlist-name:hover {
-  background-color: var(--button-color);
-  color: var(--secondary-text-color);
+  background-color: rgba(162, 240, 244, 0.359);
+  color: white;
 }
 .container-playlists {
   display: flex;
@@ -265,4 +265,14 @@
 .delete-playlist:active {
   transform: scale(0.95);
   background-color: rgba(255, 0, 0, 0.2);
+}
+
+.playlist-item {
+  padding: 15px 20px;
+  margin: 5px 0;
+  border-radius: 12px;
+  background: rgba(18, 18, 33, 0.4);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
