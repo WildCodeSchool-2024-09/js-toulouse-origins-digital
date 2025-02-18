@@ -359,42 +359,39 @@ export default function Admin() {
                   : "utilisateurs"}
             </h2>
 
-            {adminSection !== "users" && (
-              <button
-                className="add-card-manager"
-                type="button"
-                onClick={
-                  adminSection === "categories"
-                    ? () => toggleCategory()
-                    : adminSection === "videos"
-                      ? () => toggleVideo()
+            <button
+              className="add-card-manager"
+              type="button"
+              onClick={
+                adminSection === "categories"
+                  ? () => toggleCategory()
+                  : adminSection === "videos"
+                    ? () => toggleVideo()
+                    : adminSection === "users"
+                      ? () => toggleUser()
                       : undefined
-                }
-              >
-                + Ajouter
-              </button>
-            )}
+              }
+            >
+              + Ajouter
+            </button>
             {isLoading ? (
-              <div>Chargement en cours...</div>
+              <div className="loading-container">
+                <div className="loading-spinner" />
+              </div>
             ) : (
-              <>
-                {adminSection === "categories" &&
-                  category.map((cat) => (
-                    <CardCategoryManager
-                      key={cat.id}
-                      id={cat.id}
-                      name={cat.name}
-                      description={cat.description}
-                      url_image={cat.url_image}
-                      onEdit={() => toggleCategory(cat.id)}
-                      onDelete={handleCategoryDelete}
-                    />
-                  ))}
-                {adminSection === "videos" &&
-                  video.map((vid) => {
-                    if (!vid || !vid.date) return null; // Skip invalid videos
-
-                    return (
+              <div className="admin-section" key={adminSection}>
+                <div className="card-container">
+                  {adminSection === "categories" &&
+                    category.map((cat) => (
+                      <CardCategoryManager
+                        key={cat.id}
+                        {...cat}
+                        onEdit={() => toggleCategory(cat.id)}
+                        onDelete={handleCategoryDelete}
+                      />
+                    ))}
+                  {adminSection === "videos" &&
+                    video.map((vid) => (
                       <CardVideoManager
                         id={vid.id}
                         key={vid.id}
@@ -408,22 +405,18 @@ export default function Admin() {
                         onEdit={() => toggleVideo(vid.id)}
                         onDelete={handleVideoDelete}
                       />
-                    );
-                  })}
-                {adminSection === "users" &&
-                  user.map((user) => (
-                    <CardUserManager
-                      id={user.id}
-                      key={user.id}
-                      pseudo={user.pseudo}
-                      email={user.email}
-                      avatar_url={user.avatar_url}
-                      is_admin={user.is_admin}
-                      onEdit={() => toggleUser(user.id)}
-                      onDelete={handleUserDelete}
-                    />
-                  ))}
-              </>
+                    ))}
+                  {adminSection === "users" &&
+                    user.map((user) => (
+                      <CardUserManager
+                        key={user.id}
+                        {...user}
+                        onEdit={() => toggleUser(user.id)}
+                        onDelete={handleUserDelete}
+                      />
+                    ))}
+                </div>
+              </div>
             )}
           </div>
           <div className="fill-the-gap" />

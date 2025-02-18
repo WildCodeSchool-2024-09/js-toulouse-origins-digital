@@ -21,6 +21,8 @@ interface CardVideoManagerProps {
   categories: number[];
   onEdit: () => void;
   onDelete: (deletedId: number) => void;
+  style?: React.CSSProperties;
+  className?: string;
 }
 
 function getVideasVideoId(url: string): string | null {
@@ -46,6 +48,8 @@ export default function CardVideoManager({
   categories,
   onEdit,
   onDelete,
+  style,
+  className,
 }: CardVideoManagerProps) {
   const [categoryNames, setCategoryNames] = useState<Category[]>([]);
   const [isShowingConfirm, setIsShowingConfirm] = useState(false);
@@ -106,7 +110,7 @@ export default function CardVideoManager({
         onConfirm={handleConfirmDelete}
         confirmInfo={confirmInfo}
       />
-      <div className="video-component-admin">
+      <div className={`video-component-admin ${className || ""}`} style={style}>
         <div className="video-card-admin">
           <img className="miniature-pic-admin" src={thumbnailUrl} alt="" />
           <div className="video-card-box">

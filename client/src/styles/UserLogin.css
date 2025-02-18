@@ -1,9 +1,8 @@
 .modal-user-login-signup {
-  background-color: rgba(211, 211, 211, 0.306);
+  background: rgba(18, 18, 33, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 30px;
-  border: 1px solid white;
-  backdrop-filter: blur(20px);
-  padding: 40px;
+  padding: 35px;
   width: 90%;
   max-width: 400px;
   margin: auto;
@@ -12,87 +11,100 @@
   left: 50%;
   text-align: center;
   transform: translate(-50%, -50%);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
   z-index: 1000;
-  animation: scaleIn 0.4s ease-out;
+  animation: modalScaleIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .login-signup-title {
-  font-family: var(--secondary-font);
-  color: white;
-  font-size: 30px;
-  font-weight: bold;
+  font-family: var(--primary-font);
+  font-size: 28px;
+  font-weight: 600;
   margin-bottom: 30px;
+  background: linear-gradient(135deg, #31d0d9, #9de6ea);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .input-field {
-  font-family: var(--secondary-font);
-  background: rgba(100, 95, 95, 0.395);
-  border: 1px solid rgba(255, 255, 255, 0.692);
-  border-radius: 25px;
-  padding: 12px;
-  font-size: 16px;
-  color: white;
   width: 100%;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  color: white;
+  font-size: 16px;
   margin-bottom: 20px;
-  outline: none;
-  transition: border 0.3s ease, background-color 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .input-field::placeholder {
-  color: white;
+  color: rgba(255, 255, 255, 0.5);
 }
 
 .input-field:focus {
-  border: 1px solid rgba(255, 255, 255, 0.8);
-  background-color: rgba(255, 255, 255, 0.2);
+  outline: none;
+  border-color: #31d0d9;
+  box-shadow: 0 0 0 2px rgba(49, 208, 217, 0.2);
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .forgot-password-link {
-  font-family: var(--secondary-font);
-  text-align: right;
-  color: rgb(255, 255, 255);
+  color: #31d0d9;
   font-size: 14px;
   text-decoration: none;
   display: block;
-  margin-top: -10px;
-  margin-bottom: 20px;
+  margin: 5px 0 20px;
+  transition: all 0.3s ease;
+}
+
+.forgot-password-link:hover {
+  color: #9de6ea;
 }
 
 .primary-button {
-  font-family: var(--secondary-font);
-  background-color: #88c0d0;
-  border: none;
-  border-radius: 25px;
-  padding: 12px;
-  font-size: 16px;
-  color: #121221;
   width: 100%;
-  transition: background-color 0.3s ease;
+  padding: 15px;
+  background: linear-gradient(135deg, #31d0d9, #9de6ea);
+  border: none;
+  border-radius: 15px;
+  color: #1a1a1a;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 .primary-button:hover {
-  background-color: #acfcff;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(49, 208, 217, 0.4);
+  background: linear-gradient(135deg, #9de6ea, #31d0d9);
 }
 
 .switch-button {
-  font-family: var(--secondary-font);
   background: none;
   border: none;
   color: #dd25b6;
   cursor: pointer;
-  text-decoration: none;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  margin-left: 5px;
 }
 
 .switch-button:hover {
   color: #ff67d6;
+  transform: translateY(-1px);
 }
 
 .switch-link {
-  font-family: var(--secondary-font);
-  margin-top: 10px;
+  font-family: var(--primary-font);
+  margin-top: 20px;
   font-size: 14px;
   color: rgba(255, 255, 255, 0.8);
+}
+
+.switch-link span {
+  margin-right: 5px;
 }
 
 .forgot-password,
@@ -111,14 +123,16 @@
   animation: fadeInOut 0.8s ease;
 }
 
-@keyframes scaleIn {
-  0% {
-    transform: translate(-50%, -50%) scale(0.8);
+@keyframes modalScaleIn {
+  from {
     opacity: 0;
+    transform: translate(-50%, -50%) scale(0.95);
+    backdrop-filter: blur(0px);
   }
-  100% {
-    transform: translate(-50%, -50%) scale(1);
+  to {
     opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+    backdrop-filter: blur(20px);
   }
 }
 
@@ -133,40 +147,27 @@
     opacity: 0;
   }
 }
+
 .modal-message {
-  position: relative;
-  padding: 10px;
-  margin-bottom: 10px;
-  font-weight: bold;
-  text-align: center;
-  z-index: 10000;
-  width: 100%;
-  border-radius: 5px;
-  transition: all 0.3s ease;
-  font-size: 16px;
-  margin-top: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 12px;
+  font-size: 14px;
 }
 
 .modal-message.error {
-  color: white;
-  background-color: red;
+  background: rgba(255, 59, 48, 0.2);
+  color: #ff3b30;
+  border: 1px solid rgba(255, 59, 48, 0.3);
 }
 
 .modal-message.success {
-  color: white;
-  background-color: green;
+  background: rgba(52, 199, 89, 0.2);
+  color: #34c759;
+  border: 1px solid rgba(52, 199, 89, 0.3);
 }
 
 .modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 1040;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow-y: auto;
+  background: rgba(18, 18, 33, 0.75);
+  backdrop-filter: blur(8px);
 }

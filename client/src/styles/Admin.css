@@ -1,8 +1,105 @@
 .admin-page {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  min-height: 100vh;
+  opacity: 0;
+  animation: pageEnter 0.4s ease-out forwards;
+}
+
+.card-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 25px;
+  padding: 20px 0;
+}
+
+.card-container > * {
+  animation: none;
+}
+
+.card-manager {
+  background: rgba(18, 18, 33, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 20px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 0;
+  transform: translateY(20px);
+  animation: cardAppear 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes cardAppear {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.card-manager:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  border-color: rgba(49, 208, 217, 0.3);
+}
+
+.section-transition-enter {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.section-transition-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.section-transition-exit {
+  opacity: 1;
+}
+
+.section-transition-exit-active {
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Animation pour le chargement */
+.loading-container {
   display: flex;
-  flex-direction: column;
-  gap: 16px;
-  padding: 0 17px;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+}
+
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 3px solid rgba(49, 208, 217, 0.1);
+  border-radius: 50%;
+  border-top-color: #31d0d9;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Animation pour le changement de section */
+.admin-section {
+  animation: sectionFade 0.4s ease;
+}
+
+@keyframes sectionFade {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .add-card-manager {
@@ -23,7 +120,27 @@
   font-family: var(--secondary-font);
   font-weight: 700;
   text-transform: uppercase;
-  animation: slideDown 0.5s ease-out;
+  position: relative;
+  padding-bottom: 15px;
+  margin-bottom: 25px;
+  color: #31d0d9;
+}
+
+.admin-title::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    rgba(49, 208, 217, 0.1),
+    rgba(49, 208, 217, 0.6),
+    rgba(49, 208, 217, 0.1)
+  );
+  border-radius: 2px;
 }
 
 .edit {
@@ -40,6 +157,9 @@
   display: flex;
   justify-content: space-between;
   padding: 10px;
+  opacity: 0;
+  transform: translateY(-10px);
+  animation: navEnter 0.4s ease-out 0.2s forwards;
 }
 
 .button-nav-admin {
@@ -95,14 +215,18 @@
   }
 }
 
-.user-card {
-  transition: all 0.3s ease;
-  animation: fadeIn 0.5s ease-out;
+.user-card,
+.category-card,
+.video-component-admin {
+  animation: smoothAppear 0.8s cubic-bezier(0.21, 1.02, 0.73, 1);
 }
 
-.user-card:hover {
+.user-card:hover,
+.category-card:hover,
+.video-component-admin:hover {
   transform: translateY(-5px);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
 }
 
 .edit:hover {
@@ -122,45 +246,18 @@
   transform: translateY(1px);
 }
 
-.category-card {
-  transition: all 0.3s ease;
-  animation: fadeIn 0.5s ease-out;
-}
-
-.category-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-  background: rgba(47, 57, 65, 0.6);
-}
-
-/* Animation pour l'image de la catégorie */
-.category-image {
-  transition: all 0.3s ease;
-}
-
 .category-card:hover .category-image {
   transform: scale(1.05);
-}
-
-/* Animation pour le titre de la catégorie */
-.category-title {
-  transition: all 0.3s ease;
 }
 
 .category-card:hover .category-title {
   color: var(--button-color);
 }
 
-/* Animation pour la description */
-.category-description {
-  transition: all 0.3s ease;
-}
-
 .category-card:hover .category-description {
   color: rgba(255, 255, 255, 0.9);
 }
 
-/* Animations pour les boutons d'action */
 .category-actions .edit:hover {
   transform: scale(1.15) rotate(-10deg);
   background: rgba(var(--button-color-rgb), 0.2);
@@ -171,7 +268,6 @@
   background: rgba(255, 59, 59, 0.2);
 }
 
-/* Animation pour le bouton d'ajout de catégorie */
 .add-category-button {
   transition: all 0.3s ease;
 }
@@ -184,4 +280,35 @@
 
 .add-category-button:active {
   transform: translateY(1px);
+}
+
+@keyframes pageEnter {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes navEnter {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes titleEnter {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

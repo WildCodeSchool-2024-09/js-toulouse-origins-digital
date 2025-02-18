@@ -12,6 +12,8 @@ interface CardCategoryManagerProps {
   url_image: string;
   onEdit: () => void;
   onDelete: (deletedId: number) => void;
+  style?: React.CSSProperties;
+  className?: string;
 }
 
 export default function CardCategoryManager({
@@ -21,6 +23,8 @@ export default function CardCategoryManager({
   url_image,
   onEdit,
   onDelete,
+  style,
+  className,
 }: CardCategoryManagerProps) {
   const [isShowingConfirm, setIsShowingConfirm] = useState(false);
   const [confirmInfo, setConfirmInfo] = useState({ title: "", message: "" });
@@ -64,7 +68,7 @@ export default function CardCategoryManager({
         onConfirm={handleConfirmDelete}
         confirmInfo={confirmInfo}
       />
-      <div className="category-card">
+      <div className={`category-card ${className || ""}`} style={style}>
         <img className="category-avatar" src={fullImageUrl} alt="" />
         <div className="category-info">
           <p className="category-title">{name}</p>

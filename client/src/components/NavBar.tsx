@@ -100,10 +100,14 @@ export default function NavBar() {
               </Link>
             </>
           )}
-          <div className="nav-link">
+          <div
+            className="nav-link"
+            onClick={() => setIsOpenLogin((prev) => !prev)}
+            onKeyDown={(e) =>
+              e.key === "Enter" && setIsOpenLogin((prev) => !prev)
+            }
+          >
             <img
-              onClick={() => setIsOpenLogin((prev) => !prev)}
-              onKeyDown={() => setIsOpenLogin((prev) => !prev)}
               src={!auth ? imgProfile : auth?.user.avatar_url}
               alt="Profile"
               className={getProfileClass()}
