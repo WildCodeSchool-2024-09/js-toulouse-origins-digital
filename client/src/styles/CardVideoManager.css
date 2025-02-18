@@ -94,3 +94,115 @@
   flex-wrap: wrap;
   gap: 8px;
 }
+
+/* Une seule media query pour desktop */
+@media screen and (min-width: 1024px) {
+  .admin-videos-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px;
+    padding: 40px;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .video-component-admin {
+    width: 100%;
+    max-width: 450px;
+    transition: all 0.3s ease;
+  }
+
+  .video-component-admin:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  }
+
+  .video-card-admin {
+    position: relative;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .miniature-pic-admin {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  .video-component-admin:hover .miniature-pic-admin {
+    transform: scale(1.05);
+  }
+
+  .video-card-box {
+    position: relative;
+    background: rgba(69, 95, 169, 0.7);
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: background-color 0.3s ease;
+  }
+
+  .video-component-admin:hover .video-card-box {
+    background: rgba(69, 95, 169, 0.9);
+  }
+
+  .video-card-content {
+    flex: 1;
+    gap: 8px;
+  }
+
+  .video-actions {
+    align-self: flex-end;
+    margin-top: 8px;
+  }
+
+  .video-card-title {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .video-card-description {
+    font-size: 14px;
+    line-height: 1.4;
+  }
+
+  .video-details {
+    font-size: 13px;
+    gap: 15px;
+  }
+
+  .category-video-admin {
+    font-size: 12px;
+    padding: 5px 15px;
+    transition: all 0.3s ease;
+    background: rgba(197, 197, 197, 0.6);
+  }
+
+  .video-component-admin:hover .category-video-admin {
+    background: rgba(197, 197, 197, 0.8);
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .video-actions img {
+    transition: transform 0.2s ease;
+  }
+
+  .video-actions .edit:hover img {
+    transform: scale(1.15) rotate(-10deg);
+  }
+
+  .video-actions .delete:hover img {
+    transform: scale(1.15) rotate(10deg);
+  }
+}

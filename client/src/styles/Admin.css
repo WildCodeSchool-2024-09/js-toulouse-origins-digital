@@ -14,6 +14,7 @@
   font-weight: 600;
   padding: 8px;
   cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 .admin-title {
@@ -22,14 +23,17 @@
   font-family: var(--secondary-font);
   font-weight: 700;
   text-transform: uppercase;
+  animation: slideDown 0.5s ease-out;
 }
 
 .edit {
   cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 .delete {
   cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 .nav-admin {
@@ -46,12 +50,21 @@
   padding: 10px;
   cursor: pointer;
   width: 25%;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .button-nav-admin:hover {
-  border-radius: 20px;
+  transform: translateY(-3px) scale(1.05);
   background-color: #474756;
-  transform: scale(1.05);
+}
+
+.button-nav-admin:active {
+  transform: scale(0.95);
+}
+
+.button-nav-admin p {
+  font-family: var(--primary-font);
+  font-size: 18px;
 }
 
 .button-nav-admin-active {
@@ -60,7 +73,115 @@
   transform: scale(1.05);
 }
 
-.button-nav-admin p {
-  font-family: var(--primary-font);
-  font-size: 18px;
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.user-card {
+  transition: all 0.3s ease;
+  animation: fadeIn 0.5s ease-out;
+}
+
+.user-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.edit:hover {
+  transform: scale(1.15) rotate(-10deg);
+}
+
+.delete:hover {
+  transform: scale(1.15) rotate(10deg);
+}
+
+.add-card-manager:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(var(--button-color-rgb), 0.3);
+}
+
+.add-card-manager:active {
+  transform: translateY(1px);
+}
+
+.category-card {
+  transition: all 0.3s ease;
+  animation: fadeIn 0.5s ease-out;
+}
+
+.category-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  background: rgba(47, 57, 65, 0.6);
+}
+
+/* Animation pour l'image de la catégorie */
+.category-image {
+  transition: all 0.3s ease;
+}
+
+.category-card:hover .category-image {
+  transform: scale(1.05);
+}
+
+/* Animation pour le titre de la catégorie */
+.category-title {
+  transition: all 0.3s ease;
+}
+
+.category-card:hover .category-title {
+  color: var(--button-color);
+}
+
+/* Animation pour la description */
+.category-description {
+  transition: all 0.3s ease;
+}
+
+.category-card:hover .category-description {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* Animations pour les boutons d'action */
+.category-actions .edit:hover {
+  transform: scale(1.15) rotate(-10deg);
+  background: rgba(var(--button-color-rgb), 0.2);
+}
+
+.category-actions .delete:hover {
+  transform: scale(1.15) rotate(10deg);
+  background: rgba(255, 59, 59, 0.2);
+}
+
+/* Animation pour le bouton d'ajout de catégorie */
+.add-category-button {
+  transition: all 0.3s ease;
+}
+
+.add-category-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(var(--button-color-rgb), 0.3);
+  opacity: 0.9;
+}
+
+.add-category-button:active {
+  transform: translateY(1px);
 }

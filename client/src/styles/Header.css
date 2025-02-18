@@ -8,11 +8,28 @@
   line-height: normal;
   display: flex;
   align-items: center;
+  cursor: pointer;
+  text-decoration: none;
 }
 
 .logo-icon {
   width: 70px;
   height: auto;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.logo-header:hover .logo-icon {
+  transform: rotate(20deg);
+  filter: brightness(1) sepia(1) hue-rotate(235deg) saturate(8);
+}
+
+.logo-header:hover h1 {
+  color: #c06ed6;
+  transform: scale(1.05);
+}
+
+.logo-header h1 {
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .header-container {
@@ -22,7 +39,59 @@
   padding: 0 10px;
 }
 
+.swipe-view {
+  position: relative;
+  padding: 8px;
+}
+
+.swipe-view a {
+  text-decoration: none;
+}
+
 .view-text {
   text-decoration: none;
   font-family: var(--primary-font);
+  color: white;
+  background: rgba(49, 208, 217, 0.1);
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(49, 208, 217, 0.2);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.view-text::before {
+  content: "⚙️";
+  font-size: 16px;
+  opacity: 0.8;
+}
+
+.view-text:hover {
+  background: rgba(192, 110, 214, 0.15);
+  transform: translateY(-2px);
+  border-color: rgba(192, 110, 214, 0.3);
+  box-shadow: 0 4px 12px rgba(192, 110, 214, 0.2);
+}
+
+.view-text:active {
+  transform: translateY(0);
+}
+
+/* Animation de transition */
+.view-text {
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
