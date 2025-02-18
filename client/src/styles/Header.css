@@ -60,13 +60,10 @@
   border: 1px solid rgba(49, 208, 217, 0.2);
   display: flex;
   align-items: center;
-  gap: 8px;
 }
 
 .view-text::before {
-  content: "⚙️";
-  font-size: 16px;
-  opacity: 0.8;
+  display: none;
 }
 
 .view-text:hover {

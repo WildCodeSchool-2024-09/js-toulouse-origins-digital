@@ -1,8 +1,8 @@
 .modal-user-login-signup {
-  background-color: rgba(211, 211, 211, 0.199);
-  border-radius: 30px;
-  border: 1px solid white;
-  backdrop-filter: blur(10px);
+  background: rgba(18, 18, 33, 0.95);
+  border-radius: 25px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
   padding: 40px;
   width: 90%;
   max-width: 400px;
@@ -12,90 +12,118 @@
   left: 50%;
   text-align: center;
   transform: translate(-50%, -50%);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
   z-index: 1000;
-  animation: scaleIn 0.4s ease-out;
+  animation: modalSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .login-signup-title {
-  font-family: var(--secondary-font);
+  font-family: var(--primary-font);
+  font-size: 28px;
+  font-weight: 600;
+  margin: 10px 0 25px;
   color: white;
-  font-size: 30px;
-  font-weight: bold;
-  margin-bottom: 10px;
+}
+
+.login-title {
+  background: linear-gradient(45deg, #31d0d9, #9de6ea);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .input-field {
-  font-family: var(--secondary-font);
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  border-radius: 25px;
-  padding: 12px;
-  font-size: 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 14px 18px;
+  font-size: 15px;
   color: white;
-  width: 100%;
-  margin-bottom: 14px;
-  outline: none;
-  transition: border 0.3s ease, background-color 0.3s ease;
-}
-
-.input-field::placeholder {
-  color: white;
+  width: 85%;
+  margin-bottom: 15px;
+  transition: all 0.3s ease;
 }
 
 .input-field:focus {
-  border: 1px solid rgba(255, 255, 255, 0.8);
-  background-color: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.08);
+  border-color: #31d0d9;
+  box-shadow: 0 0 0 2px rgba(49, 208, 217, 0.2);
+  outline: none;
+}
+
+.input-field::placeholder {
+  color: rgba(255, 255, 255, 0.5);
 }
 
 .forgot-password-link {
-  font-family: var(--secondary-font);
-  background-color: transparent;
-  border: none;
-  text-align: right;
-  color: rgb(255, 255, 255);
+  font-family: var(--primary-font);
+  color: #31d0d9;
   font-size: 14px;
   text-decoration: none;
-  outline: none;
-  margin-left: 120px;
-  margin-top: -10px;
-  margin-bottom: 30px;
+  margin: 5px 0 20px;
+  display: block;
+  transition: all 0.3s ease;
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  text-align: right;
+  padding-right: 40px;
+}
+
+.forgot-password-link:hover {
+  color: #9de6ea;
+  transform: translateY(-1px);
 }
 
 .primary-button {
-  font-family: var(--secondary-font);
-  background-color: #88c0d0;
+  width: 85%;
+  padding: 14px;
+  font-size: 15px;
+  font-weight: 500;
+  border-radius: 20px;
   border: none;
-  border-radius: 25px;
-  padding: 12px;
-  font-size: 16px;
-  color: #121221;
-  width: 100%;
-  transition: background-color 0.3s ease;
+  background: linear-gradient(135deg, #31d0d9, #9de6ea);
+  color: #1a1a1a;
+  transition: all 0.3s ease;
+  margin: 10px 0;
 }
 
 .primary-button:hover {
-  background-color: #acfcff;
-}
-
-.switch-button {
-  font-family: var(--secondary-font);
-  background: none;
-  border: none;
-  color: #dd25b6;
-  cursor: pointer;
-  text-decoration: none;
-}
-
-.switch-button:hover {
-  color: #ff67d6;
+  transform: translateY(-2px);
+  background: linear-gradient(135deg, #9de6ea, #31d0d9);
+  box-shadow: 0 5px 15px rgba(49, 208, 217, 0.4);
 }
 
 .switch-link {
-  font-family: var(--secondary-font);
-  margin-top: 10px;
+  margin-top: 20px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.switch-button {
+  background: none;
+  border: none;
+  color: #31d0d9;
+  cursor: pointer;
+  font-family: var(--primary-font);
   font-size: 14px;
-  color: rgba(255, 255, 255, 0.8);
+  transition: all 0.3s ease;
+}
+
+.switch-button:hover {
+  color: #9de6ea;
+}
+
+@keyframes modalSlideIn {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -45%) scale(0.95);
+    backdrop-filter: blur(0px);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+    backdrop-filter: blur(10px);
+  }
 }
 
 .forgot-password,

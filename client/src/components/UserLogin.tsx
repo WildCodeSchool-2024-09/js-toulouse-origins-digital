@@ -154,7 +154,7 @@ export default function UserLogin() {
           >
             {isLogin ? (
               <form className="user-login" onSubmit={handleConnexionSubmit}>
-                <h1 className="login-signup-title">Je me connecte</h1>
+                <h1 className="login-signup-title login-title">Connexion</h1>
                 <input
                   type="text"
                   name="email"
@@ -203,7 +203,9 @@ export default function UserLogin() {
               </form>
             ) : (
               <form className="user-signup" onSubmit={handleSubscriptionSubmit}>
-                <h1 className="login-signup-title">Je crée un compte</h1>
+                <h1 className="login-signup-title login-title">
+                  Je crée un compte
+                </h1>
                 <input
                   type="text"
                   name="pseudo"
