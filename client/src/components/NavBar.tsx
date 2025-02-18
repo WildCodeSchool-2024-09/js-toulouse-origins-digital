@@ -66,42 +66,50 @@ export default function NavBar() {
         )
       ) : null}
       <div className="nav-bar-container">
+        <div className="nav-indicator" />
         <nav className={navbarClass}>
-          <Link to="/home">
+          <Link to="/home" className="nav-link">
             <img src={homeIcon} alt="Home" className={getIconClass("/home")} />
+            <span>Accueil</span>
           </Link>
-          <Link to="/search">
+          <Link to="/search" className="nav-link">
             <img
               src={searchIcon}
               alt="Search"
               className={getIconClass("/search")}
             />
+            <span>Rechercher</span>
           </Link>
           {auth && (
             <>
-              <Link to="/favorite">
+              <Link to="/favorite" className="nav-link">
                 <img
                   src={bookmarkIcon}
                   alt="Bookmark"
                   className={getIconClass("/favorite")}
                 />
+                <span>Enregistrer</span>
               </Link>
-              <Link to="/playlists">
+              <Link to="/playlists" className="nav-link">
                 <img
                   src={addIcon}
                   alt="Add"
                   className={getIconClass("/playlists")}
                 />
+                <span>Playlists</span>
               </Link>
             </>
           )}
-          <img
-            onClick={() => setIsOpenLogin((prev) => !prev)}
-            onKeyDown={() => setIsOpenLogin((prev) => !prev)}
-            src={!auth ? imgProfile : auth?.user.avatar_url}
-            alt="Profile"
-            className={getProfileClass()}
-          />
+          <div className="nav-link">
+            <img
+              onClick={() => setIsOpenLogin((prev) => !prev)}
+              onKeyDown={() => setIsOpenLogin((prev) => !prev)}
+              src={!auth ? imgProfile : auth?.user.avatar_url}
+              alt="Profile"
+              className={getProfileClass()}
+            />
+            <span>Profil</span>
+          </div>
         </nav>
       </div>
     </>
