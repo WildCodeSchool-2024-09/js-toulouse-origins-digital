@@ -17,7 +17,6 @@ type Auth = {
   token: string;
 };
 import "../styles/HomeScreen.css";
-import NavBar from "../components/NavBar";
 
 export default function HomeScreen() {
   const { isOpenLogin, setIsOpenLogin } = useNav();
@@ -73,7 +72,6 @@ export default function HomeScreen() {
               </section>
             </div>
           </div>
-          <NavBar />
         </>
       ) : (
         <AccessDenied />

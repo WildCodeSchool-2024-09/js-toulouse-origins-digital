@@ -133,38 +133,42 @@ export default function CarouselVideo({ categoryId }: CarouselVideoProps) {
         </div>
 
         <div className="carousel-video" ref={carouselRef}>
-          {displayedVideos.map((video) => {
-            const thumbnailUrl = getVideasThumbnail(video.video_url);
-            const filteredCategories = categories.filter((cat) =>
-              videoCategories[video.id]?.some(
-                (vc: Category) => vc.id === cat.id,
-              ),
-            );
-            return (
-              <div
-                key={video.id}
-                className="video-card"
-                onClick={() => setSelectedVideo(video)}
-                onKeyDown={() => setSelectedVideo(video)}
-              >
-                <div>
-                  <img
-                    src={thumbnailUrl}
-                    alt={video.title}
-                    className="image-video"
-                  />
+          {displayedVideos
+            .sort(
+              (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+            )
+            .map((video) => {
+              const thumbnailUrl = getVideasThumbnail(video.video_url);
+              const filteredCategories = categories.filter((cat) =>
+                videoCategories[video.id]?.some(
+                  (vc: Category) => vc.id === cat.id,
+                ),
+              );
+              return (
+                <div
+                  key={video.id}
+                  className="video-card"
+                  onClick={() => setSelectedVideo(video)}
+                  onKeyDown={() => setSelectedVideo(video)}
+                >
+                  <div>
+                    <img
+                      src={thumbnailUrl}
+                      alt={video.title}
+                      className="image-video"
+                    />
+                  </div>
+                  <h2 className="title-video">{video.title}</h2>
+                  <div className="category-video-container">
+                    {filteredCategories.map((category) => (
+                      <p key={category.id} className="category-video">
+                        {category.name}
+                      </p>
+                    ))}
+                  </div>
                 </div>
-                <h2 className="title-video">{video.title}</h2>
-                <div className="category-video-container">
-                  {filteredCategories.map((category) => (
-                    <p key={category.id} className="category-video">
-                      {category.name}
-                    </p>
-                  ))}
-                </div>
-              </div>
-            );
-          })}
+              );
+            })}
         </div>
         <div
           className="container-scroll-button-right"
