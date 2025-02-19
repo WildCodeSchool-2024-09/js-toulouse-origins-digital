@@ -274,7 +274,7 @@ export default function VideoCard({ video, onClose }: VideoPlayerProps) {
   };
 
   return (
-    <>
+    <div className="video-card-modal">
       <AlertModal
         isShowing={isShowingAlert}
         onClose={toggleAlert}
@@ -414,6 +414,6 @@ export default function VideoCard({ video, onClose }: VideoPlayerProps) {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 }

@@ -37,6 +37,14 @@
   align-items: center;
   justify-content: space-between;
   padding: 0 10px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background-color: #121221;
+  z-index: 1000;
+  height: 80px;
 }
 
 .swipe-view {
