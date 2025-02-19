@@ -1,6 +1,6 @@
 import "./App.css";
 import { useEffect, useState } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import { useNav } from "./contexts/NavProvider";
 
 type User = {
@@ -63,6 +63,17 @@ function App() {
       localStorage.removeItem("user");
     }
   }, [auth]);
+
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.pathname) {
+      window.scrollTo({
+        top: 0,
+        behavior: "instant",
+      });
+    }
+  }, [location.pathname]);
 
   return (
     <main
