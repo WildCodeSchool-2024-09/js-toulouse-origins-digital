@@ -359,21 +359,21 @@ export default function Admin() {
                   : "utilisateurs"}
             </h2>
 
-            <button
-              className="add-card-manager"
-              type="button"
-              onClick={
-                adminSection === "categories"
-                  ? () => toggleCategory()
-                  : adminSection === "videos"
-                    ? () => toggleVideo()
-                    : adminSection === "users"
-                      ? () => toggleUser()
+            {adminSection !== "users" && (
+              <button
+                className="add-card-manager"
+                type="button"
+                onClick={
+                  adminSection === "categories"
+                    ? () => toggleCategory()
+                    : adminSection === "videos"
+                      ? () => toggleVideo()
                       : undefined
-              }
-            >
-              + Ajouter
-            </button>
+                }
+              >
+                + Ajouter
+              </button>
+            )}
             {isLoading ? (
               <div className="loading-container">
                 <div className="loading-spinner" />

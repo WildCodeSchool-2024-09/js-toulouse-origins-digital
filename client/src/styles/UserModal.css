@@ -46,6 +46,7 @@
   margin: 10px 0;
   background: linear-gradient(45deg, #31d0d9, #9de6ea);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
@@ -78,6 +79,7 @@
   border: none;
   transition: all 0.3s ease;
   margin: 5px 0;
+  cursor: pointer;
 }
 
 .first-button {
@@ -189,6 +191,7 @@
     margin: 20px 0;
     background: linear-gradient(45deg, #31d0d9, #9de6ea);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
   }
 
