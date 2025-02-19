@@ -178,6 +178,18 @@ export default function VideoCard({ video, onClose }: VideoPlayerProps) {
 
       if (response.ok) {
         setSuccessMessage("Vidéo ajoutée à votre playlist !");
+        setTimeout(() => {
+          const fadeOut = setInterval(() => {
+            setSuccessMessage((prev) => {
+              if (prev === null || prev.length === 0) {
+                clearInterval(fadeOut);
+                return null;
+              }
+              return prev.slice(0, -1);
+            });
+          }, 20);
+        }, 2000);
+
         setIsOpenPlaylists(false);
       } else {
         setError(data.error);
@@ -293,6 +305,7 @@ export default function VideoCard({ video, onClose }: VideoPlayerProps) {
             className="close close-video-card"
             onClick={() => {
               setIsOpenCardVideo(false);
+              setSuccessMessage(null);
               onClose();
             }}
           >

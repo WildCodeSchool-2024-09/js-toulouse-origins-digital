@@ -106,7 +106,9 @@ const GamePlaylists = () => {
           <main className="playlists-container">
             <div className="playlists-section">
               <h2 className="title-playlists-page">
-                Mes Playlists &#x27E9; {selectedPlaylist?.name}
+                {!selectedPlaylist
+                  ? "Mes Playlists \u27E9"
+                  : `${selectedPlaylist?.name} \u27E9`}
               </h2>
             </div>
             <hr className="line" />
