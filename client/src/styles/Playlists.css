@@ -71,6 +71,7 @@
   border-radius: 10px;
   padding: 8px 15px;
   flex: 1;
+  cursor: pointer;
 }
 
 .playlist-name:hover {
@@ -249,6 +250,7 @@
     transform: scale(1.2);
     background-color: rgba(255, 0, 0, 0.1);
     box-shadow: 0 0 10px rgba(255, 0, 0, 0.3);
+    cursor: pointer;
   }
 
   .delete-playlist:active {

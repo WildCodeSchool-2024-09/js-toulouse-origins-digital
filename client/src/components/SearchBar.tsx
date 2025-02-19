@@ -113,7 +113,7 @@ export default function SearchBar() {
         <form onSubmit={handleSearch} className="form-search">
           <input
             type="text"
-            placeholder="Rechercher un streamer, jeux vidéos..."
+            placeholder="Rechercher une vidéo..."
             className="search-input"
             value={query}
             onChange={(e) => {
