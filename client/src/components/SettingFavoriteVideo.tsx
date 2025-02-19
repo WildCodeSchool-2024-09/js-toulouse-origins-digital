@@ -1,4 +1,4 @@
-import "../styles/SettingFavoriteVideo.css";
+import "../styles/Favorite.css";
 import { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import deleteIcon from "../assets/images/supprimer.png";
@@ -171,7 +171,7 @@ export default function SettingFavoriteVideo({
   }
 
   return (
-    <div className="setting-favorite-video">
+    <div className="favorite-video-box">
       {sortedFavorites.map((video) => (
         <div key={video.id} className="favorite-video-container">
           <div

@@ -1,10 +1,58 @@
+.favorite-video-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px;
+  border-radius: 20px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.favorite-video-container:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.favorite-video-container:hover .favorite-video-frame {
+  transition: transform 0.3s ease;
+  transform: scale(1.02);
+}
+
+.favorite-video-title {
+  font-family: var(--primary-font);
+  font-size: 18px;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-top: 5px;
+}
+
+.no-favorites-message {
+  text-align: center;
+  padding: 2rem;
+  color: #666;
+  font-size: 1.1rem;
+}
+
+.favorite-video-info {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px;
+  width: 100%;
+  position: relative;
+}
+
+.delete-button {
+  position: absolute;
+  background: none;
+  border: none;
+  left: 230px;
+}
+
 .favorite-container {
   position: relative;
   font-family: "Exo", sans-serif;
   font-weight: 100;
-  padding: 20px;
-  height: 100vh;
-  overflow-x: hidden;
+  margin: 20px;
 }
 
 .favorite-section {
@@ -19,6 +67,7 @@
   font-weight: 200;
 }
 
+/* Setting Favorite Video */
 .filter-sort-out {
   display: flex;
   flex-direction: row;
@@ -103,7 +152,6 @@
   background-color: #2f3941;
   border-radius: 8px;
   padding: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   z-index: 1000;
   min-width: 200px;
   margin-top: 5px;
@@ -192,7 +240,6 @@ input[type="checkbox"] {
   background-color: #2f3941;
   border-radius: 8px;
   padding: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   z-index: 1000;
   min-width: 200px;
   margin-top: 5px;
@@ -222,4 +269,59 @@ input[type="checkbox"] {
 .sort-item.active {
   background-color: rgba(147, 51, 234, 0.5);
   color: white;
+}
+
+@media screen and (min-width: 768px) {
+  .favorite-video-box {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 40px;
+    padding: 30px;
+  }
+
+  .favorite-container {
+    position: relative;
+    padding: 20px;
+    height: 100vh;
+    overflow-x: hidden;
+  }
+
+  .favorite-video-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px;
+    border-radius: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .favorite-video-info {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0;
+    position: relative;
+  }
+
+  .favorite-video-title {
+    font-family: var(--primary-font);
+    font-size: 18px;
+    font-weight: 600;
+    text-align: left;
+    padding-left: 30px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-left: 5px;
+    margin-top: 15px;
+  }
+
+  .delete-button {
+    position: relative;
+    width: 30px;
+    height: 30px;
+    background: none;
+    border: none;
+    left: -30px;
+    top: 10px;
+  }
 }

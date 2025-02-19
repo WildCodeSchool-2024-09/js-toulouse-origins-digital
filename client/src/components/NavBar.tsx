@@ -88,7 +88,7 @@ export default function NavBar() {
                   alt="Bookmark"
                   className={getIconClass("/favorite")}
                 />
-                <span>Enregistrer</span>
+                <span>Favoris</span>
               </Link>
               <Link to="/playlists" className="nav-link">
                 <img
