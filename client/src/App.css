@@ -43,28 +43,29 @@ button {
   cursor: pointer;
 }
 
-.scrollbar {
-  scrollbar-width: thin;
-  scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+body::-webkit-scrollbar {
+  width: 14px;
 }
 
-.scrollbar::-webkit-scrollbar {
-  width: 6px;
+body::-webkit-scrollbar-track {
+  background: #121221;
 }
 
-.scrollbar::-webkit-scrollbar-track {
-  background: transparent;
+body::-webkit-scrollbar-thumb {
+  background-color: #333344;
+  border-radius: 0;
+  border: none;
 }
 
-.scrollbar::-webkit-scrollbar-thumb {
-  background-color: rgba(255, 255, 255, 0.3);
-  border-radius: 20px;
+body::-webkit-scrollbar-thumb:hover {
+  background-color: #444455;
 }
 
-.scrollbar::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(255, 255, 255, 0.5);
+body::-webkit-scrollbar-button:single-button {
+  background-color: #1a1a2a;
+  height: 16px;
 }
 
-.scrollbar::-webkit-scrollbar:horizontal {
-  height: 6px;
+body::-webkit-scrollbar-button:hover {
+  background-color: #2a2a3a;
 }

@@ -13,15 +13,18 @@
   justify-content: space-between;
   align-items: center;
   padding-bottom: 15px;
+  margin-bottom: 15px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .modal-header.error {
   color: #ff4444;
 }
+
 .modal-header.success {
   color: #4caf50;
 }
+
 .modal-header.warning {
   color: #ff9800;
 }
@@ -65,6 +68,7 @@
     opacity: 0;
     transform: translateY(-20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);

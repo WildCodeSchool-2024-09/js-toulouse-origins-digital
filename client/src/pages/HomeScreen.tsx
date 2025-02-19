@@ -33,8 +33,8 @@ export default function HomeScreen() {
       <div className="container">
         <section className="carrousel-section">
           <p className="text-home-screen intro">
-            Plongez dans l'univers des jeux vidéos : découvrez nos guides vidéos
-            pour maitriser vos jeux préférés et déjouer tous les défis !
+            L'essentiel du gaming réuni : guides vidéos experts et actualités
+            des sorties pour ne rien manquer de vos jeux préférés !
           </p>
           <div className="carrousel-container">
             <CarrouselAuto />

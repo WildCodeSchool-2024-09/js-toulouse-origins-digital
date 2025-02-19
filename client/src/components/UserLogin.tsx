@@ -82,7 +82,7 @@ export default function UserLogin() {
         );
         setError("");
 
-        setTimeout(() => navigate("/home"), 1500);
+        setTimeout(() => setIsLogin(!isLogin), 1000);
       } else {
         const errorData = await response.json();
         setResponseMessage(

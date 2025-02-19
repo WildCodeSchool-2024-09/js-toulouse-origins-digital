@@ -152,7 +152,7 @@
   background-color: #2f3941;
   border-radius: 8px;
   padding: 10px;
-  z-index: 1000;
+  z-index: 999;
   min-width: 200px;
   margin-top: 5px;
   max-height: 300px;
@@ -240,7 +240,7 @@ input[type="checkbox"] {
   background-color: #2f3941;
   border-radius: 8px;
   padding: 10px;
-  z-index: 1000;
+  z-index: 999;
   min-width: 200px;
   margin-top: 5px;
 }
@@ -283,7 +283,6 @@ input[type="checkbox"] {
     position: relative;
     padding: 20px;
     height: 100vh;
-    overflow-x: hidden;
   }
 
   .favorite-video-container {
