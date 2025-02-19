@@ -19,7 +19,7 @@ export default function HomePage() {
   return (
     <>
       <Header />
-      <div className="container container-home-page">
+      <div className="container container-home-page ">
         <CarouselPrimary onCategorySelect={handleCategorySelect} />
         {selectedCategory && (
           <>

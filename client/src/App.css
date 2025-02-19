@@ -26,7 +26,6 @@ body {
 
 .container {
   padding-bottom: 10px;
-  padding-left: 20px;
 }
 
 img {
@@ -38,4 +37,30 @@ img {
 button {
   border: none;
   cursor: pointer;
+}
+
+.scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+}
+
+.scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 20px;
+}
+
+.scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.scrollbar::-webkit-scrollbar:horizontal {
+  height: 6px;
 }
