@@ -8,13 +8,14 @@ body.modal-open {
   left: 0;
   width: 100vw;
   height: 100vh;
-  z-index: 1040;
+  z-index: 1000;
   background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
   overflow-y: auto;
 }
+
 .modify-category-wrapper {
   position: relative;
   width: 100%;
@@ -40,6 +41,12 @@ body.modal-open {
   margin: auto;
   max-height: 90vh;
   overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.category-form::-webkit-scrollbar {
+  display: none;
 }
 
 .modal-header {
@@ -234,4 +241,22 @@ input:checked + .slider:before {
 .toggle-label {
   font-family: var(--primary-font);
   font-size: 14px;
+}
+
+.form-textarea {
+  font-family: var(--secondary-font);
+}
+
+.form-textarea::-webkit-scrollbar {
+  width: 6px;
+}
+
+.form-textarea::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+
+.form-textarea::-webkit-scrollbar-thumb {
+  background: var(--button-color);
+  border-radius: 3px;
 }

@@ -8,11 +8,14 @@ export default function AccessDenied() {
       <Header />
       <div className="container-access-denied">
         <section className="section-access-denied">
+          <h1 className="title-access-denied">⛔ Accès restreint !</h1>
           <p className="paragraph-access-denied">
-            Il semblerait que tu essaies d'accéder à une page sans droit d'accès
-            ! Pour retourner à la page d'accueil de Jestone clique sur{" "}
-            <Link to="/home">Accueil Jestone</Link>
+            Il semble que vous essayez d’accéder à une page pour laquelle vous
+            n’avez pas les autorisations nécessaires.{" "}
           </p>
+          <Link className="button-access-denied" to="/home">
+            Retour à l'accueil &#10132;
+          </Link>
         </section>
       </div>
     </div>

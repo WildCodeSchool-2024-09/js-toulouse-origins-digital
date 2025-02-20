@@ -105,7 +105,11 @@ const GamePlaylists = () => {
           <Header />
           <main className="playlists-container">
             <div className="playlists-section">
-              <h2 className="title-playlists-page">Mes Playlists &#x27E9;</h2>
+              <h2 className="title-playlists-page">
+                {!selectedPlaylist
+                  ? "Mes Playlists \u27E9"
+                  : `${selectedPlaylist?.name} \u27E9`}
+              </h2>
             </div>
             <hr className="line" />
             {error && <div className="error-message">{error}</div>}

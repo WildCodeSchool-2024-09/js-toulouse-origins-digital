@@ -96,12 +96,24 @@ export default function SearchBar() {
   }, [query, debouncedSearch, showSuggestions]);
 
   return (
-    <>
+    <div className="search-container">
+      {showSuggestions && (
+        <div
+          className="overlay"
+          onClick={() => setShowSuggestions(false)}
+          onKeyDown={(e) => {
+            if (e.key === "Escape") setShowSuggestions(false);
+          }}
+          role="button"
+          tabIndex={0}
+        />
+      )}
+
       <div className="search-bar" ref={searchBarRef}>
         <form onSubmit={handleSearch} className="form-search">
           <input
             type="text"
-            placeholder="Rechercher un streamer, jeux vidéos..."
+            placeholder="Rechercher une vidéo..."
             className="search-input"
             value={query}
             onChange={(e) => {
@@ -120,9 +132,8 @@ export default function SearchBar() {
         </form>
         {error && <p className="error-message">{error}</p>}
 
-        {/* Suggestions en direct */}
         {showSuggestions && query && results.length > 0 && (
-          <div className="suggestions-container">
+          <div className="suggestions-container filter-dropdown">
             {results.slice(0, 5).map((video) => (
               <div
                 key={video.id}
@@ -162,11 +173,14 @@ export default function SearchBar() {
               onKeyDown={() => null}
             />
             <h3 className="title-video-search">{video.title}</h3>
+            <p className="description-video-search">
+              {video.description.slice(0, 60)}...
+            </p>
           </div>
         ))}
       </div>
 
       <VideoCard video={selectedVideo} onClose={handleCloseVideo} />
-    </>
+    </div>
   );
 }

@@ -10,8 +10,8 @@
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 10;
-  backdrop-filter: blur(10px);
+  z-index: 1000;
+  background-color: var(--background-color);
   overflow-y: auto;
 }
 
@@ -288,15 +288,15 @@
   }
   .close-video-card {
     position: absolute;
-    top: 4%;
+    top: 2%;
     left: 2%;
     background: none;
     border: none;
     font-size: 48px;
     cursor: pointer;
     font-weight: 400;
-    margin-left: 15px;
-    margin-top: 5px;
+    margin-left: 2%;
+    margin-top: 2%;
     text-align: left;
   }
 }
