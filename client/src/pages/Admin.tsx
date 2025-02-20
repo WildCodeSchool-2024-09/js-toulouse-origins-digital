@@ -281,6 +281,7 @@ export default function Admin() {
                 if (!isEditing && response.status !== 204) {
                   const result = await response.json();
                   videoId = result.insertId;
+
                   const videoResponse = await fetch(
                     `${import.meta.env.VITE_API_URL}/api/videos/${videoId}`,
                   );
@@ -307,7 +308,15 @@ export default function Admin() {
 
                 const updatedVideo: Video = {
                   ...updatedVideoData,
-                  id: videoId as number,
+                  id: videoId,
+                  title: videoData.title,
+                  description: videoData.description,
+                  video_url: videoData.video_url.endsWith("/")
+                    ? videoData.video_url
+                    : `${videoData.video_url}/`,
+                  date: new Date().toISOString(),
+                  views: 0,
+                  duration: videoData.duration || "00:00",
                 };
                 setVideo((prevVideos) =>
                   isEditing
@@ -331,7 +340,7 @@ export default function Admin() {
                 onClick={() => setAdminSection("users")}
               >
                 <img width={30} src={usersPic} alt="" />
-                <p>Users</p>
+                <p>Utilisateurs</p>
               </button>
               <button
                 className={`button-nav-admin ${adminSection === "categories" ? "button-nav-admin-active" : ""}`}
@@ -339,7 +348,7 @@ export default function Admin() {
                 onClick={() => setAdminSection("categories")}
               >
                 <img width={30} src={categoriesPic} alt="" />
-                <p>Categories</p>
+                <p>Catégories</p>
               </button>
               <button
                 className={`button-nav-admin ${adminSection === "videos" ? "button-nav-admin-active" : ""}`}
@@ -347,7 +356,7 @@ export default function Admin() {
                 onClick={() => setAdminSection("videos")}
               >
                 <img width={30} src={videosPic} alt="" />
-                <p>Videos</p>
+                <p>Vidéos</p>
               </button>
             </nav>
             <h2 className="admin-title">
